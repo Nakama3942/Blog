@@ -8,30 +8,30 @@
 </head>
 <body>
 
-    <header>
-        <h1>Калиновський Валентин<br>Мій Особистий Блог</h1>
-    </header>
+	<header>
+		<h1>Калиновський Валентин<br>Мій Особистий Блог</h1>
+	</header>
 
-    <nav>
-        <a href="/">Головна</a>
+	<nav>
+		<a href="/">Головна</a>
 <!--        <a href="#">Проекти</a>-->
 <!--        <a href="#">Документації</a>-->
-        <a href="/diary">Щоденник</a>
+		<a href="/diary">Щоденник</a>
 <!--		<a href="#">Контакти</a>-->
-    </nav>
+	</nav>
 
-    <main>
+	<main>
 		<article>
 			<p>{{ post_content[3]['description'] }}</p>
 			<p>Дата публікації: {{ post_content[2]['datetime'].strftime('%Y-%m-%d %I:%M %p') }}</p>
 			<hr>
 			<p>{{ post_content[4]['post']|safe }}</p>
 		</article>
-    </main>
+	</main>
 
-    <footer>
-        <p>&copy; 2023 Калиновський Валентин</p>
-    </footer>
+	<footer>
+		<p>&copy; 2023 Калиновський Валентин</p>
+	</footer>
 
 </body>
 </html>

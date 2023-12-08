@@ -8,33 +8,33 @@
 </head>
 <body>
 
-    <header>
-        <h1>Калиновський Валентин<br>Мій Особистий Блог</h1>
-    </header>
+	<header>
+		<h1>Калиновський Валентин<br>Мій Особистий Блог</h1>
+	</header>
 
-    <nav>
-        <a href="/">Головна</a>
+	<nav>
+		<a href="/">Головна</a>
 <!--        <a href="#">Проекти</a>-->
 <!--        <a href="#">Документації</a>-->
-        <a href="/diary">Щоденник</a>
+		<a href="/diary">Щоденник</a>
 <!--        <a href="#">Контакти</a>-->
-    </nav>
+	</nav>
 
-    <main>
-        {% for metadata in post_contents %}
-            <article>
-                <a href="{{ url_for('post', post_id=metadata[0]['name']) }}">
-                    <h2>{{ metadata[1]['title'] }}</h2>
-                </a>
-                <p>{{ metadata[3]['description'] }}</p>
-                <p>Дата публікації: {{ metadata[2]['datetime'].strftime('%Y-%m-%d %I:%M %p') }}</p>
-            </article>
-        {% endfor %}
-    </main>
+	<main>
+		{% for metadata in post_contents %}
+			<article>
+				<a href="{{ url_for('post', post_id=metadata[0]['name']) }}">
+					<h2>{{ metadata[1]['title'] }}</h2>
+				</a>
+				<p>{{ metadata[3]['description'] }}</p>
+				<p>Дата публікації: {{ metadata[2]['datetime'].strftime('%Y-%m-%d %I:%M %p') }}</p>
+			</article>
+		{% endfor %}
+	</main>
 
-    <footer>
-        <p>&copy; 2023 Калиновський Валентин</p>
-    </footer>
+	<footer>
+		<p>&copy; 2023 Калиновський Валентин</p>
+	</footer>
 
 </body>
 </html>
