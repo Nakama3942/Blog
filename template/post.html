@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ post_content[1]['title'] }}</title>
+	<link rel="stylesheet" href="../resources/style/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Калиновський Валентин<br>Мій Особистий Блог</h1>
+    </header>
+
+    <nav>
+        <a href="/">Головна</a>
+<!--        <a href="#">Проекти</a>-->
+<!--        <a href="#">Документації</a>-->
+        <a href="/diary">Щоденник</a>
+<!--		<a href="#">Контакти</a>-->
+    </nav>
+
+    <main>
+		<article>
+			<p>{{ post_content[3]['description'] }}</p>
+			<p>Дата публікації: {{ post_content[2]['datetime'].strftime('%Y-%m-%d %I:%M %p') }}</p>
+			<hr>
+			<p>{{ post_content[4]['post']|safe }}</p>
+		</article>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Калиновський Валентин</p>
+    </footer>
+
+</body>
+</html>
