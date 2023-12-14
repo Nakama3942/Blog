@@ -13,6 +13,10 @@
 	{% include 'nav.html' %}
 
 	<main>
+		{% if is_admin %}
+			<a href="/new_post">Додати пост</a>
+		{% endif %}
+
 		{% for metadata in post_contents %}
 			<article>
 				<a href="{{ url_for('post', post_id=metadata[0]['name']) }}">

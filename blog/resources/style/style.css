@@ -1,53 +1,53 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #f4f4f4;
 }
 
 header {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 1em;
+	background-color: #333;
+	color: #fff;
+	text-align: center;
+	padding: 1em;
 }
 
 nav {
-    background-color: #eee;
-    padding: 1em;
-    text-align: center;
+	background-color: #eee;
+	padding: 1em;
+	text-align: center;
 }
 
 nav a {
-    margin: 0 10px;
-    text-decoration: none;
-    color: #333;
+	margin: 0 10px;
+	text-decoration: none;
+	color: #333;
 }
 
 main {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
+	max-width: 800px;
+	margin: 20px auto;
+	padding: 20px;
+	background-color: #fff;
 }
 
 footer {
-    padding: 1em;
-    background-color: #333;
-    color: #fff;
+	padding: 1em;
+	background-color: #333;
+	color: #fff;
 }
 
 .footer-container {
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 .column-left {
 	padding-left: 50px;
-    width: 48%; /* Задайте ширину колонок по вашему усмотрению */
+	width: 48%; /* Задайте ширину колонок по вашему усмотрению */
 }
 .column-right {
 	text-align: center;
-    width: 48%; /* Задайте ширину колонок по вашему усмотрению */
+	width: 48%; /* Задайте ширину колонок по вашему усмотрению */
 }
 
 .file-list {
@@ -63,4 +63,41 @@ footer {
 .file-icon {
 	width: 100%;
 	height: auto;
+}
+
+form {
+	max-width: 600px;
+	margin: 0 auto;
+}
+input[type="text"],
+textarea,
+input[type="file"],
+input[type="submit"] {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 15px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+textarea {
+	resize: none; /* Запрет изменения размера */
+	overflow-y: hidden; /* Скрытие вертикального ползунка прокрутки */
+	min-height: 150px; /* Высота для textarea */
+}
+input[type="submit"] {
+	background-color: #4CAF50;
+	color: white;
+	cursor: pointer;
+}
+input[type="submit"]:hover {
+	background-color: #45a049;
+}
+/* Дополнительные стили для элемента input[type="file"] */
+input[type="file"] {
+	padding: 0;
+}
+/* Стили для подсказок (placeholders) */
+::placeholder {
+	color: #999;
 }

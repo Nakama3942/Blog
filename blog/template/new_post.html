@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Новий пост</title>
+	<link rel="stylesheet" href="../resources/style/style.css">
+</head>
+<body>
+
+	{% include 'header.html' %}
+
+	{% include 'nav.html' %}
+
+	<script src="resources/scripts/scripts.js"></script>
+
+	<main>
+		<form action="{{ url_for('save_post_route') }}" method="post" enctype="multipart/form-data">
+			<input type="text" name="title" placeholder="Заголовок" required>
+
+			<input type="text" name="description" placeholder="Опис" required>
+
+			<textarea name="content" placeholder="Текст" oninput="auto_grow(this)" required></textarea>
+
+			<input type="file" id="fileInput" name="files" onchange="handleFileSelect(event)" multiple>
+
+			<!-- Список выбранных файлов -->
+			<ul id="fileList" class="file-list"></ul>
+
+			<input type="submit" value="Зберегти пост">
+		</form>
+	</main>
+
+	{% include 'footer.html' %}
+
+</body>
+</html>
