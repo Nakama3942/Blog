@@ -32,8 +32,35 @@ main {
 }
 
 footer {
-    text-align: center;
     padding: 1em;
     background-color: #333;
     color: #fff;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+}
+.column-left {
+	padding-left: 50px;
+    width: 48%; /* Задайте ширину колонок по вашему усмотрению */
+}
+.column-right {
+	text-align: center;
+    width: 48%; /* Задайте ширину колонок по вашему усмотрению */
+}
+
+.file-list {
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px; /* Расстояние между изображениями */
+}
+.file-item {
+	text-align: center;
+	width: 150px; /* Ширина блока с изображением */
+}
+.file-icon {
+	width: 100%;
+	height: auto;
 }

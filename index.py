@@ -1,16 +1,21 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 import markdown2
 import yaml
 import os
 from datetime import datetime
 
 app = Flask(__name__, template_folder='template', static_folder='resources')
+app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'files')
 
 @app.route('/')
 def home():
 	post_files = get_posts('posts', 5)
 	post_contents = [load_post_metadata(file) for file in post_files]
 	return render_template('index.html', post_contents=post_contents)
+
+# @app.route('/contacts')
+# def contacts():
+# 	return render_template('contacts.html')
 
 @app.route('/diary')
 def diary():
@@ -58,7 +63,7 @@ def load_post_content(file_name):
 	# print(file_name)
 	if os.path.exists(file_name):
 		with open(file_name, 'r', encoding='utf-8') as file:
-			metadata_block = [next(file) for _ in range(4)]
+			metadata_block = [next(file) for _ in range(5)]
 			content = file.read()
 			content_list = []
 			# print(str(metadata_block))
@@ -76,6 +81,10 @@ def load_post_content(file_name):
 				return {"title": "Invalid post format"}
 	else:
 		return "Post not found"
+
+@app.route('/files/<path:filename>')
+def uploaded_file(filename):
+	return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
 	app.run(debug=True)

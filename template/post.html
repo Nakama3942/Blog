@@ -8,30 +8,31 @@
 </head>
 <body>
 
-	<header>
-		<h1>Калиновський Валентин<br>Мій Особистий Блог</h1>
-	</header>
+	{% include 'header.html' %}
 
-	<nav>
-		<a href="/">Головна</a>
-<!--        <a href="#">Проекти</a>-->
-<!--        <a href="#">Документації</a>-->
-		<a href="/diary">Щоденник</a>
-<!--		<a href="#">Контакти</a>-->
-	</nav>
+	{% include 'nav.html' %}
 
 	<main>
 		<article>
 			<p>{{ post_content[3]['description'] }}</p>
 			<p>Дата публікації: {{ post_content[2]['datetime'].strftime('%Y-%m-%d %I:%M %p') }}</p>
+<!--			<p>{{ post_content[4]['files'] }}</p>-->
+            <ul class="file-list">
+				{% for file in post_content[4]['files'] %}
+					<li class="file-item">
+						<a href="{{ url_for('uploaded_file', filename=file.name) }}" download="/files/{{ file.name }}">
+							<img class="file-icon" src="{{ url_for('static', filename='icons/' + file.type + '.png') }}" alt="{{ file.type }} Icon" width="128" height="128">
+							{{ file.name }}
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
 			<hr>
-			<p>{{ post_content[4]['post']|safe }}</p>
+			<p>{{ post_content[5]['post']|safe }}</p>
 		</article>
 	</main>
 
-	<footer>
-		<p>&copy; 2023 Калиновський Валентин</p>
-	</footer>
+	{% include 'footer.html' %}
 
 </body>
 </html>

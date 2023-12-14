@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,17 +8,9 @@
 </head>
 <body>
 
-	<header>
-		<h1>Калиновський Валентин<br>Мій Особистий Блог</h1>
-	</header>
+	{% include 'header.html' %}
 
-	<nav>
-		<a href="/">Головна</a>
-<!--        <a href="#">Проекти</a>-->
-<!--        <a href="#">Документації</a>-->
-		<a href="/diary">Щоденник</a>
-<!--        <a href="#">Контакти</a>-->
-	</nav>
+	{% include 'nav.html' %}
 
 	<main>
 		{% for metadata in post_contents %}
@@ -32,9 +24,7 @@
 		{% endfor %}
 	</main>
 
-	<footer>
-		<p>&copy; 2023 Калиновський Валентин</p>
-	</footer>
+	{% include 'footer.html' %}
 
 </body>
 </html>

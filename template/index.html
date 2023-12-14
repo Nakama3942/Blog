@@ -8,17 +8,9 @@
 </head>
 <body>
 
-	<header>
-		<h1>Калиновський Валентин<br>Мій Особистий Блог</h1>
-	</header>
+	{% include 'header.html' %}
 
-	<nav>
-		<a href="/">Головна</a>
-<!--        <a href="#">Проекти</a>-->
-<!--        <a href="#">Документації</a>-->
-		<a href="/diary">Щоденник</a>
-<!--        <a href="#">Контакти</a>-->
-	</nav>
+	{% include 'nav.html' %}
 
 	<main> <!-- Про себе -->
 		<article>
@@ -40,9 +32,7 @@
 		{% endfor %}
 	</main>
 
-	<footer>
-		<p>&copy; 2023 Калиновський Валентин</p>
-	</footer>
+	{% include 'footer.html' %}
 
 </body>
 </html>
