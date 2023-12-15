@@ -5,14 +5,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Новий пост</title>
 	<link rel="stylesheet" href="../resources/style/style.css">
+	<script src="resources/scripts/new_post.js"></script>
 </head>
 <body>
 
 	{% include 'header.html' %}
 
 	{% include 'nav.html' %}
-
-	<script src="resources/scripts/scripts.js"></script>
 
 	<main>
 		<form action="{{ url_for('save_post_route') }}" method="post" enctype="multipart/form-data">
@@ -26,6 +25,8 @@
 
 			<!-- Список выбранных файлов -->
 			<ul id="fileList" class="file-list"></ul>
+
+			<input type="datetime-local" name="post_datetime">
 
 			<input type="submit" value="Зберегти пост">
 		</form>

@@ -23,11 +23,11 @@
 	<main>
 		{% for metadata in post_contents %}
 			<article>
-				<a href="{{ url_for('post', post_id=metadata[0]['name']) }}">
-					<h2>{{ metadata[1]['title'] }}</h2>
+				<a href="{{ url_for('post', post_title=metadata['title']) }}">
+					<h2>{{ metadata['title'] }}</h2>
 				</a>
-				<p>{{ metadata[3]['description'] }}</p>
-				<p>Дата публікації: {{ metadata[2]['datetime'].strftime('%Y-%m-%d %I:%M %p') }}</p>
+				<p>{{ metadata['description'] }}</p>
+				<p>Дата публікації: {{ metadata['post_datetime'] }}</p>
 			</article>
 		{% endfor %}
 	</main>

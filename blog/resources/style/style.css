@@ -72,6 +72,7 @@ form {
 input[type="text"],
 textarea,
 input[type="file"],
+input[type="datetime-local"],
 input[type="submit"] {
 	width: 100%;
 	padding: 10px;
