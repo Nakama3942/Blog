@@ -1,3 +1,7 @@
+/*
+ * Ядро стилей для всего блога
+ */
+
 body {
 	font-family: Arial, sans-serif;
 	margin: 0;
@@ -26,6 +30,7 @@ nav a {
 
 main {
 	max-width: 800px;
+	min-height: 400px;
 	margin: 20px auto;
 	padding: 20px;
 	background-color: #fff;
@@ -50,6 +55,10 @@ footer {
 	width: 48%; /* Задайте ширину колонок по вашему усмотрению */
 }
 
+/*
+ * Стили для списка файлов
+ */
+
 .file-list {
 	list-style: none;
 	display: flex;
@@ -64,6 +73,10 @@ footer {
 	width: 100%;
 	height: auto;
 }
+
+/*
+ * Стили для страницы добавления поста
+ */
 
 form {
 	max-width: 600px;
@@ -80,6 +93,7 @@ input[type="submit"] {
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	box-sizing: border-box;
+	font-family: 'Montserrat', sans-serif;
 }
 textarea {
 	resize: none; /* Запрет изменения размера */
@@ -90,6 +104,7 @@ input[type="submit"] {
 	background-color: #4CAF50;
 	color: white;
 	cursor: pointer;
+	transition: background-color 0.3s ease;
 }
 input[type="submit"]:hover {
 	background-color: #45a049;
@@ -101,4 +116,93 @@ input[type="file"] {
 /* Стили для подсказок (placeholders) */
 ::placeholder {
 	color: #999;
+}
+
+/*
+ * Стили для остальных кнопок
+ */
+
+input[type="submit"].button.add {
+	background-color: #3498db; /* Зеленый цвет для кнопки "Добавить пост" */
+	color: white;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+input[type="submit"].button.add:hover {
+	background-color: #2980b9; /* Зеленый цвет для кнопки "Добавить пост" */
+}
+input[type="submit"].button.delete {
+	background-color: #e74c3c; /* Красный цвет для кнопки "Удалить пост" */
+	color: white;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+input[type="submit"].button.delete:hover {
+	background-color: #c0392b; /* Красный цвет для кнопки "Удалить пост" */
+}
+
+/*
+ * Стили для списка постов
+ */
+
+.post-item {
+	/* Стили для article */
+	margin-bottom: 20px;
+	padding: 15px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-family: 'Montserrat', sans-serif;
+}
+.post-item a {
+	text-decoration: none;
+	color: #3498db; /* Синий цвет для ссылок на посты */
+}
+.post-item a:hover {
+	text-decoration: underline;
+}
+.post-item .post-title {
+	/* Стили для вложенного p с классом post-description */
+	font-size: 24px;
+}
+.post-item .post-description {
+	/* Стили для вложенного p с классом post-description */
+	font-size: 16px;
+	color: #333;
+}
+.post-item .post-date {
+	/* Стили для вложенного p с классом post-date */
+	font-size: 14px;
+	color: #555;
+}
+
+/*
+ * Стили для поста
+ */
+
+.post {
+	border: 1px solid #ddd;
+	padding: 20px;
+	margin-bottom: 20px;
+	border-radius: 8px;
+	background-color: #fff;
+}
+.post .post-title {
+	text-align: center;
+	font-size: 36px;
+}
+.post .post-description {
+	font-size: 18px;
+}
+.post .post-date {
+	text-align: right;
+	font-size: 16px;
+}
+.post .divider {
+	border: 0;
+	border-top: 1px solid #ddd;
+	margin: 20px 0;
+}
+.post .post-content {
+	font-size: 16px;
+	line-height: 1.6;
 }

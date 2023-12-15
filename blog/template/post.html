@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>{{ post_content['title'] }}</title>
 	<link rel="stylesheet" href="../resources/style/style.css">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -13,16 +14,19 @@
 	{% include 'nav.html' %}
 
 	<main>
-		<article>
-			<!-- Добавьте кнопку удаления -->
+		<article class="post">
+			<!-- Кнопка удаления -->
 			{% if is_admin %}
 				<form method="post" action="{{ url_for('delete_post', post_title=post_content['title']) }}">
-					<button type="submit">Видалити пост</button>
+					<input class="button delete" type="submit" value="Видалити пост">
 				</form>
 			{% endif %}
-			<p>{{ post_content['description'] }}</p>
-			<p>Дата публікації: {{ post_content['post_datetime'] }}</p>
-<!--			<p>{{ post_content['files'] }}</p>-->
+			<!-- Метаданные поста -->
+			<h2 class="post-title">{{ post_content['title'] }}</h2>
+			<p class="post-description">{{ post_content['description'] }}</p>
+			<p class="post-date">Дата публікації: {{ post_content['post_datetime'] }}</p>
+			<!-- Файлы -->
+			<!--<p>{{ post_content['files'] }}</p>-->
 			<ul class="file-list">
 				{% for file in post_content['files'] %}
 					<li class="file-item">
@@ -33,8 +37,9 @@
 					</li>
 				{% endfor %}
 			</ul>
-			<hr>
-			<p>{{ post_content['content']|safe }}</p>
+			<hr class="divider">
+			<!-- Содержание поста -->
+			<div class="post-content">{{ post_content['content']|safe }}</div>
 		</article>
 	</main>
 

@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Мій особистий блог</title>
 	<link rel="stylesheet" href="resources/style/style.css">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -21,15 +22,8 @@
 	</main>
 
 	<main>
-		{% for metadata in post_contents %}
-			<article>
-				<a href="{{ url_for('post', post_title=metadata['title']) }}">
-					<h2>{{ metadata['title'] }}</h2>
-				</a>
-				<p>{{ metadata['description'] }}</p>
-				<p>Дата публікації: {{ metadata['post_datetime'] }}</p>
-			</article>
-		{% endfor %}
+		{% set post_list_content=post_contents %}
+		{% include 'post_list.html' %}
 	</main>
 
 	{% include 'footer.html' %}
