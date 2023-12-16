@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_from_directory, request, redirect, url_for, session
+from flask import Flask, render_template, send_from_directory, request, redirect, url_for, session, send_file
 import markdown2
 import yaml
 import os
@@ -154,6 +154,46 @@ def delete_post(post_title):
 @app.route('/files/<path:filename>')
 def uploaded_file(filename):
 	return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+############
+# Остальные странички
+############
+
+@app.route('/autobiography')
+def autobiography():
+	return render_template('autobiography.html', is_admin=is_admin())
+
+@app.route('/projects')
+def projects():
+	return render_template('projects.html', is_admin=is_admin())
+
+@app.route('/documentation')
+def documentation():
+	return render_template('documentation.html', is_admin=is_admin())
+
+@app.route('/viary')
+def viary():
+	return render_template('viary.html', is_admin=is_admin())
+
+@app.route('/dream_diary')
+def dream_diary():
+	return render_template('dream_diary.html', is_admin=is_admin())
+
+@app.route('/arts')
+def arts():
+	return render_template('arts.html', is_admin=is_admin())
+
+############
+# Функция для открытия документаций
+############
+
+@app.route('/docs/<path:subpath>/<path:filename>')
+def serve_docs(subpath, filename):
+	return send_file(f'N:/Blog/blog/docs/{subpath}/{filename}')
+
+############
+# Запуск блога
+############
 
 if __name__ == '__main__':
 	app.run(debug=True)

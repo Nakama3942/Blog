@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Документації</title>
+	<link rel="stylesheet" href="resources/style/style.css">
+	{% include 'fonts.html' %}
+</head>
+<body>
+
+	{% include 'header.html' %}
+
+	{% include 'nav.html' %}
+
+	<main>
+		<article class="docs-item">
+			<a href="/docs/ALGOR/index.html">
+				<h1 class="docs-title">ALGOR</h1>
+			</a>
+		</article>
+		<article class="docs-item">
+			<a href="/docs/mighty_logger/index.html">
+				<h2 class="docs-title">mighty_logger</h2>
+			</a>
+		</article>
+	</main>
+
+	{% include 'footer.html' %}
+
+</body>
+</html>
