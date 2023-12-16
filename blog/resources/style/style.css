@@ -3,7 +3,7 @@
  */
 
 body {
-	font-family: Arial, sans-serif;
+	font-family: 'Lato', sans-serif;
 	margin: 0;
 	padding: 0;
 	background-color: #f4f4f4;
@@ -145,6 +145,29 @@ input[type="submit"].button.delete:hover {
  * Стили для списка постов
  */
 
+.biography {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+}
+.biography .title{
+	text-align: center;
+	font-size: 36px;
+	font-weight: 700;
+}
+.biography .subtitle {
+	font-weight: 700;
+}
+.biography .foto {
+	text-align: center;
+}
+
+/*
+ * Стили для списка постов
+ */
+
 .post-item {
 	/* Стили для article */
 	margin-bottom: 20px;
@@ -185,6 +208,7 @@ input[type="submit"].button.delete:hover {
 	margin-bottom: 20px;
 	border-radius: 8px;
 	background-color: #fff;
+	font-family: 'Montserrat', sans-serif;
 }
 .post .post-title {
 	text-align: center;

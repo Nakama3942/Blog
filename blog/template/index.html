@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Мій особистий блог</title>
 	<link rel="stylesheet" href="resources/style/style.css">
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+	{% include 'fonts.html' %}
 </head>
 <body>
 
@@ -14,14 +14,8 @@
 	{% include 'nav.html' %}
 
 	<main> <!-- Про себе -->
-		<article>
-			<h2>Про себе</h2>
-			<p>Програміст</p>
-			<img src="../resources/images/Me.jpg" alt="Моя фотография" width="300px">
-		</article>
-	</main>
+		{% include 'biography.html' %}
 
-	<main>
 		{% set post_list_content=post_contents %}
 		{% include 'post_list.html' %}
 	</main>
