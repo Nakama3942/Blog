@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Файли постів</title>
+	<link rel="stylesheet" href="../resources/style/style.css">
+	<script src="resources/scripts/files.js"></script>
+	{% include 'fonts.html' %}
+</head>
+<body>
+
+	{% include 'header.html' %}
+
+	{% include 'nav.html' %}
+
+	<main>
+		{% if is_admin %}
+			<form method="post" action="{{ url_for('upload_file') }}" enctype="multipart/form-data">
+				<input type="file" id="fileInput" name="files" multiple>
+
+				<input class="button-add" type="submit" value="Додати файл">
+			</form>
+		{% endif %}
+
+		<ul class="file-list">
+			{% for file in files %}
+				<li class="file-item">
+					<a href="{{ url_for('uploaded_file', filename=file.name) }}" download="/files/{{ file.name }}">
+						<img class="file-icon" src="{{ url_for('static', filename='icons/' + file.type + '.png') }}" alt="{{ file.type }} Icon" width="128" height="128">
+						{{ file.name }}
+					</a>
+					<span class="delete-icon" onclick="deleteFile('{{ file.name }}')">🗑️</span>
+				</li>
+			{% endfor %}
+		</ul>
+	</main>
+
+	{% include 'footer.html' %}
+
+</body>
+</html>

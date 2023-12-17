@@ -73,6 +73,15 @@ footer {
 	width: 100%;
 	height: auto;
 }
+.delete-icon {
+    cursor: pointer;
+    font-size: 20px;
+    color: #e74c3c; /* Красный цвет для иконки удаления */
+    margin-left: 5px;
+}
+.delete-icon:hover {
+    color: #c0392b; /* Красный цвет для иконки удаления при наведении */
+}
 
 /*
  * Стили для страницы добавления поста
@@ -157,27 +166,45 @@ input[type="file"] {
  * Стили для остальных кнопок
  */
 
-input[type="submit"].button.add {
+input[type="submit"].button-add {
 	background-color: #3498db; /* Зеленый цвет для кнопки "Добавить пост" */
 	color: white;
 	cursor: pointer;
 	transition: background-color 0.3s ease;
 }
-input[type="submit"].button.add:hover {
+input[type="submit"].button-add:hover {
 	background-color: #2980b9; /* Зеленый цвет для кнопки "Добавить пост" */
 }
-input[type="submit"].button.delete {
+input[type="submit"].button-file {
+	background-color: #3498db; /* Зеленый цвет для кнопки "Добавить пост" */
+	color: white;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+input[type="submit"].button-file:hover {
+	background-color: #2980b9; /* Зеленый цвет для кнопки "Добавить пост" */
+}
+input[type="submit"].button-update {
+	background-color: #f1c40f; /* Красный цвет для кнопки "Удалить пост" */
+	color: white;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+input[type="submit"].button-update:hover {
+	background-color: #d4ac0d; /* Красный цвет для кнопки "Удалить пост" */
+}
+input[type="submit"].button-delete {
 	background-color: #e74c3c; /* Красный цвет для кнопки "Удалить пост" */
 	color: white;
 	cursor: pointer;
 	transition: background-color 0.3s ease;
 }
-input[type="submit"].button.delete:hover {
+input[type="submit"].button-delete:hover {
 	background-color: #c0392b; /* Красный цвет для кнопки "Удалить пост" */
 }
 
 /*
- * Стили для списка постов
+ * Стили для биографии
  */
 
 .biography {
