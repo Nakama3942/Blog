@@ -13,9 +13,6 @@ app.config['POST_FOLDER'] = os.path.join(os.getcwd(), 'posts')
 app.secret_key = 'your_secret_key'  # Секретный ключ для подписи сессий
 ADMIN_KEY = 'admin_key'  # Ваш ключ для доступа к админским функциям
 
-# Подключение к базе данных
-db = PostDb()
-
 ############
 # Администрирование
 ############
@@ -57,7 +54,9 @@ def diary():
 	return render_template('diary.html', post_contents=post_contents, is_admin=is_admin())
 
 def get_posts(num_posts):
+	db = PostDb()
 	posts = db.get_all_posts()[:num_posts] if num_posts else db.get_all_posts()
+	db.close()
 	posts.reverse()
 	posts_metadata = [extract_post_metadata(post_metadata) for post_metadata in posts]
 	print(posts_metadata)
@@ -69,7 +68,9 @@ def post(post_title):
 	return render_template('post.html', post_content=post_content, is_admin=is_admin())
 
 def load_post_content(title):
+	db = PostDb()
 	chosen_post = db.get_post(title)
+	db.close()
 	chosen_post_metadata = extract_post_metadata(chosen_post)
 	print(chosen_post_metadata)
 
@@ -85,7 +86,8 @@ def extract_post_metadata(post_obj):
 		'description': post_obj.description,
 		'files': yaml.safe_load(post_obj.files),
 		'post_datetime': post_obj.post_datetime.strftime('%Y-%m-%d %I:%M %p'),
-		'post_path': post_obj.post_path
+		'post_path': post_obj.post_path,
+		'is_private': post_obj.is_private
 	}
 
 ############
@@ -104,6 +106,8 @@ def save_post_route():
 		post_datetime = datetime.now()
 	post_path = f"{os.path.join(app.config['POST_FOLDER'], title)}.md"
 	content = request.form['content']
+
+	is_private = request.form.get('private') == 'on'
 
 	# Сохраняем файлы на сервер
 	uploaded_files = request.files.getlist('files')
@@ -125,12 +129,15 @@ def save_post_route():
 		'files': str(files),
 		'post_datetime': post_datetime,
 		'post_path': post_path,
+		'is_private': is_private
 	}
 
 	# Сохраняем метаданные в базе данных
 	with open(post_path, 'w', encoding='utf-8') as post_file:
 		post_file.write(content)
+		db = PostDb()
 		db.create_post(title, post_metadata)
+		db.close()
 
 	return redirect(url_for('diary'))
 
@@ -142,8 +149,13 @@ def save_post_route():
 def delete_post(post_title):
 	post_path = f"{os.path.join(app.config['POST_FOLDER'], post_title)}.md"
 	if os.path.exists(post_path):
-		os.remove(post_path)
+		db = PostDb()
+		post_files = yaml.safe_load(db.get_post(post_title).files)
+		for post_file in post_files:
+			os.remove(os.path.join(app.config['UPLOAD_FOLDER'], post_file['name']))
 		db.remove_post(post_title)
+		db.close()
+		os.remove(post_path)
 
 	return redirect(url_for('diary'))
 

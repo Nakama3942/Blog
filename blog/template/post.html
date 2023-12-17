@@ -22,7 +22,11 @@
 				</form>
 			{% endif %}
 			<!-- Метаданные поста -->
-			<h2 class="post-title">{{ post_content['title'] }}</h2>
+			{% if not post_content['is_private'] %}
+				<h2 class="post-title">{{ post_content['title'] }}</h2>
+			{% else %}
+				<h2 class="post-title-private">{{ post_content['title'] }}</h2>
+			{% endif %}
 			<p class="post-description">{{ post_content['description'] }}</p>
 			<p class="post-date">Дата публікації: {{ post_content['post_datetime'] }}</p>
 			<!-- Файлы -->

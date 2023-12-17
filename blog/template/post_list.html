@@ -1,9 +1,11 @@
 {% for metadata in post_contents %}
-	<article class="post-item">
-		<a href="{{ url_for('post', post_title=metadata['title']) }}">
-			<h2 class="post-title">{{ metadata['title'] }}</h2>
-		</a>
-		<p class="post-description">{{ metadata['description'] }}</p>
-		<p class="post-date">Дата публікації: {{ metadata['post_datetime'] }}</p>
-	</article>
+	{% if not metadata['is_private'] or is_admin %}
+		<article class="post-item">
+			<a href="{{ url_for('post', post_title=metadata['title']) }}">
+				<h2 class="post-title">{{ metadata['title'] }}</h2>
+			</a>
+			<p class="post-description">{{ metadata['description'] }}</p>
+			<p class="post-date">Дата публікації: {{ metadata['post_datetime'] }}</p>
+		</article>
+	{% endif %}
 {% endfor %}
