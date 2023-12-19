@@ -52,9 +52,10 @@ def diary():
 def get_posts(num_posts):
 	db = Database()
 	posts = db.get_all_posts()[:num_posts] if num_posts else db.get_all_posts()
-	db.close()
-	posts.reverse()
+	# db.close()
+	# posts.reverse()
 	posts_metadata = [extract_post_metadata(post_metadata) for post_metadata in posts]
+	db.close()
 	print(posts_metadata)
 	return posts_metadata
 
@@ -65,10 +66,11 @@ def post(post_title):
 	return render_template('post.html', post_content=post_content, is_admin=is_admin())
 
 def load_post_content(title):
-	db = Database()
-	chosen_post = db.get_post(title)
-	db.close()
-	chosen_post_metadata = extract_post_metadata(chosen_post)
+	# db = Database()
+	with Database() as db:
+		chosen_post = db.get_post(title)
+		chosen_post_metadata = extract_post_metadata(chosen_post)
+	# db.close()
 	print(chosen_post_metadata)
 
 	# Прочитайте содержимое файла
@@ -81,7 +83,7 @@ def extract_post_metadata(post_obj):
 	return {
 		'title': post_obj.title,
 		'description': post_obj.description,
-		'files': yaml.safe_load(post_obj.files),
+		'files': [{'name': file.name, 'type': file.type} for file in post_obj.files],
 		'post_datetime': post_obj.post_datetime.strftime('%Y-%m-%d %I:%M %p'),
 		'post_path': post_obj.post_path,
 		'is_private': post_obj.is_private
@@ -93,13 +95,17 @@ def extract_post_metadata(post_obj):
 
 @app.route('/new_post', methods=['POST'])
 def new_post():
-	return render_template('new_post.html', is_admin=is_admin())
+	# Получаем список всех файлов
+	db = Database()
+	files = db.get_all_files()
+	db.close()
+	return render_template('new_post.html', files=files, is_admin=is_admin())
 
 @app.route('/save_post', methods=['POST'])
 def save_post_route():
 	title = request.form['title']
 	description = request.form['description']
-	files = []
+	selected_file_ids = request.form.getlist('files')
 	post_datetime = request.form.get('post_datetime')
 	if post_datetime:
 		post_datetime = datetime.strptime(post_datetime, '%Y-%m-%dT%H:%M')
@@ -110,24 +116,9 @@ def save_post_route():
 
 	is_private = request.form.get('private') == 'on'
 
-	# Сохраняем файлы на сервер
-	uploaded_files = request.files.getlist('files')
-	# Фильтруем файлы, чтобы оставить только те, которые не пусты
-	valid_files = [file for file in uploaded_files if file.filename]
-	print(valid_files)
-	if valid_files:
-		for upload_file in valid_files:
-			filename = os.path.join(app.config['UPLOAD_FOLDER'], upload_file.filename)
-			upload_file.save(filename)
-			file_metadata = {'name': upload_file.filename, 'type': upload_file.filename.split('.')[-1].upper()}
-			files.append(file_metadata)
-
-	print(files)
-
 	# Формируем метаданные поста
 	post_metadata = {
 		'description': description,
-		'files': str(files),
 		'post_datetime': post_datetime,
 		'post_path': post_path,
 		'is_private': is_private
@@ -138,6 +129,7 @@ def save_post_route():
 		post_file.write(content)
 		db = Database()
 		db.create_post(title, post_metadata)
+		db.associate_files(title, selected_file_ids)
 		db.close()
 
 	return redirect(url_for('diary'))
@@ -149,13 +141,17 @@ def save_post_route():
 @app.route('/update_post/<post_title>', methods=['POST'])
 def update_post(post_title):
 	post_content = load_post_content(post_title)
-	return render_template('update_post.html', post_content=post_content, is_admin=is_admin())
+	db = Database()
+	files = db.get_all_files()
+	db.close()
+	return render_template('update_post.html', post_content=post_content, files=files, is_admin=is_admin())
 
 @app.route('/update_post_route/<post_title>', methods=['POST'])
 def update_post_route(post_title):
 	post_path = f"{os.path.join(app.config['POST_FOLDER'], post_title)}.md"
 
 	description = request.form['description']
+	selected_file_ids = request.form.getlist('files')
 	content = request.form['content']
 	is_private = request.form.get('private') == 'on'
 
@@ -170,6 +166,7 @@ def update_post_route(post_title):
 		post_file.write(content)
 		db = Database()
 		db.update_post(post_title, post_metadata)
+		db.associate_files(post_title, selected_file_ids)
 		db.close()
 
 	return redirect(url_for('diary'))
@@ -183,9 +180,9 @@ def delete_post(post_title):
 	post_path = f"{os.path.join(app.config['POST_FOLDER'], post_title)}.md"
 	if os.path.exists(post_path):
 		db = Database()
-		post_files = yaml.safe_load(db.get_post(post_title).files)
-		for post_file in post_files:
-			os.remove(os.path.join(app.config['UPLOAD_FOLDER'], post_file['name']))
+		# post_files = yaml.safe_load(db.get_post(post_title).files)
+		# for post_file in post_files:
+		# 	os.remove(os.path.join(app.config['UPLOAD_FOLDER'], post_file['name']))
 		db.remove_post(post_title)
 		db.close()
 		os.remove(post_path)
@@ -227,7 +224,6 @@ def delete_file(filename):
 		os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 		db.remove_file(filename)
 		db.close()
-		return jsonify({'success': True})
 	except:
 		return jsonify({'success': False})
 

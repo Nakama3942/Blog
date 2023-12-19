@@ -31,17 +31,11 @@
 
 				<textarea name="content" placeholder="Текст" oninput="auto_grow(this)" required>{{ post_content['content'] }}</textarea>
 
-				<!-- Список выбранных файлов -->
-				<ul id="fileList" class="file-list">
-					{% for file in post_content['files'] %}
-						<li class="file-item">
-							<a href="{{ url_for('uploaded_file', filename=file.name) }}" download="/files/{{ file.name }}">
-								<img class="file-icon" src="{{ url_for('static', filename='icons/' + file.type + '.png') }}" alt="{{ file.type }} Icon" width="128" height="128">
-								{{ file.name }}
-							</a>
-						</li>
+				<select name="files" id="files" multiple>
+					{% for file in files %}
+						<option value="{{ file.id }}" {% if {'name': file['name'], 'type': file['type']} in post_content['files'] %}selected{% endif %}>{{ file.name }}</option>
 					{% endfor %}
-				</ul>
+				</select>
 
 				<div class="toggle-wrapper">
 					<input type="checkbox" class="toggle" id="private" name="private" {% if post_content['is_private'] %}checked{% endif %}>

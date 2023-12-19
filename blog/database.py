@@ -25,9 +25,8 @@ class Posts(Base):
 	post_path = Column(String)
 	is_private = Column(Boolean)
 
-	# Связь с таблицей Files
-	file_id = Column(Integer, ForeignKey('files.id'))
-	file = relationship("Files", back_populates="posts")
+	# Добавим отношение к таблице постов
+	files = relationship("Files", secondary="post_file_association")
 
 class Files(Base):
 	__tablename__ = "files"
@@ -35,45 +34,48 @@ class Files(Base):
 	name = Column(String)
 	type = Column(String)
 
-	# Связь с таблицей Posts
-	posts = relationship("Posts", back_populates="file")
-	# Количество ссылок на этот файл
-	references_count = Column(Integer, default=0)
+	# Добавим обратное отношение к таблице файлов
+	posts = relationship("Posts", secondary="post_file_association")
+
+class PostFileAssociation(Base):
+	__tablename__ = "post_file_association"
+	post_id = Column(Integer, ForeignKey('posts.id'), primary_key=True)
+	file_id = Column(Integer, ForeignKey('files.id'), primary_key=True)
 
 class Database:
 	def __init__(self):
 		super(Database, self).__init__()
 
-		self.posts_engine = create_engine("sqlite:///db\\posts_database.db")
-		Base.metadata.create_all(self.posts_engine)
-		self.PostsSession = sessionmaker(bind=self.posts_engine)
-		self.postsSession = self.PostsSession()
+		self.engine = create_engine("sqlite:///db\\blog_database.db")
+		Base.metadata.create_all(self.engine)
+		self.Session = sessionmaker(bind=self.engine)
+		self.session = self.Session()
 
-		self.files_engine = create_engine("sqlite:///db\\files_database.db")
-		Base.metadata.create_all(self.files_engine)
-		self.FilesSession = sessionmaker(bind=self.files_engine)
-		self.filesSession = self.FilesSession()
+	def __enter__(self):
+		return self
+
+	def __exit__(self, exc_type, exc_value, traceback):
+		self.close()
 
 	def close(self):
-		self.postsSession.close()
-		self.filesSession.close()
+		self.session.close()
 
 	# Методы для работы с таблицей постов
 
 	def get_post(self, title):
-		return self.postsSession.query(Posts).filter_by(title=title).first()
+		return self.session.query(Posts).filter_by(title=title).first()
 
 	def get_all_posts(self):
-		return self.postsSession.query(Posts).all()
+		return self.session.query(Posts).all()
 
 	def check_post(self, title):
-		existing_user = self.postsSession.query(Posts.title).filter_by(title=title).scalar()
+		existing_user = self.session.query(Posts.title).filter_by(title=title).scalar()
 		return existing_user is None
 
 	def create_post(self, title, post_data):
 		new_post = Posts(title=title, **post_data)
-		self.postsSession.add(new_post)
-		self.postsSession.commit()
+		self.session.add(new_post)
+		self.session.commit()
 
 	def update_post(self, title, new_data):
 		post = self.get_post(title)
@@ -83,33 +85,53 @@ class Database:
 				setattr(post, key, value)
 
 			# Фіксуємо значення в БД
-			self.postsSession.commit()
+			self.session.commit()
 
 	def remove_post(self, title):
-		post = self.postsSession.query(Posts).filter_by(title=title).first()
+		post = self.session.query(Posts).filter_by(title=title).first()
 		if post:
-			self.postsSession.delete(post)
-			self.postsSession.commit()
+			self.session.delete(post)
+			self.session.commit()
 
 	# Методы для работы с таблицей файлов
 
+	def __get_file_by_id(self, file_id):
+		return self.session.query(Files).filter_by(id=file_id).first()
+
 	def get_file(self, name):
-		return self.filesSession.query(Files).filter_by(name=name).first()
+		return self.session.query(Files).filter_by(name=name).first()
 
 	def get_all_files(self):
-		return self.filesSession.query(Files).all()
+		return self.session.query(Files).all()
 
 	def check_file(self, name):
-		existing_user = self.filesSession.query(Files.name).filter_by(name=name).scalar()
+		existing_user = self.session.query(Files.name).filter_by(name=name).scalar()
 		return existing_user is None
 
 	def create_file(self, name, post_data):
 		new_file = Files(name=name, **post_data)
-		self.filesSession.add(new_file)
-		self.filesSession.commit()
+		self.session.add(new_file)
+		self.session.commit()
 
 	def remove_file(self, name):
-		file = self.filesSession.query(Files).filter_by(name=name).first()
+		file = self.session.query(Files).filter_by(name=name).first()
 		if file:
-			self.filesSession.delete(file)
-			self.filesSession.commit()
+			self.session.delete(file)
+			self.session.commit()
+
+	# Методы для работы с таблицей ассоциаций
+
+	def associate_files(self, post_title, selected_file_ids):
+		# Получаем созданный пост
+		new_post = self.get_post(post_title)
+
+		# Открепляем все файлы от поста
+		new_post.files = []
+
+		# Привязываем выбранные файлы к посту
+		for file_id in selected_file_ids:
+			file = self.__get_file_by_id(file_id)
+			if file:
+				new_post.files.append(file)
+
+		self.session.commit()
