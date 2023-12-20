@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, Boolean, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, Boolean, ForeignKey, desc
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 
 Base = declarative_base()
@@ -21,7 +21,9 @@ class Posts(Base):
 	id = Column(Integer, primary_key=True)
 	title = Column(String)
 	description = Column(String)
-	post_datetime = Column(DateTime)
+	post_datetime = Column(DateTime) # created_at
+	# last_changed_at
+	# published_at
 	post_path = Column(String)
 	is_private = Column(Boolean)
 
@@ -35,7 +37,7 @@ class Files(Base):
 	type = Column(String)
 
 	# Добавим обратное отношение к таблице файлов
-	posts = relationship("Posts", secondary="post_file_association")
+	posts = relationship("Posts", secondary="post_file_association", overlaps="files")
 
 class PostFileAssociation(Base):
 	__tablename__ = "post_file_association"
@@ -66,7 +68,7 @@ class Database:
 		return self.session.query(Posts).filter_by(title=title).first()
 
 	def get_all_posts(self):
-		return self.session.query(Posts).all()
+		return self.session.query(Posts).order_by(desc(Posts.post_datetime)).all()
 
 	def check_post(self, title):
 		existing_user = self.session.query(Posts.title).filter_by(title=title).scalar()
@@ -95,9 +97,6 @@ class Database:
 
 	# Методы для работы с таблицей файлов
 
-	def __get_file_by_id(self, file_id):
-		return self.session.query(Files).filter_by(id=file_id).first()
-
 	def get_file(self, name):
 		return self.session.query(Files).filter_by(name=name).first()
 
@@ -123,15 +122,15 @@ class Database:
 
 	def associate_files(self, post_title, selected_file_ids):
 		# Получаем созданный пост
-		new_post = self.get_post(post_title)
+		post = self.get_post(post_title)
 
 		# Открепляем все файлы от поста
-		new_post.files = []
+		post.files = []
 
 		# Привязываем выбранные файлы к посту
 		for file_id in selected_file_ids:
-			file = self.__get_file_by_id(file_id)
+			file = self.session.query(Files).filter_by(id=file_id).first()
 			if file:
-				new_post.files.append(file)
+				post.files.append(file)
 
 		self.session.commit()
