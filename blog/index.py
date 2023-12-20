@@ -7,8 +7,6 @@ from database import Database
 
 # todo сделать собственное логирование (с сохранением передаваемых данных)
 # todo реализовать отображение постов, какие закреплены за файлом
-# todo сделать такую штуку, что бы посты всегда сначала были приватными и становили публичными только после нажатия кнопки публикации
-# todo добавить поле в БД, хранящее дату публикации и поля на страничках для её отображения
 
 app = Flask(__name__, template_folder='template', static_folder='resources')
 app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'files')
@@ -76,22 +74,21 @@ def save_post_route():
 	description = request.form['description']
 	content = request.form['content']
 	selected_file_ids = request.form.getlist('files')
-	post_datetime = request.form.get('post_datetime')
+	created_at = request.form.get('created_at')
 	post_path = f"{os.path.join(app.config['POST_FOLDER'], title)}.md"
-	is_private = request.form.get('private') == 'on'
 
 	# Если дата не указана - взять текущую
-	if post_datetime:
-		post_datetime = datetime.strptime(post_datetime, '%Y-%m-%dT%H:%M')
+	if created_at:
+		created_at = datetime.strptime(created_at, '%Y-%m-%dT%H:%M')
 	else:
-		post_datetime = datetime.now()
+		created_at = datetime.now()
 
 	# Формируем метаданные поста
 	post_metadata = {
 		'description': description,
-		'post_datetime': post_datetime,
+		'created_at': created_at,
 		'post_path': post_path,
-		'is_private': is_private
+		'is_private': True
 	}
 
 	# Сохраняем метаданные в базе данных
@@ -100,6 +97,24 @@ def save_post_route():
 		with Database() as db:
 			db.create_post(title, post_metadata)
 			db.associate_files(title, selected_file_ids)
+
+	return redirect(url_for('diary'))
+
+@app.route('/publish_post/<post_title>', methods=['POST'])
+def publish_post(post_title):
+	with Database() as db:
+		private_status = db.get_post(post_title).is_private
+		if private_status:
+			post_metadata = {
+				'published_at': datetime.now(),
+				'is_private': not private_status
+			}
+		else:
+			post_metadata = {
+				'published_at': None,
+				'is_private': not private_status
+			}
+		db.update_post(post_title, post_metadata)
 
 	return redirect(url_for('diary'))
 
@@ -121,12 +136,11 @@ def update_post_route(post_title):
 	description = request.form['description']
 	selected_file_ids = request.form.getlist('files')
 	content = request.form['content']
-	is_private = request.form.get('private') == 'on'
 
 	# Формируем метаданные поста
 	post_metadata = {
 		'description': description,
-		'is_private': is_private
+		'last_changed_at': datetime.now()
 	}
 
 	# Сохраняем метаданные в базе данных
@@ -259,7 +273,9 @@ def extract_post_metadata(post_obj):
 		'title': post_obj.title,
 		'description': post_obj.description,
 		'files': [{'name': file.name, 'type': file.type} for file in post_obj.files],
-		'post_datetime': post_obj.post_datetime.strftime('%Y-%m-%d %I:%M %p'),
+		'created_at': post_obj.created_at.strftime('%Y-%m-%d %I:%M %p'),
+		'last_changed_at': post_obj.last_changed_at.strftime('%Y-%m-%d %I:%M %p') if post_obj.last_changed_at is not None else None,
+		'published_at': post_obj.published_at.strftime('%Y-%m-%d %I:%M %p') if post_obj.published_at is not None else None,
 		'post_path': post_obj.post_path,
 		'is_private': post_obj.is_private
 	}

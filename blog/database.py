@@ -19,13 +19,13 @@ Base = declarative_base()
 class Posts(Base):
 	__tablename__ = "posts"
 	id = Column(Integer, primary_key=True)
-	title = Column(String)
-	description = Column(String)
-	post_datetime = Column(DateTime) # created_at
-	# last_changed_at
-	# published_at
-	post_path = Column(String)
-	is_private = Column(Boolean)
+	title = Column(String, nullable=False)
+	description = Column(String, nullable=False)
+	created_at = Column(DateTime, nullable=False)
+	last_changed_at = Column(DateTime)
+	published_at = Column(DateTime)
+	is_private = Column(Boolean, nullable=False)
+	post_path = Column(String, nullable=False)
 
 	# Добавим отношение к таблице постов
 	files = relationship("Files", secondary="post_file_association")
@@ -33,8 +33,8 @@ class Posts(Base):
 class Files(Base):
 	__tablename__ = "files"
 	id = Column(Integer, primary_key=True)
-	name = Column(String)
-	type = Column(String)
+	name = Column(String, nullable=False)
+	type = Column(String, nullable=False)
 
 	# Добавим обратное отношение к таблице файлов
 	posts = relationship("Posts", secondary="post_file_association", overlaps="files")
@@ -68,7 +68,7 @@ class Database:
 		return self.session.query(Posts).filter_by(title=title).first()
 
 	def get_all_posts(self):
-		return self.session.query(Posts).order_by(desc(Posts.post_datetime)).all()
+		return self.session.query(Posts).order_by(desc(Posts.created_at)).all()
 
 	def check_post(self, title):
 		existing_user = self.session.query(Posts.title).filter_by(title=title).scalar()

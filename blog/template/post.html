@@ -20,9 +20,6 @@
 				<form method="post" action="{{ url_for('delete_post', post_title=post_content['title']) }}">
 					<input class="button-delete" type="submit" value="Видалити пост">
 				</form>
-				<form method="post" action="{{ url_for('update_post', post_title=post_content['title']) }}">
-					<input class="button-update" type="submit" value="Оновити пост">
-				</form>
 			{% endif %}
 			<!-- Метаданные поста -->
 			{% if not post_content['is_private'] %}
@@ -31,7 +28,15 @@
 				<h2 class="post-title-private">{{ post_content['title'] }}</h2>
 			{% endif %}
 			<p class="post-description">{{ post_content['description'] }}</p>
-			<p class="post-date">Дата публікації: {{ post_content['post_datetime'] }}</p>
+			<p class="post-date">Дата написання: {{ post_content['created_at'] }}</p>
+			{% if is_admin %}
+				{% if post_content['last_changed_at'] is not none %}
+					<p class="post-date">Дата останньої зміни: {{ post_content['last_changed_at'] }}</p>
+				{% endif %}
+				{% if post_content['published_at'] is not none %}
+					<p class="post-date">Дата публікації: {{ post_content['published_at'] }}</p>
+				{% endif %}
+			{% endif %}
 			<!-- Файлы -->
 			<!--<p>{{ post_content['files'] }}</p>-->
 			<ul class="file-list">
@@ -47,6 +52,21 @@
 			<hr class="divider">
 			<!-- Содержание поста -->
 			<div class="post-content">{{ post_content['content']|safe }}</div>
+			<!-- Настройки поста -->
+			{% if is_admin %}
+				<form method="post" action="{{ url_for('update_post', post_title=post_content['title']) }}">
+					<input class="button-update" type="submit" value="Оновити пост">
+				</form>
+				{% if not post_content['is_private'] %}
+					<form method="post" action="{{ url_for('publish_post', post_title=post_content['title']) }}">
+						<input class="button-add" type="submit" value="Закрити пост">
+					</form>
+				{% else %}
+					<form method="post" action="{{ url_for('publish_post', post_title=post_content['title']) }}">
+						<input type="submit" value="Опублікувати пост">
+					</form>
+				{% endif %}
+			{% endif %}
 		</article>
 	</main>
 
