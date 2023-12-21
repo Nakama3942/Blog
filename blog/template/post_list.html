@@ -5,7 +5,7 @@
 				<h2 class="post-title">{{ metadata['title'] }}</h2>
 			</a>
 			<p class="post-description">{{ metadata['description'] }}</p>
-			<p class="post-date">Дата публікації: {{ metadata['post_datetime'] }}</p>
+			<p class="post-date">Дата написання: {{ metadata['created_at'] }}</p>
 		</article>
 	{% endif %}
 {% endfor %}

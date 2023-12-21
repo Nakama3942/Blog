@@ -1,5 +1,6 @@
 from flask import Flask, render_template, send_from_directory, request, redirect, url_for, session, send_file, jsonify
 from markdown2 import markdown
+from dotenv import get_key
 from datetime import datetime
 import os
 
@@ -7,6 +8,7 @@ from database import Database
 
 # todo сделать собственное логирование (с сохранением передаваемых данных)
 # todo реализовать отображение постов, какие закреплены за файлом
+# todo сделать возможным отображать картинки в посте не только из resources/images, но и из files/ и arts/
 
 app = Flask(__name__, template_folder='template', static_folder='resources')
 app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'files')
@@ -38,13 +40,25 @@ def logout():
 	return redirect(url_for('diary'))
 
 ############
-# Отображение постов и Главная
+# Открытие страниц Блога
 ############
 
 @app.route('/')
 def home():
 	post_contents = get_posts(num_posts=5)
 	return render_template('index.html', post_contents=post_contents, is_admin=is_admin())
+
+@app.route('/autobiography')
+def autobiography():
+	return render_template('autobiography.html', is_admin=is_admin())
+
+@app.route('/projects')
+def projects():
+	return render_template('projects.html', is_admin=is_admin())
+
+@app.route('/documentation')
+def documentation():
+	return render_template('documentation.html', is_admin=is_admin())
 
 @app.route('/diary')
 def diary():
@@ -56,6 +70,18 @@ def post(post_title):
 	post_content = load_post_content(post_title)
 	post_content['content'] = markdown(post_content['content'])
 	return render_template('post.html', post_content=post_content, is_admin=is_admin())
+
+@app.route('/viary')
+def viary():
+	return render_template('viary.html', api_key=get_key(".env", "YOUTUBE_API_KEY"), is_admin=is_admin())
+
+@app.route('/dream_diary')
+def dream_diary():
+	return render_template('dream_diary.html', is_admin=is_admin())
+
+@app.route('/arts')
+def arts():
+	return render_template('arts.html', is_admin=is_admin())
 
 ############
 # Добавление постов
@@ -161,8 +187,8 @@ def delete_post(post_title):
 	post_path = f"{os.path.join(app.config['POST_FOLDER'], post_title)}.md"
 	if os.path.exists(post_path):
 		with Database() as db:
+			os.remove(post_path)
 			db.remove_post(post_title)
-		os.remove(post_path)
 
 	return redirect(url_for('diary'))
 
@@ -210,34 +236,6 @@ def uploaded_file(filename):
 	return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 ############
-# Остальные странички
-############
-
-@app.route('/autobiography')
-def autobiography():
-	return render_template('autobiography.html', is_admin=is_admin())
-
-@app.route('/projects')
-def projects():
-	return render_template('projects.html', is_admin=is_admin())
-
-@app.route('/documentation')
-def documentation():
-	return render_template('documentation.html', is_admin=is_admin())
-
-@app.route('/viary')
-def viary():
-	return render_template('viary.html', is_admin=is_admin())
-
-@app.route('/dream_diary')
-def dream_diary():
-	return render_template('dream_diary.html', is_admin=is_admin())
-
-@app.route('/arts')
-def arts():
-	return render_template('arts.html', is_admin=is_admin())
-
-############
 # Функция для открытия документаций
 ############
 
@@ -252,7 +250,6 @@ def serve_docs(subpath, filename):
 def get_posts(num_posts):
 	with Database() as db:
 		posts = db.get_all_posts()[:num_posts] if num_posts else db.get_all_posts()
-		# posts.reverse()
 		posts_metadata = [extract_post_metadata(post_metadata) for post_metadata in posts]
 
 	return posts_metadata
