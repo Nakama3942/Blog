@@ -1,26 +1,12 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Мій особистий блог</title>
-	<link rel="stylesheet" href="resources/style/style.css">
-	{% include 'fonts.html' %}
-</head>
-<body>
+{% extends 'base.html' %}
 
-	{% include 'header.html' %}
+{% block title %}Мій особистий Блог - Блог Калиновського{% endblock %}
 
-	{% include 'nav.html' %}
-
-	<main> <!-- Про себе -->
+{% block content %}
+	<main>
 		{% include 'biography.html' %}
 
 		{% set post_list_content=post_contents %}
 		{% include 'post_list.html' %}
 	</main>
-
-	{% include 'footer.html' %}
-
-</body>
-</html>
+{% endblock %}

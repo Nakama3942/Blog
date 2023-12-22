@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Ваш API ключ YouTube
-    var apiKey = document.body.getAttribute('data-api-key');
+    var apiKey = document.getElementById('videoBlog').getAttribute('data-api-key');
 
     // ID вашего плейлиста
     var playlistId = 'PL2MbnZfZV5Ku1yAsuDXz3h4bCOYDn2eJh';

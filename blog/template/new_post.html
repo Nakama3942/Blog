@@ -1,23 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Новий пост</title>
-	<link rel="stylesheet" href="../resources/style/style.css">
-	<script src="resources/scripts/new_post.js"></script>
-	{% include 'fonts.html' %}
+{% extends 'base.html' %}
 
+{% block title %}Новий пост - Блог Калиновського{% endblock %}
+
+{% block scripts %}
+	<script src="resources/scripts/new_post.js"></script>
 	<!-- Подключение библиотеки Select2 -->
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-</head>
-<body>
+{% endblock %}
 
-	{% include 'header.html' %}
-
-	{% include 'nav.html' %}
-
+{% block content %}
 	<main>
 		<form action="{{ url_for('save_post_route') }}" method="post" enctype="multipart/form-data">
 			<input type="text" name="title" placeholder="Заголовок" required>
@@ -35,16 +27,7 @@
 
 			<input type="datetime-local" name="created_at">
 
-<!--			<div class="toggle-wrapper">-->
-<!--				<input type="checkbox" class="toggle" id="private" name="private">-->
-<!--				<label for="private">Зробити приватним</label>-->
-<!--			</div>-->
-
 			<input type="submit" value="Зберегти пост">
 		</form>
 	</main>
-
-	{% include 'footer.html' %}
-
-</body>
-</html>
+{% endblock %}

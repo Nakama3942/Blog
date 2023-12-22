@@ -1,23 +1,9 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Арти</title>
-	<link rel="stylesheet" href="resources/style/style.css">
-	{% include 'fonts.html' %}
-</head>
-<body>
+{% extends 'base.html' %}
 
-	{% include 'header.html' %}
+{% block title %}Арти - Блог Калиновського{% endblock %}
 
-	{% include 'nav.html' %}
-
+{% block content %}
 	<main>
 		<h1>Ще не готово</h1>
 	</main>
-
-	{% include 'footer.html' %}
-
-</body>
-</html>
+{% endblock %}

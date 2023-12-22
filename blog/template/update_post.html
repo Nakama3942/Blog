@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>{{ post_content['title'] }}</title>
+	<title>{{ post_content['title'] }} - Блог Калиновського</title>
 	<link rel="stylesheet" href="../resources/style/style.css">
 	<script src="resources/scripts/new_post.js"></script>
 	{% include 'fonts.html' %}
@@ -14,6 +14,18 @@
 
 	{% include 'nav.html' %}
 
+
+
+	{% include 'footer.html' %}
+
+</body>
+</html>
+
+{% extends 'base.html' %}
+
+{% block title %}{{ post_content['title'] }} - Блог Калиновського{% endblock %}
+
+{% block content %}
 	<main>
 		<article class="post">
 			<form action="{{ url_for('update_post_route', post_title=post_content['title']) }}" method="post" enctype="multipart/form-data">
@@ -37,17 +49,8 @@
 					{% endfor %}
 				</select>
 
-<!--				<div class="toggle-wrapper">-->
-<!--					<input type="checkbox" class="toggle" id="private" name="private" {% if post_content['is_private'] %}checked{% endif %}>-->
-<!--					<label for="private">Зробити приватним</label>-->
-<!--				</div>-->
-
 				<input type="submit" value="Зберегти пост">
 			</form>
 		</article>
 	</main>
-
-	{% include 'footer.html' %}
-
-</body>
-</html>
+{% endblock %}

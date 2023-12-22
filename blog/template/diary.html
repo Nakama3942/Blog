@@ -1,18 +1,8 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Щоденник</title>
-	<link rel="stylesheet" href="../resources/style/style.css">
-	{% include 'fonts.html' %}
-</head>
-<body>
+{% extends 'base.html' %}
 
-	{% include 'header.html' %}
+{% block title %}Щоденник - Блог Калиновського{% endblock %}
 
-	{% include 'nav.html' %}
-
+{% block content %}
 	<main>
 		{% if is_admin %}
 			<form method="post" action="{{ url_for('new_post') }}">
@@ -26,8 +16,4 @@
 		{% set post_list_content=post_contents %}
 		{% include 'post_list.html' %}
 	</main>
-
-	{% include 'footer.html' %}
-
-</body>
-</html>
+{% endblock %}

@@ -1,24 +1,13 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Відео-щоденник</title>
-	<link rel="stylesheet" href="resources/style/style.css">
+{% extends 'base.html' %}
+
+{% block title %}Відео-щоденник - Блог Калиновського{% endblock %}
+
+{% block scripts %}
 	<script src="resources/scripts/viary.js"></script>
-	{% include 'fonts.html' %}
-</head>
-<body data-api-key="{{ api_key }}">
+{% endblock %}
 
-	{% include 'header.html' %}
-
-	{% include 'nav.html' %}
-
-	<main id="videoBlog">
+{% block content %}
+	<main id="videoBlog" data-api-key="{{ api_key }}">
         <!-- Здесь будут плееры -->
     </main>
-
-	{% include 'footer.html' %}
-
-</body>
-</html>
+{% endblock %}

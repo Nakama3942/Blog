@@ -1,18 +1,8 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Проекти</title>
-	<link rel="stylesheet" href="resources/style/style.css">
-	{% include 'fonts.html' %}
-</head>
-<body>
+{% extends 'base.html' %}
 
-	{% include 'header.html' %}
+{% block title %}Проекти - Блог Калиновського{% endblock %}
 
-	{% include 'nav.html' %}
-
+{% block content %}
 	<main>
 		<article class="project-item">
 			<a href="https://github.com/Nakama3942/CommPayGUI">
@@ -78,8 +68,4 @@
 			<p class="project-date">Процес розробки репозиторію: 09.12.2023 - і по нині</p>
 		</article>
 	</main>
-
-	{% include 'footer.html' %}
-
-</body>
-</html>
+{% endblock %}
