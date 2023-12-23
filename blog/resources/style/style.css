@@ -67,20 +67,35 @@ footer {
 }
 .file-item {
 	text-align: center;
-	width: 150px; /* Ширина блока с изображением */
+	width: 128px; /* Ширина блока с изображением */
+}
+.thumbnail-container {
+	width: 128px;
+	height: 128px;
+	overflow: hidden;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.thumbnail-container img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
 }
 .file-icon {
-	width: 100%;
-	height: auto;
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: cover;
 }
 .delete-icon {
-    cursor: pointer;
-    font-size: 20px;
-    color: #e74c3c; /* Красный цвет для иконки удаления */
-    margin-left: 5px;
+	cursor: pointer;
+	font-size: 20px;
+	color: #e74c3c; /* Красный цвет для иконки удаления */
+	margin-left: 5px;
 }
 .delete-icon:hover {
-    color: #c0392b; /* Красный цвет для иконки удаления при наведении */
+	color: #c0392b; /* Красный цвет для иконки удаления при наведении */
 }
 
 /*
@@ -130,37 +145,37 @@ input[type="file"] {
 }
 /* Стили для переключателя */
 .toggle-wrapper {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 .toggle {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    width: 60px;
-    height: 34px;
-    margin-right: 15px;
-    background-color: #ddd;
-    border-radius: 20px;
-    position: relative;
-    cursor: pointer;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	width: 60px;
+	height: 34px;
+	margin-right: 15px;
+	background-color: #ddd;
+	border-radius: 20px;
+	position: relative;
+	cursor: pointer;
 }
 .toggle:checked {
-    background-color: #FF5500; /* Тёмно-оранжевый цвет при включенном тогле */
+	background-color: #FF5500; /* Тёмно-оранжевый цвет при включенном тогле */
 }
 .toggle::before {
 	position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    border-radius: 50%;
-    transition: transform 0.4s ease;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	border-radius: 50%;
+	transition: transform 0.4s ease;
 }
 .toggle:checked::before {
-    transform: translateX(26px);
+	transform: translateX(26px);
 }
 
 /*
@@ -209,11 +224,11 @@ input[type="submit"].button-delete:hover {
  */
 
 .biography {
-    margin-bottom: 20px;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-family: 'Montserrat', sans-serif;
+	margin-bottom: 20px;
+	padding: 15px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-family: 'Montserrat', sans-serif;
 }
 .biography .title{
 	text-align: center;
@@ -362,18 +377,132 @@ input[type="submit"].button-delete:hover {
  */
 
 .video-container {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-    height: 0;
-    overflow: hidden;
+	position: relative;
+	padding-bottom: 56.25%; /* 16:9 aspect ratio */
+	height: 0;
+	overflow: hidden;
 }
 .video-container + .video-container {
-    margin-top: 20px; /* Отступ между видео */
+	margin-top: 20px; /* Отступ между видео */
 }
 .video-container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+/*
+ * Стили для модального окна обзорщика изображений
+ */
+
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	padding-top: 50px;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 94.2%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+.modal-content {
+	margin: auto;
+	margin-top: 50px;
+	display: block;
+	width: auto;
+	max-width: 80%;
+	max-height: 80vh; /* 80% высоты экрана */
+	/*max-width: 800px;*/
+	margin-bottom: 50px; /* Добавляем отступ снизу */
+}
+.close {
+	position: fixed;
+	top: 15px;
+	right: 35px;
+	width: 50px; /* Задаем фиксированную ширину */
+	height: 50px; /* Задаем фиксированную высоту */
+	text-indent: 15px; /* Сдвигаем текст вправо на 40 пикселей */
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: 50%;
+	color: #f1f1f1;
+	font-size: 40px;
+	font-weight: bold;
+	cursor: pointer;
+}
+/* Стиль кнопки загрузки */
+.download {
+	position: fixed;
+	top: 15px;
+	right: 95px; /* Подвигаем кнопку загрузки левее */
+	width: 50px; /* Задаем фиксированную ширину */
+	height: 50px; /* Задаем фиксированную высоту */
+	text-indent: 15px; /* Сдвигаем текст вправо на 40 пикселей */
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: 50%;
+	color: #f1f1f1;
+	font-size: 40px;
+	font-weight: bold;
+	cursor: pointer;
+}
+.prev, .next {
+	position: fixed;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 50px;
+	height: 50px;
+	margin: 50px; /* Добавляем отступы */
+	line-height: 50px; /* Центрируем текст (иконку) по вертикали */
+	text-indent: 10px; /* Сдвигаем текст вправо на 40 пикселей */
+	font-size: 40px;
+	color: #f1f1f1;
+	font-weight: bold;
+	background-color: rgba(0, 0, 0, 0.5);
+	cursor: pointer;
+	border-radius: 50%;
+	z-index: 2;
+}
+.next {
+	right: 0;
+}
+.close:hover, .download:hover, .prev:hover, .next:hover {
+	background-color: rgba(0, 0, 0, 0.8);
+}
+
+/*
+ * Стили для всплывающих подсказок
+ */
+
+#snackbar {
+	visibility: hidden;
+	min-width: 250px;
+	margin-left: -125px;
+	background-color: #333;
+	color: #fff;
+	text-align: center;
+	border-radius: 2px;
+	padding: 16px;
+	position: fixed;
+	z-index: 1;
+	left: 50%;
+	bottom: 30px;
+	font-size: 17px;
+}
+#snackbar.show {
+	visibility: visible;
+	/* Анимация появления */
+	animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+/* Анимация появления */
+@keyframes fadein {
+	from {bottom: 0; opacity: 0;}
+	to {bottom: 30px; opacity: 1;}
+}
+/* Анимация исчезновения */
+@keyframes fadeout {
+	from {bottom: 30px; opacity: 1;}
+	to {bottom: 0; opacity: 0;}
 }

@@ -27,7 +27,7 @@ class Posts(Base):
 	is_private = Column(Boolean, nullable=False)
 	post_path = Column(String, nullable=False)
 
-	# Добавим отношение к таблице постов
+	# Добавим отношение к таблице файлов
 	files = relationship("Files", secondary="post_file_association")
 
 class Files(Base):
@@ -36,13 +36,28 @@ class Files(Base):
 	name = Column(String, nullable=False)
 	type = Column(String, nullable=False)
 
-	# Добавим обратное отношение к таблице файлов
+	# Добавим обратное отношение к таблице постов
 	posts = relationship("Posts", secondary="post_file_association", overlaps="files")
 
 class PostFileAssociation(Base):
 	__tablename__ = "post_file_association"
 	post_id = Column(Integer, ForeignKey('posts.id'), primary_key=True)
 	file_id = Column(Integer, ForeignKey('files.id'), primary_key=True)
+
+class Dreams(Base):
+	__tablename__ = "dreams"
+	id = Column(Integer, primary_key=True)
+	title = Column(String, nullable=False)
+	tags = Column(String, nullable=False)
+	dreamed_at = Column(DateTime, nullable=False)
+	is_private = Column(Boolean, nullable=False)
+	dream_path = Column(String, nullable=False)
+
+class Arts(Base):
+	__tablename__ = "arts"
+	id = Column(Integer, primary_key=True)
+	name = Column(String, nullable=False)
+	type = Column(String, nullable=False)
 
 class Database:
 	def __init__(self):
@@ -116,6 +131,62 @@ class Database:
 		file = self.session.query(Files).filter_by(name=name).first()
 		if file:
 			self.session.delete(file)
+			self.session.commit()
+
+	# Методы для работы с таблицей сновидений
+
+	def get_dream(self, title):
+		return self.session.query(Dreams).filter_by(title=title).first()
+
+	def get_all_dreams(self):
+		return self.session.query(Dreams).order_by(desc(Dreams.dreamed_at)).all()
+
+	def check_dream(self, title):
+		existing_user = self.session.query(Dreams.title).filter_by(title=title).scalar()
+		return existing_user is None
+
+	def create_dream(self, title, dream_data):
+		new_dream = Files(title=title, **dream_data)
+		self.session.add(new_dream)
+		self.session.commit()
+
+	def update_dream(self, title, new_data):
+		dream = self.get_dream(title)
+		if dream:
+			# Оновлюємо поля сновидіння
+			for key, value in new_data.items():
+				setattr(dream, key, value)
+
+			# Фіксуємо значення в БД
+			self.session.commit()
+
+	def remove_dream(self, title):
+		dream = self.session.query(Dreams).filter_by(title=title).first()
+		if dream:
+			self.session.delete(dream)
+			self.session.commit()
+
+	# Методы для работы с таблицей артов
+
+	def get_art(self, name):
+		return self.session.query(Arts).filter_by(name=name).first()
+
+	def get_all_arts(self):
+		return self.session.query(Arts).all()
+
+	def check_art(self, name):
+		existing_user = self.session.query(Arts.name).filter_by(name=name).scalar()
+		return existing_user is None
+
+	def create_art(self, name, art_data):
+		new_art = Arts(name=name, **art_data)
+		self.session.add(new_art)
+		self.session.commit()
+
+	def remove_art(self, name):
+		art = self.session.query(Arts).filter_by(name=name).first()
+		if art:
+			self.session.delete(art)
 			self.session.commit()
 
 	# Методы для работы с таблицей ассоциаций
