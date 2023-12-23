@@ -1,4 +1,4 @@
-<nav>
+<nav id="mainNav">
 	<a href="/">Головна</a>
 	<a href="/autobiography">Автобіографія</a>
 	<a href="/projects">Проекти</a>
@@ -6,5 +6,17 @@
 	<a href="/diary">Щоденник</a>
 	<a href="/viary">Відео-щоденник</a>
 	<a href="/dream_diary">Соннік</a>
-	<a href="/arts">Арти</a>
+	<a href="javascript:void(0);" id="galleryBtn">Галерея</a>
+    <div id="galleryMenu">
+        <a href="/arts">Арти</a>
+        <a href="/screenshots">Скрины</a>
+        <a href="/photos">Фотографії</a>
+    </div>
+
+	<script>
+		document.getElementById('galleryBtn').addEventListener('click', function() {
+			var galleryMenu = document.getElementById('galleryMenu');
+			galleryMenu.style.display = (galleryMenu.style.display === 'block') ? 'none' : 'block';
+		});
+	</script>
 </nav>

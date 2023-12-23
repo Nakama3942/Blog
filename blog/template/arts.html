@@ -19,7 +19,7 @@
 		<ul class="file-list">
 			{% for art in arts %}
 				<li class="file-item">
-					<a href="javascript:void(0);" class="open-modal" data-index="{{ loop.index - 1 }}" data-img="{{ url_for('full_image', filename=art.name) }}">
+					<a href="javascript:void(0);" class="open-modal" data-index="{{ loop.index - 1 }}" data-img="{{ url_for('full_image', folder='ART_FOLDER', filename=art.name) }}">
 						<div class="thumbnail-container">
 							<img class="file-icon" src="{{ url_for('thumbnail', filename=art.name) }}" alt="{{ art.name }}" width="128" height="128">
 						</div>

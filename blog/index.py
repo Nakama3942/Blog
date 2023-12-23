@@ -124,7 +124,7 @@ def save_post_route():
 	}
 
 	# Сохраняем метаданные в базе данных
-	with open(post_path, 'w', encoding='utf-8') as post_file:
+	with open(post_path, 'w', encoding='utf-8', newline='') as post_file:
 		post_file.write(content)
 		with Database() as db:
 			db.create_post(title, post_metadata)
@@ -172,7 +172,7 @@ def update_post_route(post_title):
 	}
 
 	# Сохраняем метаданные в базе данных
-	with open(post_path, 'w', encoding='utf-8') as post_file:
+	with open(post_path, 'w', encoding='utf-8', newline='') as post_file:
 		post_file.write(content)
 		with Database() as db:
 			db.update_post(post_title, post_metadata)
@@ -238,9 +238,9 @@ def delete_file(filename):
 def thumbnail(filename):
 	return send_from_directory(app.config['THUMBNAIL_FOLDER'], filename)
 
-@app.route('/full_image/<filename>')
-def full_image(filename):
-	return send_from_directory(app.config['ART_FOLDER'], filename)
+@app.route('/full_image/<folder>/<filename>')
+def full_image(folder, filename):
+	return send_from_directory(app.config[folder], filename)
 
 @app.route('/upload_art', methods=['POST'])
 def upload_art():
