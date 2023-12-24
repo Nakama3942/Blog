@@ -7,16 +7,27 @@ import os
 
 from database import Database
 
+# todo перенести ID плейлиста в .env
 # todo сделать собственное логирование (с сохранением передаваемых данных)
 # todo реализовать отображение постов, какие закреплены за файлом
-# todo сделать возможным отображать картинки в посте не только из resources/images, но и из files/ и arts/
+# todo перенести ссылки на документацию в навигационную панель
+# todo сделать возможность указать настроение в посте, которое будет выражаться изменением рамочки поста
+# todo добавить теги к постам и сновидениям
+# todo запретить создавать посты с одинаковыми названиями и проверять файлы на названия; если файл уже загружен - не грузить его и предупредить меня
+# todo добавить поиск в постах и сновидениях по словам в названии, тексте, и поиск по тегам
+# todo сделать такую штуку, чтобы было ясно, в какой вкладке с навигационной панели я сейчас нахожусь
+# todo заменить select2 на что-то другое
 
 app = Flask(__name__, template_folder='template', static_folder='resources')
 app.config['POST_FOLDER'] = os.path.join(os.getcwd(), 'posts')
 app.config['FILE_FOLDER'] = os.path.join(os.getcwd(), 'files')
 app.config['DREAM_FOLDER'] = os.path.join(os.getcwd(), 'dreams')
-app.config['ART_FOLDER'] = os.path.join(os.getcwd(), 'arts')
-app.config['THUMBNAIL_FOLDER'] = os.path.join(os.getcwd(), 'arts/thumbnails')
+app.config['ART_FOLDER'] = os.path.join(os.getcwd(), 'gallery/arts')
+app.config['THUMBNAIL_ART_FOLDER'] = os.path.join(os.getcwd(), 'gallery/arts/thumbnails')
+app.config['SCREENSHOT_FOLDER'] = os.path.join(os.getcwd(), 'gallery/screenshots')
+app.config['THUMBNAIL_SCREENSHOT_FOLDER'] = os.path.join(os.getcwd(), 'gallery/screenshots/thumbnails')
+app.config['PHOTO_FOLDER'] = os.path.join(os.getcwd(), 'gallery/photos')
+app.config['THUMBNAIL_PHOTO_FOLDER'] = os.path.join(os.getcwd(), 'gallery/photos/thumbnails')
 
 app.secret_key = 'your_secret_key'  # Секретный ключ для подписи сессий
 ADMIN_KEY = 'admin_key'  # Ваш ключ для доступа к админским функциям
@@ -87,7 +98,19 @@ def dream_diary():
 def arts():
 	with Database() as db:
 		db_arts = db.get_all_arts()
-	return render_template('arts.html', arts=db_arts, is_admin=is_admin())
+	return render_template('gallery.html', page_data={ 'title': 'Арти', 'sender': 'arts', 'folder': 'ART_FOLDER' }, images=db_arts, is_admin=is_admin())
+
+@app.route('/screenshots')
+def screenshots():
+	with Database() as db:
+		db_screenshots = db.get_all_screenshots()
+	return render_template('gallery.html', page_data={ 'title': 'Скріни', 'sender': 'screenshots', 'folder': 'SCREENSHOT_FOLDER' }, images=db_screenshots, is_admin=is_admin())
+
+@app.route('/photos')
+def photos():
+	with Database() as db:
+		db_photos = db.get_all_photos()
+	return render_template('gallery.html', page_data={ 'title': 'Фотографії', 'sender': 'photos', 'folder': 'PHOTO_FOLDER' }, images=db_photos, is_admin=is_admin())
 
 ############
 # Работа с постами
@@ -230,30 +253,31 @@ def delete_file(filename):
 ############
 
 ############
-# Открытие страницы артов
+# Страница галереи
 ############
 
-# Маршрут для обслуживания миниатюр
-@app.route('/thumbnails/<filename>')
-def thumbnail(filename):
-	return send_from_directory(app.config['THUMBNAIL_FOLDER'], filename)
-
-@app.route('/full_image/<folder>/<filename>')
-def full_image(folder, filename):
+@app.route('/image/<folder>/<filename>')
+def image(folder, filename):
 	return send_from_directory(app.config[folder], filename)
 
-@app.route('/upload_art', methods=['POST'])
-def upload_art():
+@app.route('/upload_image/<sender>/<folder>', methods=['POST'])
+def upload_image(sender, folder):
 	# Сохраняем файлы на сервер
 	with Database() as db:
-		uploaded_arts = request.files.getlist('arts')
-		# Фильтруем арты, чтобы оставить только те, которые не пусты
-		valid_arts = [art for art in uploaded_arts if art.filename]
-		if valid_arts:
-			for valid_art in valid_arts:
-				filename = os.path.join(app.config['ART_FOLDER'], valid_art.filename)
-				valid_art.save(filename)
-				db.create_art(valid_art.filename, {'type': valid_art.filename.split('.')[-1].upper()})
+		uploaded_images = request.files.getlist('images')
+		# Фильтруем изображения, чтобы оставить только те, которые не пусты
+		valid_images = [uploaded_image for uploaded_image in uploaded_images if uploaded_image.filename]
+		if valid_images:
+			for valid_image in valid_images:
+				filename = os.path.join(app.config[folder], valid_image.filename)
+				valid_image.save(filename)
+				match sender:
+					case 'arts':
+						db.create_art(valid_image.filename, {'type': valid_image.filename.split('.')[-1].upper()})
+					case 'screenshots':
+						db.create_screenshot(valid_image.filename, {'type': valid_image.filename.split('.')[-1].upper()})
+					case 'photos':
+						db.create_photo(valid_image.filename, {'type': valid_image.filename.split('.')[-1].upper()})
 
 				# Открываем изображение
 				original_image = Image.open(filename)
@@ -263,24 +287,26 @@ def upload_art():
 				image_thumbnail.thumbnail((128, 128))
 
 				# Сохраняем миниатюру в директорию thumbnail
-				image_thumbnail.save(os.path.join(app.config['THUMBNAIL_FOLDER'], valid_art.filename))
+				image_thumbnail.save(os.path.join(app.config[f'THUMBNAIL_{folder}'], valid_image.filename))
 
-	return redirect(url_for('arts'))
+	return redirect(url_for(sender))
 
-@app.route('/delete_art/<filename>', methods=['DELETE'])
-def delete_art(filename):
+@app.route('/delete_image/<folder>/<filename>', methods=['DELETE'])
+def delete_image(folder, filename):
 	try:
 		with Database() as db:
-			os.remove(os.path.join(app.config['ART_FOLDER'], filename))
-			os.remove(os.path.join(app.config['THUMBNAIL_FOLDER'], filename))
-			db.remove_art(filename)
+			os.remove(os.path.join(app.config[folder], filename))
+			os.remove(os.path.join(app.config[f'THUMBNAIL_{folder}'], filename))
+			match folder:
+				case 'ART_FOLDER':
+					db.remove_art(filename)
+				case 'SCREENSHOT_FOLDER':
+					db.remove_screenshot(filename)
+				case 'PHOTO_FOLDER':
+					db.remove_photo(filename)
 		return jsonify({'success': True})
 	except FileNotFoundError:
 		return jsonify({'success': False, 'error': 'Art not found'})
-
-@app.route('/download_art/<path:filename>')
-def download_art(filename):
-	return send_from_directory(app.config['ART_FOLDER'], filename)
 
 ############
 # Загрузка файлов с сервера на компьютер

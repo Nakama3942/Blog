@@ -25,32 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		modalOpen = false;
 	});
 
-//    // Закрываем модальное окно при клике вне его
-//    window.addEventListener('click', function (e) {
-//        if (e.target === modal) {
-//            modal.style.display = 'none';
-//            modalOpen = false;
-//
-//            // Восстановить прокрутку страницы
-//            document.body.style.overflow = 'auto';
-//        }
-//    });
-
-	// Обработка событий прокрутки колеса мыши
-//    window.addEventListener('wheel', function (e) {
-//        // Блокируем прокрутку страницы, если модальное окно открыто
-//        if (modalOpen) {
-//            e.preventDefault();
-//
-//            // При нажатой клавише Shift - прокручиваем изображение вправо или влево
-//            if (e.shiftKey) {
-//                modal.scrollLeft += e.deltaY;
-//            } else {
-//                modal.scrollTop += e.deltaY;
-//            }
-//        }
-//    });
-
 	// Функция для переключения между изображениями
 	window.plusSlides = function (imageIndex) {
 		var images = document.querySelectorAll('.open-modal');
@@ -69,8 +43,9 @@ document.addEventListener('DOMContentLoaded', function () {
 	window.downloadImage = function () {
 		var image = document.querySelectorAll('.open-modal');
 		var imageName = image[currentImageIndex].getAttribute('data-img');
+		var folder = image[currentImageIndex].getAttribute('data-folder');
 
-		fetch(`/download_art/${encodeURIComponent(imageName.split('/').pop())}`, {
+		fetch(`/image/${folder}/${encodeURIComponent(imageName.split('/').pop())}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -114,9 +89,9 @@ function showSnackbar(message) {
 	}, 3000); // Закрыть всплывающее сообщение через 3 секунды
 }
 
-function deleteArt(filename) {
+function deleteImage(folder, filename) {
 	if (confirm(`Вы уверены, что хотите удалить арт ${filename}?`)) {
-		fetch(`/delete_art/${filename}`, {
+		fetch(`/delete_image/${folder}/${filename}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',

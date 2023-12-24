@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_data['title'] }} - Блог Калиновського{% endblock %}
+
+{% block scripts %}
+<script src="resources/scripts/gallery.js"></script>
+{% endblock %}
+
+{% block content %}
+	<main>
+		{% if is_admin %}
+			<form method="post" action="{{ url_for('upload_image', sender=page_data['sender'], folder=page_data['folder']) }}" enctype="multipart/form-data">
+				<input type="file" id="artInput" name="images" multiple>
+				<input class="button-add" type="submit" value="Додати файл">
+			</form>
+		{% endif %}
+
+		<ul class="file-list">
+			{% for image in images %}
+				<li class="file-item">
+					<a href="javascript:void(0);" class="open-modal" data-index="{{ loop.index - 1 }}" data-img="{{ url_for('image', folder=page_data['folder'], filename=image.name) }}" data-folder="{{ page_data['folder'] }}">
+						<div class="thumbnail-container">
+							<img class="file-icon" src="{{ url_for('image', folder='THUMBNAIL_'+page_data['folder'], filename=image.name) }}" alt="{{ image.name }}" width="128" height="128">
+						</div>
+					</a>
+					{% if is_admin %}
+						<span class="delete-icon" onclick="deleteImage('{{ page_data['folder'] }}', '{{ image.name }}')">🗑️</span>
+					{% endif %}
+				</li>
+			{% endfor %}
+		</ul>
+
+		<div id="myModal" class="modal">
+			<span class="close">&times;</span>
+			<span class="download" onclick="downloadImage()">&#8595;</span>
+			<span class="prev" onclick="plusSlides(-1)">&#10094;</span>
+			<img class="modal-content" id="img01" src="">
+			<span class="next" onclick="plusSlides(1)">&#10095;</span>
+		</div>
+
+		<!-- Всплывающее сообщение -->
+		<div id="snackbar"></div>
+	</main>
+{% endblock %}

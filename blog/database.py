@@ -59,6 +59,18 @@ class Arts(Base):
 	name = Column(String, nullable=False)
 	type = Column(String, nullable=False)
 
+class Screenshots(Base):
+	__tablename__ = "screenshots"
+	id = Column(Integer, primary_key=True)
+	name = Column(String, nullable=False)
+	type = Column(String, nullable=False)
+
+class Photos(Base):
+	__tablename__ = "photos"
+	id = Column(Integer, primary_key=True)
+	name = Column(String, nullable=False)
+	type = Column(String, nullable=False)
+
 class Database:
 	def __init__(self):
 		super(Database, self).__init__()
@@ -187,6 +199,52 @@ class Database:
 		art = self.session.query(Arts).filter_by(name=name).first()
 		if art:
 			self.session.delete(art)
+			self.session.commit()
+
+	# Методы для работы с таблицей скринов
+
+	def get_screenshot(self, name):
+		return self.session.query(Screenshots).filter_by(name=name).first()
+
+	def get_all_screenshots(self):
+		return self.session.query(Screenshots).all()
+
+	def check_screenshot(self, name):
+		existing_screenshot = self.session.query(Screenshots.name).filter_by(name=name).scalar()
+		return existing_screenshot is None
+
+	def create_screenshot(self, name, art_data):
+		new_screenshot = Screenshots(name=name, **art_data)
+		self.session.add(new_screenshot)
+		self.session.commit()
+
+	def remove_screenshot(self, name):
+		screenshot = self.session.query(Screenshots).filter_by(name=name).first()
+		if screenshot:
+			self.session.delete(screenshot)
+			self.session.commit()
+
+	# Методы для работы с таблицей фотографий
+
+	def get_photo(self, name):
+		return self.session.query(Photos).filter_by(name=name).first()
+
+	def get_all_photos(self):
+		return self.session.query(Photos).all()
+
+	def check_photo(self, name):
+		existing_photo = self.session.query(Photos.name).filter_by(name=name).scalar()
+		return existing_photo is None
+
+	def create_photo(self, name, art_data):
+		new_photo = Photos(name=name, **art_data)
+		self.session.add(new_photo)
+		self.session.commit()
+
+	def remove_photo(self, name):
+		photo = self.session.query(Photos).filter_by(name=name).first()
+		if photo:
+			self.session.delete(photo)
 			self.session.commit()
 
 	# Методы для работы с таблицей ассоциаций
