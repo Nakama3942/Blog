@@ -7,16 +7,14 @@ import os
 
 from database import Database
 
-# todo перенести ID плейлиста в .env
-# todo сделать собственное логирование (с сохранением передаваемых данных)
 # todo реализовать отображение постов, какие закреплены за файлом
-# todo перенести ссылки на документацию в навигационную панель
 # todo сделать возможность указать настроение в посте, которое будет выражаться изменением рамочки поста
 # todo добавить теги к постам и сновидениям
 # todo запретить создавать посты с одинаковыми названиями и проверять файлы на названия; если файл уже загружен - не грузить его и предупредить меня
 # todo добавить поиск в постах и сновидениях по словам в названии, тексте, и поиск по тегам
-# todo сделать такую штуку, чтобы было ясно, в какой вкладке с навигационной панели я сейчас нахожусь
 # todo заменить select2 на что-то другое
+# todo перенести кнопку удаления файла/изображения в модальное окно
+# todo сделать анимацию открывания вложенных вкладок во вкладках в навигационной панели
 
 app = Flask(__name__, template_folder='template', static_folder='resources')
 app.config['POST_FOLDER'] = os.path.join(os.getcwd(), 'posts')
@@ -61,56 +59,103 @@ def logout():
 @app.route('/')
 def home():
 	post_contents = get_posts(num_posts=5)
-	return render_template('index.html', post_contents=post_contents, is_admin=is_admin())
+	return render_template(
+		'index.html',
+		active_tab='',
+		post_contents=post_contents,
+		is_admin=is_admin()
+	)
 
 @app.route('/autobiography')
 def autobiography():
-	return render_template('autobiography.html', is_admin=is_admin())
+	return render_template(
+		'autobiography.html',
+		active_tab='autobiography',
+		is_admin=is_admin()
+	)
 
 @app.route('/projects')
 def projects():
-	return render_template('projects.html', is_admin=is_admin())
-
-@app.route('/documentation')
-def documentation():
-	return render_template('documentation.html', is_admin=is_admin())
+	return render_template(
+		'projects.html',
+		active_tab='projects',
+		is_admin=is_admin()
+	)
 
 @app.route('/diary')
 def diary():
 	post_contents = get_posts(num_posts=0)
-	return render_template('diary.html', post_contents=post_contents, is_admin=is_admin())
+	return render_template(
+		'diary.html',
+		active_tab='diary',
+		post_contents=post_contents,
+		is_admin=is_admin()
+	)
 
 @app.route('/posts/<post_title>')
 def post(post_title):
 	post_content = load_post_content(post_title)
 	post_content['content'] = markdown(post_content['content'])
-	return render_template('post.html', post_content=post_content, is_admin=is_admin())
+	return render_template(
+		'post.html',
+		active_tab='post',
+		post_content=post_content,
+		is_admin=is_admin()
+	)
 
 @app.route('/viary')
 def viary():
-	return render_template('viary.html', api_key=get_key(".env", "YOUTUBE_API_KEY"), is_admin=is_admin())
+	return render_template(
+		'viary.html',
+		active_tab='viary',
+		youtube_api_key=get_key(".env", "YOUTUBE_API_KEY"),
+		playlist_id=get_key(".env", "PLAYLIST_ID"),
+		is_admin=is_admin()
+	)
 
 @app.route('/dream_diary')
 def dream_diary():
-	return render_template('dream_diary.html', is_admin=is_admin())
+	return render_template(
+		'dream_diary.html',
+		active_tab='dream_diary',
+		is_admin=is_admin()
+	)
 
 @app.route('/arts')
 def arts():
 	with Database() as db:
 		db_arts = db.get_all_arts()
-	return render_template('gallery.html', page_data={ 'title': 'Арти', 'sender': 'arts', 'folder': 'ART_FOLDER' }, images=db_arts, is_admin=is_admin())
+	return render_template(
+		'gallery.html',
+		active_tab='arts',
+		page_data={ 'title': 'Арти', 'sender': 'arts', 'folder': 'ART_FOLDER' },
+		images=db_arts,
+		is_admin=is_admin()
+	)
 
 @app.route('/screenshots')
 def screenshots():
 	with Database() as db:
 		db_screenshots = db.get_all_screenshots()
-	return render_template('gallery.html', page_data={ 'title': 'Скріни', 'sender': 'screenshots', 'folder': 'SCREENSHOT_FOLDER' }, images=db_screenshots, is_admin=is_admin())
+	return render_template(
+		'gallery.html',
+		active_tab='screenshots',
+		page_data={ 'title': 'Скріни', 'sender': 'screenshots', 'folder': 'SCREENSHOT_FOLDER' },
+		images=db_screenshots,
+		is_admin=is_admin()
+	)
 
 @app.route('/photos')
 def photos():
 	with Database() as db:
 		db_photos = db.get_all_photos()
-	return render_template('gallery.html', page_data={ 'title': 'Фотографії', 'sender': 'photos', 'folder': 'PHOTO_FOLDER' }, images=db_photos, is_admin=is_admin())
+	return render_template(
+		'gallery.html',
+		active_tab='photos',
+		page_data={ 'title': 'Фотографії', 'sender': 'photos', 'folder': 'PHOTO_FOLDER' },
+		images=db_photos,
+		is_admin=is_admin()
+	)
 
 ############
 # Работа с постами
@@ -221,7 +266,14 @@ def delete_post(post_title):
 def attached_files():
 	with Database() as db:
 		files = db.get_all_files()
-	return render_template('files.html', files=files, is_admin=is_admin())
+		files_data = [
+			{
+				'name': file.name,
+				'type': file.type,
+				'posts_titles': [post_data.title for post_data in file.posts]
+			} for file in files
+		]
+	return render_template('files.html', files=files_data, is_admin=is_admin())
 
 @app.route('/upload_file', methods=['POST'])
 def upload_file():

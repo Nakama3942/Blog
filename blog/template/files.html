@@ -17,13 +17,21 @@
 		<ul class="file-list">
 			{% for file in files %}
 				<li class="file-item">
-					<a href="{{ url_for('uploaded_file', filename=file.name) }}" download="/files/{{ file.name }}">
-						<img class="file-icon" src="{{ url_for('static', filename='icons/' + file.type + '.png') }}" alt="{{ file.type }} Icon" width="128" height="128">
+					<a href="javascript:void(0);" class="open-modal" file-name="{{ file.name }}" file-posts-titles="{{ file.posts_titles|safe }}">
+						<div class="thumbnail-container">
+							<img class="file-icon" src="{{ url_for('static', filename='icons/' + file.type + '.png') }}" alt="{{ file.type }} Icon" width="128" height="128">
+						</div>
 						{{ file.name }}
 					</a>
-					<span class="delete-icon" onclick="deleteFile('{{ file.name }}')">🗑️</span>
+					<span class="button-icon" onclick="deleteFile('{{ file.name }}')">🗑️</span>
 				</li>
 			{% endfor %}
 		</ul>
+
+		<div id="myModal" class="modal">
+			<span class="close">&times;</span>
+			<span class="download" onclick="downloadFile()">&#8595;</span>
+			<p class="modal-content" id="postsList"></p>
+		</div>
 	</main>
 {% endblock %}

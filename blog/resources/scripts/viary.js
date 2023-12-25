@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Ваш API ключ YouTube
-    var apiKey = document.getElementById('videoBlog').getAttribute('data-api-key');
+    var apiKey = document.getElementById('videoBlog').getAttribute('youtube-api-key');
 
     // ID вашего плейлиста
-    var playlistId = 'PL2MbnZfZV5Ku1yAsuDXz3h4bCOYDn2eJh';
+    var playlistId = document.getElementById('videoBlog').getAttribute('playlist-id');
 
     // Количество видео, которые вы хотите отобразить
     var maxResults = 10;

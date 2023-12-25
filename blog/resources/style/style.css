@@ -21,30 +21,33 @@ header {
 	padding: 1em;
 	text-align: center;
 }
-
-#mainNav a {
+#mainNav a,
+#docsMenu a,
+#galleryMenu a {
 	margin: 5px;
 	padding: 10px;
-	background-color: #e0e0e0;
+	background-color: #e4e4e4;
 	text-decoration: none;
 	color: #333;
 	border-radius: 5px;
 }
-
+/* Change the color of links on hover */
+#mainNav a:hover {
+	background-color: #aaa;
+	color: black;
+	transition: background-color 0.5s ease, color 0.5s ease;
+}
+/* Add a color to the active/current link */
+#mainNav a.active {
+	background-color: #bbb;
+	color: black;
+}
+#docsMenu,
 #galleryMenu {
 	display: none;
 	flex-basis: 100%;
 	flex-direction: column;
 	margin-top: 30px; /* или другое значение отступа сверху */
-}
-
-#galleryMenu a {
-	margin: 5px;
-	padding: 10px;
-	background-color: #e0e0e0;
-	text-decoration: none;
-	color: #333;
-	border-radius: 5px;
 }
 
 main {
@@ -107,13 +110,13 @@ footer {
 	max-height: 100%;
 	object-fit: cover;
 }
-.delete-icon {
+.button-icon {
 	cursor: pointer;
 	font-size: 20px;
 	color: #e74c3c; /* Красный цвет для иконки удаления */
 	margin-left: 5px;
 }
-.delete-icon:hover {
+.button-icon:hover {
 	color: #c0392b; /* Красный цвет для иконки удаления при наведении */
 }
 
@@ -437,6 +440,28 @@ input[type="submit"].button-delete:hover {
 	max-height: 80vh; /* 80% высоты экрана */
 	/*max-width: 800px;*/
 	margin-bottom: 50px; /* Добавляем отступ снизу */
+}
+#postsList {
+	background-color: #333; /* Непрозрачный фон */
+	color: #ddd; /* Цвет текста */
+	font-size: 18px;
+	line-height: 2; /* Межстрочный интервал */
+	padding: 10px; /* Поля вокруг текста */
+}
+#postsList a {
+	display: inline-block; /* Чтобы элемент занимал всю ширину строки */
+	width: 100%;
+	box-sizing: border-box; /* Это свойство учитывает padding в расчетах ширины элемента */
+	color: #007bff; /* Цвет ссылок */
+	text-decoration: none; /* Убираем подчеркивание у ссылок */
+	padding: 6px;
+	border-radius: 5px; /* Закругляем углы */
+}
+#postsList br {
+	margin-bottom: 12px;
+}
+#postsList a:hover {
+	background-color: #444; /* Изменяем фон при наведении на ссылку */
 }
 .close {
 	position: fixed;
