@@ -7,14 +7,18 @@ import os
 
 from database import Database
 
-# todo реализовать отображение постов, какие закреплены за файлом
-# todo сделать возможность указать настроение в посте, которое будет выражаться изменением рамочки поста
+# todo реализовать дневник сновидений
+# todo добавить больше плейлистов в видеодневник
+# todo добавить страницы для хранения фрагментов кода
+# todo сделать возможность указать настроение в посте, которое будет выражаться изменением рамочки поста (и для сна тоже)
 # todo добавить теги к постам и сновидениям
 # todo запретить создавать посты с одинаковыми названиями и проверять файлы на названия; если файл уже загружен - не грузить его и предупредить меня
 # todo добавить поиск в постах и сновидениях по словам в названии, тексте, и поиск по тегам
 # todo заменить select2 на что-то другое
 # todo перенести кнопку удаления файла/изображения в модальное окно
 # todo сделать анимацию открывания вложенных вкладок во вкладках в навигационной панели
+
+# todo после завершения разработки адаптировать дизайн под телефоны
 
 app = Flask(__name__, template_folder='template', static_folder='resources')
 app.config['POST_FOLDER'] = os.path.join(os.getcwd(), 'posts')
@@ -154,6 +158,22 @@ def photos():
 		active_tab='photos',
 		page_data={ 'title': 'Фотографії', 'sender': 'photos', 'folder': 'PHOTO_FOLDER' },
 		images=db_photos,
+		is_admin=is_admin()
+	)
+
+@app.route('/gists')
+def gists():
+	return render_template(
+		'gist.html',
+		active_tab='gists',
+		is_admin=is_admin()
+	)
+
+@app.route('/codesnaps')
+def codesnaps():
+	return render_template(
+		'codesnap.html',
+		active_tab='codesnaps',
 		is_admin=is_admin()
 	)
 

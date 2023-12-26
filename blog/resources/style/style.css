@@ -21,9 +21,22 @@ header {
 	padding: 1em;
 	text-align: center;
 }
+#docsMenu,
+#blogMenu,
+#viaryMenu,
+#galleryMenu,
+#codeMenu {
+	display: none;
+	flex-basis: 100%;
+	flex-direction: column;
+	margin-top: 30px; /* или другое значение отступа сверху */
+}
 #mainNav a,
 #docsMenu a,
-#galleryMenu a {
+#blogMenu a,
+#viaryMenu a,
+#galleryMenu a,
+#codeMenu a {
 	margin: 5px;
 	padding: 10px;
 	background-color: #e4e4e4;
@@ -41,13 +54,6 @@ header {
 #mainNav a.active {
 	background-color: #bbb;
 	color: black;
-}
-#docsMenu,
-#galleryMenu {
-	display: none;
-	flex-basis: 100%;
-	flex-direction: column;
-	margin-top: 30px; /* или другое значение отступа сверху */
 }
 
 main {

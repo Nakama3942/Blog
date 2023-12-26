@@ -3,80 +3,31 @@
 	<a href="/autobiography">Автобіографія</a>
 	<a href="/projects">Проекти</a>
 	<a href="javascript:void(0);" id="docsBtn">Документації</a>
-	<a href="/diary">Щоденник</a>
-	<a href="/viary">Відео-щоденник</a>
-	<a href="/dream_diary">Соннік</a>
+	<a href="javascript:void(0);" id="blogBtn">Блог</a>
+	<a href="javascript:void(0);" id="viaryBtn">Відео-блог</a>
 	<a href="javascript:void(0);" id="galleryBtn">Галерея</a>
+	<a href="javascript:void(0);" id="codeBtn">Код</a>
+
 	<div id="docsMenu">
 		<a href="/docs/ALGOR/index.html">ALGOR</a>
 		<a href="/docs/mighty_logger/index.html">mighty_logger</a>
+	</div>
+	<div id="blogMenu">
+		<a href="/diary">Щоденник</a>
+		<a href="/dream_diary">Соннік</a>
+	</div>
+	<div id="viaryMenu">
+		<a href="/viary">Перший плейлист</a>
+		<a href="/viary">Другий плейлист</a>
+		<a href="/viary">Третій плейлист</a>
 	</div>
 	<div id="galleryMenu">
 		<a href="/arts">Арти</a>
 		<a href="/screenshots">Скріни</a>
 		<a href="/photos">Фотографії</a>
 	</div>
-
-	<script>
-		document.getElementById('docsBtn').addEventListener('click', function() {
-			var docsMenu = document.getElementById('docsMenu');
-			var galleryMenu = document.getElementById('galleryMenu');
-
-			// Скрываем galleryMenu, если открыт
-			galleryMenu.style.display = 'none';
-
-			// Переключаем состояние для docsMenu
-			docsMenu.style.display = (docsMenu.style.display === 'block') ? 'none' : 'block';
-		});
-		document.getElementById('galleryBtn').addEventListener('click', function() {
-			var docsMenu = document.getElementById('docsMenu');
-			var galleryMenu = document.getElementById('galleryMenu');
-
-			// Скрываем docsMenu, если открыт
-			docsMenu.style.display = 'none';
-
-			// Переключаем состояние для galleryMenu
-			// Проверяем, является ли текущая страница вложенной в galleryMenu
-			if (window.location.pathname.startsWith('/arts') || window.location.pathname.startsWith('/screenshots') || window.location.pathname.startsWith('/photos')) {
-				// Если это вложенная страница, то всегда показываем galleryMenu
-				galleryMenu.style.display = 'block';
-			} else {
-				// Иначе инвертируем текущее состояние (показываем, если скрыто, и наоборот)
-				galleryMenu.style.display = (galleryMenu.style.display === 'block') ? 'none' : 'block';
-			}
-		});
-
-		document.addEventListener("DOMContentLoaded", function() {
-			if (window.location.pathname.startsWith('/arts') || window.location.pathname.startsWith('/screenshots') || window.location.pathname.startsWith('/photos')) {
-				var galleryMenu = document.getElementById('galleryMenu');
-				galleryMenu.style.display = 'block';
-			}
-
-			// Получаем значение pathname из localStorage
-			var activePath = localStorage.getItem('active_path');
-			if (activePath) {
-				// Удаляем класс "active" у всех ссылок
-				var navLinks = document.querySelectorAll('#mainNav a');
-				navLinks.forEach(function(link) {
-					link.classList.remove('active');
-				});
-
-				// Добавляем класс "active" только к ссылке с соответствующим href
-				var activeLink = document.querySelector(`#mainNav a[href="${activePath}"]`);
-				if (activeLink) {
-					activeLink.classList.add('active');
-				}
-			}
-
-			// Добавляем обработчик событий для каждой ссылки
-			var navLinks = document.querySelectorAll('#mainNav a');
-			navLinks.forEach(function(link) {
-				link.addEventListener('click', function() {
-					// Устанавливаем значение active_path в localStorage
-					var href = this.getAttribute('href');
-					localStorage.setItem('active_path', href);
-				});
-			});
-		});
-	</script>
+	<div id="codeMenu">
+		<a href="/gists">Gist</a>
+		<a href="/codesnaps">CodeSnap</a>
+	</div>
 </nav>
