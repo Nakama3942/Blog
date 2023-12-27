@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	var menuMap = {
-		'/diary': 'blogMenu',
+		'/post_diary': 'blogMenu',
 		'/dream_diary': 'blogMenu',
 		'/viary': 'viaryMenu',
 		'/arts': 'galleryMenu',

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ dream_content['title'] }} - Блог Калиновського{% endblock %}
+
+{% block scripts %}
+	<script src="/resources/scripts/content_script.js"></script>
+{% endblock %}
+
+{% block content %}
+	<main>
+		<article class="diary-entry">
+			<form action="{{ url_for('update_dream_route', dream_title=dream_content['title']) }}" method="post" enctype="multipart/form-data">
+				{{ form.hidden_tag() }}
+
+				{% if not dream_content['is_private'] %}
+					<h2 class="title">{{ dream_content['title'] }}</h2>
+				{% else %}
+					<h2 class="title-private">{{ dream_content['title'] }}</h2>
+				{% endif %}
+
+				{{ form.mood(placeholder="Що ти думаєш про сон? Який настрій після сну?", required=true) }}
+				{{ form.tags(placeholder="Теги", required=true) }}
+				{{ form.importance(required=true) }}
+				{{ form.dreamed_at(type="datetime-local", value=dream_content['dreamed_at']|default(""), required=true) }}
+
+				<hr class="divider">
+
+				{{ form.content(placeholder="Сновидіння", oninput="auto_grow(this)", required=true) }}
+
+				{{ form.submit() }}
+			</form>
+		</article>
+	</main>
+{% endblock %}

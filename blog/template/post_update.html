@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post_content['title'] }} - Блог Калиновського{% endblock %}
+
+{% block scripts %}
+	<script src="/resources/scripts/content_script.js"></script>
+{% endblock %}
+
+{% block content %}
+	<main>
+		<article class="diary-entry">
+			<form action="{{ url_for('update_post_route', post_title=post_content['title']) }}" method="post" enctype="multipart/form-data">
+				{{ form.hidden_tag() }}
+
+				{% if not post_content['is_private'] %}
+					<h2 class="title">{{ post_content['title'] }}</h2>
+				{% else %}
+					<h2 class="title-private">{{ post_content['title'] }}</h2>
+				{% endif %}
+
+				{{ form.description(placeholder="Опис запису", required=true) }}
+				{{ form.tags(placeholder="Теги", required=true) }}
+				{{ form.importance(required=true) }}
+				{{ form.created_at(type="datetime-local", value=post_content['created_at']|default(""), required=true) }}
+				{{ form.files(required=false) }}
+
+				<hr class="divider">
+
+				<div class="content-wrapper">
+					{{ form.content(placeholder="Текст запису", oninput="auto_grow(this)", required=true) }}
+					<hr class="content-divider">
+					{{ form.image_name(placeholder="Назва зображення", required=false) }}
+					{{ form.image_directory(onchange="insertImageTag()", required=false) }}
+				</div>
+
+				{{ form.submit() }}
+			</form>
+		</article>
+	</main>
+{% endblock %}

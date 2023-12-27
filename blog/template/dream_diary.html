@@ -4,6 +4,13 @@
 
 {% block content %}
 	<main>
-		<h1>Ще не готово</h1>
+		{% if is_admin %}
+			<form method="post" action="{{ url_for('new_dream') }}">
+				<input class="button-add" type="submit" value="Додати сновидіння">
+			</form>
+		{% endif %}
+
+		{% set dreams_list_content=dreams_content %}
+		{% include 'dream_list.html' %}
 	</main>
 {% endblock %}

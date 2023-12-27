@@ -1,0 +1,13 @@
+{% for dream_metadata in dreams_content %}
+	{% if not dream_metadata['is_private'] or is_admin %}
+		<div class="article-container" data-importance="{{ dream_metadata['importance'] }}">
+			<article class="diary-item">
+				<a href="{{ url_for('dream', dream_title=dream_metadata['title']) }}">
+					<h2 class="entry-title">{{ dream_metadata['title'] }}</h2>
+				</a>
+				<p class="entry-description">{{ dream_metadata['mood'] }}</p>
+				<p class="entry-date">Час сновидіння: {{ dream_metadata['dreamed_at'] }}</p>
+			</article>
+		</div>
+	{% endif %}
+{% endfor %}

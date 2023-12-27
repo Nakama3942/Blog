@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ dream_content['title'] }} - Блог Калиновського{% endblock %}
+
+{% block scripts %}
+	<script src="/resources/scripts/importance.js"></script>
+{% endblock %}
+
+{% block content %}
+	<main>
+		<div class="article-container" data-importance="{{ dream_content['importance'] }}">
+			<article class="diary-entry">
+				<!-- Кнопка удаления -->
+				{% if is_admin %}
+					<form method="post" action="{{ url_for('delete_dream', dream_title=dream_content['title']) }}">
+						<input class="button-delete" type="submit" value="Видалити сновидіння">
+					</form>
+				{% endif %}
+				<!-- Метаданные поста -->
+				{% if not dream_content['is_private'] %}
+					<h2 class="title">{{ dream_content['title'] }}</h2>
+				{% else %}
+					<h2 class="title-private">{{ dream_content['title'] }}</h2>
+				{% endif %}
+				<p class="description">{{ dream_content['mood'] }}</p>
+				<p class="tags">Теги:</p>
+				<ul class="tag-list">
+					{% for tag in dream_content['tags'] %}
+						<li class="tag-item">
+							<p class="tag-source">{{ tag }}</p>
+						</li>
+					{% endfor %}
+				</ul>
+				<p class="importance" id="importance" data-content-type="dream">{{ dream_content['importance'] }}</p>
+				<p class="date">Час сновидіння: {{ dream_content['dreamed_at'] }}</p>
+				<hr class="divider">
+				<!-- Содержание поста -->
+				<div class="content">{{ dream_content['content']|safe }}</div>
+				<!-- Настройки поста -->
+				{% if is_admin %}
+					<form method="post" action="{{ url_for('update_dream', dream_title=dream_content['title']) }}">
+						<input class="button-update" type="submit" value="Оновити сновидіння">
+					</form>
+					{% if not dream_content['is_private'] %}
+						<form method="post" action="{{ url_for('publish_dream', dream_title=dream_content['title']) }}">
+							<input class="button-add" type="submit" value="Закрити сновидіння">
+						</form>
+					{% else %}
+						<form method="post" action="{{ url_for('publish_dream', dream_title=dream_content['title']) }}">
+							<input type="submit" value="Опублікувати сновидіння">
+						</form>
+					{% endif %}
+				{% endif %}
+			</article>
+		</div>
+	</main>
+{% endblock %}

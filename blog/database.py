@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, Boolean, ForeignKey, desc
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, Boolean, Enum, ForeignKey, desc
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 
 Base = declarative_base()
@@ -21,6 +21,8 @@ class Posts(Base):
 	id = Column(Integer, primary_key=True)
 	title = Column(String, nullable=False)
 	description = Column(String, nullable=False)
+	tags = Column(String, nullable=False)
+	importance = Column(Enum('Normal', 'Rare', 'Elite', 'Super Rare', 'Ultra Rare'), nullable=False)
 	created_at = Column(DateTime, nullable=False)
 	last_changed_at = Column(DateTime)
 	published_at = Column(DateTime)
@@ -48,7 +50,9 @@ class Dreams(Base):
 	__tablename__ = "dreams"
 	id = Column(Integer, primary_key=True)
 	title = Column(String, nullable=False)
+	mood = Column(String, nullable=False)
 	tags = Column(String, nullable=False)
+	importance = Column(Enum('Normal', 'Rare', 'Elite', 'Super Rare', 'Ultra Rare'), nullable=False)
 	dreamed_at = Column(DateTime, nullable=False)
 	is_private = Column(Boolean, nullable=False)
 	dream_path = Column(String, nullable=False)
@@ -158,7 +162,7 @@ class Database:
 		return existing_user is None
 
 	def create_dream(self, title, dream_data):
-		new_dream = Files(title=title, **dream_data)
+		new_dream = Dreams(title=title, **dream_data)
 		self.session.add(new_dream)
 		self.session.commit()
 

@@ -2,61 +2,76 @@
 
 {% block title %}{{ post_content['title'] }} - Блог Калиновського{% endblock %}
 
+{% block scripts %}
+	<script src="/resources/scripts/importance.js"></script>
+{% endblock %}
+
 {% block content %}
 	<main>
-		<article class="post">
-			<!-- Кнопка удаления -->
-			{% if is_admin %}
-				<form method="post" action="{{ url_for('delete_post', post_title=post_content['title']) }}">
-					<input class="button-delete" type="submit" value="Видалити пост">
-				</form>
-			{% endif %}
-			<!-- Метаданные поста -->
-			{% if not post_content['is_private'] %}
-				<h2 class="post-title">{{ post_content['title'] }}</h2>
-			{% else %}
-				<h2 class="post-title-private">{{ post_content['title'] }}</h2>
-			{% endif %}
-			<p class="post-description">{{ post_content['description'] }}</p>
-			<p class="post-date">Дата написання: {{ post_content['created_at'] }}</p>
-			{% if is_admin %}
-				{% if post_content['last_changed_at'] is not none %}
-					<p class="post-date">Дата останньої зміни: {{ post_content['last_changed_at'] }}</p>
+		<div class="article-container" data-importance="{{ post_content['importance'] }}">
+			<article class="diary-entry">
+				<!-- Кнопка удаления -->
+				{% if is_admin %}
+					<form method="post" action="{{ url_for('delete_post', post_title=post_content['title']) }}">
+						<input class="button-delete" type="submit" value="Видалити пост">
+					</form>
 				{% endif %}
-				{% if post_content['published_at'] is not none %}
-					<p class="post-date">Дата публікації: {{ post_content['published_at'] }}</p>
-				{% endif %}
-			{% endif %}
-			<!-- Файлы -->
-			<!--<p>{{ post_content['files'] }}</p>-->
-			<ul class="file-list">
-				{% for file in post_content['files'] %}
-					<li class="file-item">
-						<a href="{{ url_for('uploaded_file', filename=file.name) }}" download="/files/{{ file.name }}">
-							<img class="file-icon" src="{{ url_for('static', filename='icons/' + file.type + '.png') }}" alt="{{ file.type }} Icon" width="128" height="128">
-							{{ file.name }}
-						</a>
-					</li>
-				{% endfor %}
-			</ul>
-			<hr class="divider">
-			<!-- Содержание поста -->
-			<div class="post-content">{{ post_content['content']|safe }}</div>
-			<!-- Настройки поста -->
-			{% if is_admin %}
-				<form method="post" action="{{ url_for('update_post', post_title=post_content['title']) }}">
-					<input class="button-update" type="submit" value="Оновити пост">
-				</form>
+				<!-- Метаданные поста -->
 				{% if not post_content['is_private'] %}
-					<form method="post" action="{{ url_for('publish_post', post_title=post_content['title']) }}">
-						<input class="button-add" type="submit" value="Закрити пост">
-					</form>
+					<h2 class="title">{{ post_content['title'] }}</h2>
 				{% else %}
-					<form method="post" action="{{ url_for('publish_post', post_title=post_content['title']) }}">
-						<input type="submit" value="Опублікувати пост">
-					</form>
+					<h2 class="title-private">{{ post_content['title'] }}</h2>
 				{% endif %}
-			{% endif %}
-		</article>
+				<p class="description">{{ post_content['description'] }}</p>
+				<p class="tags">Теги:</p>
+				<ul class="tag-list">
+					{% for tag in post_content['tags'] %}
+						<li class="tag-item">
+							<p class="tag-source">{{ tag }}</p>
+						</li>
+					{% endfor %}
+				</ul>
+				<p class="importance" id="importance" data-content-type="post">{{ post_content['importance'] }}</p>
+				<p class="date">Дата написання: {{ post_content['created_at'] }}</p>
+				{% if is_admin %}
+					{% if post_content['last_changed_at'] is not none %}
+						<p class="date">Дата останньої зміни: {{ post_content['last_changed_at'] }}</p>
+					{% endif %}
+					{% if post_content['published_at'] is not none %}
+						<p class="date">Дата публікації: {{ post_content['published_at'] }}</p>
+					{% endif %}
+				{% endif %}
+				<!-- Файлы -->
+				<!--<p>{{ post_content['files'] }}</p>-->
+				<ul class="file-list">
+					{% for file in post_content['files'] %}
+						<li class="file-item">
+							<a href="{{ url_for('uploaded_file', filename=file.name) }}" download="/files/{{ file.name }}">
+								<img class="file-icon" src="{{ url_for('static', filename='icons/' + file.type + '.png') }}" alt="{{ file.type }} Icon" width="128" height="128">
+								{{ file.name }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+				<hr class="divider">
+				<!-- Содержание поста -->
+				<div class="content">{{ post_content['content']|safe }}</div>
+				<!-- Настройки поста -->
+				{% if is_admin %}
+					<form method="post" action="{{ url_for('update_post', post_title=post_content['title']) }}">
+						<input class="button-update" type="submit" value="Оновити пост">
+					</form>
+					{% if not post_content['is_private'] %}
+						<form method="post" action="{{ url_for('publish_post', post_title=post_content['title']) }}">
+							<input class="button-add" type="submit" value="Закрити пост">
+						</form>
+					{% else %}
+						<form method="post" action="{{ url_for('publish_post', post_title=post_content['title']) }}">
+							<input type="submit" value="Опублікувати пост">
+						</form>
+					{% endif %}
+				{% endif %}
+			</article>
+		</div>
 	</main>
 {% endblock %}

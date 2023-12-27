@@ -1,5 +1,28 @@
+document.addEventListener('DOMContentLoaded', function() {
+	// Вызовите вашу функцию обновления размера здесь
+	auto_grow(document.getElementById('content'));
+});
+
 function auto_grow(element) {
 	element.style.height = (element.scrollHeight) + "px";
+}
+
+function insertImageTag() {
+    const imageDirectorySelect = document.getElementById('image_directory');
+    const imageFileNameInput = document.getElementById('image_name');
+    const contentTextArea = document.getElementById('content');
+
+    const selectedDirectory = imageDirectorySelect.value;
+    const fileName = imageFileNameInput.value.trim();
+
+    if (selectedDirectory !== '' && fileName !== '') {
+        const imgTag = `<p class="image"><img src="/image/${selectedDirectory}/${fileName}" width="700px"></p>`;
+        contentTextArea.value += `\n${imgTag}`;
+        auto_grow(contentTextArea);
+    }
+
+    // Сброс значения селектора после добавления картинки
+    imageDirectorySelect.value = '';
 }
 
 window.addEventListener('unload', function () {
