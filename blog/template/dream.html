@@ -17,22 +17,28 @@
 					</form>
 				{% endif %}
 				<!-- Метаданные поста -->
-				{% if not dream_content['is_private'] %}
-					<h2 class="title">{{ dream_content['title'] }}</h2>
-				{% else %}
-					<h2 class="title-private">{{ dream_content['title'] }}</h2>
-				{% endif %}
+				<h2 class="title">{{ dream_content['title'] }}</h2>
 				<p class="description">{{ dream_content['mood'] }}</p>
 				<p class="tags">Теги:</p>
 				<ul class="tag-list">
-					{% for tag in dream_content['tags'] %}
-						<li class="tag-item">
+					<li class="tag-item">
+						{% if dream_content['tags'][0] == 'Особистий' %}
+							<p class="tag-private-source">{{ dream_content['tags'][0] }}</p>
+						{% else %}
+							<p class="tag-source">{{ dream_content['tags'][0] }}</p>
+						{% endif %}
+						{% for tag in dream_content['tags'][1:] %}
 							<p class="tag-source">{{ tag }}</p>
-						</li>
-					{% endfor %}
+						{% endfor %}
+					</li>
 				</ul>
 				<p class="importance" id="importance" data-content-type="dream">{{ dream_content['importance'] }}</p>
 				<p class="date">Час сновидіння: {{ dream_content['dreamed_at'] }}</p>
+				{% if is_admin %}
+					{% if dream_content['published_at'] is not none %}
+						<p class="date">Дата публікації у Блозі: {{ dream_content['published_at'] }}</p>
+					{% endif %}
+				{% endif %}
 				<hr class="divider">
 				<!-- Содержание поста -->
 				<div class="content">{{ dream_content['content']|safe }}</div>
@@ -41,15 +47,6 @@
 					<form method="post" action="{{ url_for('update_dream', dream_title=dream_content['title']) }}">
 						<input class="button-update" type="submit" value="Оновити сновидіння">
 					</form>
-					{% if not dream_content['is_private'] %}
-						<form method="post" action="{{ url_for('publish_dream', dream_title=dream_content['title']) }}">
-							<input class="button-add" type="submit" value="Закрити сновидіння">
-						</form>
-					{% else %}
-						<form method="post" action="{{ url_for('publish_dream', dream_title=dream_content['title']) }}">
-							<input type="submit" value="Опублікувати сновидіння">
-						</form>
-					{% endif %}
 				{% endif %}
 			</article>
 		</div>

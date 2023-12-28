@@ -130,9 +130,15 @@ footer {
  * Стили для списка тегов
  */
 
+.diary-item .tags,
+.diary-item .tag-list,
+.diary-entry .tags,
+.diary-entry .tag-list {
+  display: inline; /* Добавьте этот стиль */
+  margin: 10px 5px 5px 0px;
+}
 .tag-list {
   list-style: none; /* Убираем маркеры списка */
-  margin: 4px 0px 10px 0px;
   padding: 0px; /* Убираем отступы вокруг списка */
 }
 .tag-item {
@@ -149,6 +155,13 @@ footer {
   margin: 0px;
   border-radius: 20px; /* Создаем круглую форму */
   background-color: rgba(100, 100, 100, 0.2); /* Цвет фона планочки */
+}
+.tag-private-source {
+  display: inline-block; /* Размещаем текст внутри круглой планочки */
+  padding: 5px 10px; /* Задаем отступы внутри круглой планочки */
+  margin: 0px;
+  border-radius: 20px; /* Создаем круглую форму */
+  background-color: rgba(240, 40, 40, 0.2); /* Цвет фона планочки */
 }
 
 /*
@@ -393,18 +406,25 @@ input[type="submit"].button-delete:hover {
 }
 .diary-item .entry-title {
 	/* Стили для вложенного p с классом post-description */
-	margin: 0px 0px 8px 0px;
+	margin: 8px 0px;
+	margin-top: 0px;
 	font-size: 24px;
 }
 .diary-item .entry-description {
 	/* Стили для вложенного p с классом post-description */
-	margin: 0px 0px 4px 0px;
+	margin:8px 0px;
+	font-size: 16px;
+	color: #333;
+}
+.diary-item .tags {
+	margin: 8px 0px;
 	font-size: 16px;
 	color: #333;
 }
 .diary-item .entry-date {
 	/* Стили для вложенного p с классом post-date */
-	margin: 0px 0px 0px 0px;
+	margin: 8px 0px;
+	margin-bottom: 0px;
 	font-size: 14px;
 	color: #555;
 }
@@ -426,18 +446,11 @@ input[type="submit"].button-delete:hover {
 	text-align: center;
 	font-size: 36px;
 }
-.diary-entry .title-private {
-	margin: 10px 0px;
-	text-align: center;
-	font-size: 36px;
-	color: #FF5500;
-}
 .diary-entry .description {
 	margin: 10px 0px;
 	font-size: 18px;
 }
 .diary-entry .tags {
-	margin: 10px 0px 4px 0px;
 	font-size: 18px;
 }
 .diary-entry .date {

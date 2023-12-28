@@ -11,18 +11,16 @@ from post_update_form import UpdatePostForm
 from dream_create_form import CreateDreamForm
 from dream_update_form import UpdateDreamForm
 
-# todo + реализовать дневник сновидений
-# todo + сделать возможность указать настроение в посте, которое будет выражаться изменением рамочки поста (и для сна тоже)
-# todo + добавить теги к постам и сновидениям
-# todo + добавить в страничку добавления/изменения поста инструмент, который облегчит добавление изображений в текст поста
-# todo + решить баг на странице обновления поста - поле контента не расширяется
-# todo + заменить select2 на что-то другое
-
-# todo - добавить больше плейлистов в видеодневник
+# todo + добавить больше плейлистов в видеодневник
 # todo - добавить страницы для хранения фрагментов кода
 
-# todo - изменить метод приватизации: если есть тег "личный" или что-то подобное - запись приватная и изменение статуса происходит изменением наличия тега
-# todo - запретить создавать посты с одинаковыми названиями и проверять файлы на названия; если файл уже загружен - не грузить его и предупредить меня
+# todo + Переписать главную страницу
+# todo + теги в одну строчку
+# todo + изменить метод приватизации: если есть тег "личный" или что-то подобное - запись приватная и изменение статуса происходит изменением наличия тега
+# todo + запретить создавать посты с одинаковыми названиями и проверять файлы на названия; если файл уже загружен - не грузить его и предупредить меня
+# todo + убрать post_path, dream_path
+# todo + решить баг с обновлением времени в постах
+# todo - Перевести файлы и изображения на систему запросов, как в постах и сновидениях - после реализации сделать вывод - какие файлы не удалось загрузить из-за совпадающего названия
 # todo - добавить поиск в постах и сновидениях по словам в названии, тексте, и поиск по тегам
 # todo - заменит form - input - button на кнопки
 # todo - перенести кнопку удаления файла/изображения в модальное окно
@@ -31,6 +29,8 @@ from dream_update_form import UpdateDreamForm
 # todo - исправить все баги навигационной панели
 # todo - разбить стили на несколько файлов
 # todo - нарисовать favicom
+
+# todo - Сделать настройки: 1) Выключатель цветных рамочек 2) Тёмная-светлая тема 3) Включение мемного режима ;)
 
 # todo - после завершения разработки адаптировать дизайн под телефоны
 
@@ -113,7 +113,6 @@ def post_diary():
 @app.route('/post/<post_title>')
 def post(post_title):
 	post_content = load_post_content(post_title)
-	post_content['tags'] = post_content['tags'].split(", ")
 	post_content['content'] = markdown(post_content['content'])
 	return render_template(
 		'post.html',
@@ -135,7 +134,6 @@ def dream_diary():
 @app.route('/dream/<dream_title>')
 def dream(dream_title):
 	dream_content = load_dream_content(dream_title)
-	dream_content['tags'] = dream_content['tags'].split(", ")
 	dream_content['content'] = markdown(dream_content['content'])
 	return render_template(
 		'dream.html',
@@ -144,13 +142,13 @@ def dream(dream_title):
 		is_admin=is_admin()
 	)
 
-@app.route('/viary')
-def viary():
+@app.route('/viary/<playlist_id>')
+def viary(playlist_id):
 	return render_template(
 		'viary.html',
 		active_tab='viary',
 		youtube_api_key=get_key(".env", "YOUTUBE_API_KEY"),
-		playlist_id=get_key(".env", "PLAYLIST_ID"),
+		playlist_id=playlist_id,
 		is_admin=is_admin()
 	)
 
@@ -223,13 +221,15 @@ def new_post():
 @app.route('/save_post', methods=['POST'])
 def save_post_route():
 	title = request.form['title']
+	with Database() as db:
+		if not db.check_post(title):
+			return jsonify({'success': False, 'error_message': 'Пост із такою назвою вже існує'})
 	description = request.form['description']
 	tags = request.form['tags']
 	importance = request.form['importance']
 	content = request.form['content']
 	selected_file_ids = request.form.getlist('files')
 	created_at = request.form.get('created_at')
-	post_path = f"{os.path.join(app.config['POST_FOLDER'], title)}.md"
 
 	# Если дата не указана - взять текущую
 	if created_at:
@@ -243,36 +243,17 @@ def save_post_route():
 		'tags': tags,
 		'importance': importance,
 		'created_at': created_at,
-		'post_path': post_path,
-		'is_private': True
+		'published_at': datetime.now()
 	}
 
 	# Сохраняем метаданные в базе данных
-	with open(post_path, 'w', encoding='utf-8', newline='') as post_file:
+	with open(f"{os.path.join(app.config['POST_FOLDER'], title)}.md", 'w', encoding='utf-8', newline='') as post_file:
 		post_file.write(content)
 		with Database() as db:
 			db.create_post(title, post_metadata)
 			db.associate_files(title, selected_file_ids)
 
-	return redirect(url_for('post_diary'))
-
-@app.route('/publish_post/<post_title>', methods=['POST'])
-def publish_post(post_title):
-	with Database() as db:
-		private_status = db.get_post(post_title).is_private
-		if private_status:
-			post_metadata = {
-				'published_at': datetime.now(),
-				'is_private': not private_status
-			}
-		else:
-			post_metadata = {
-				'published_at': None,
-				'is_private': not private_status
-			}
-		db.update_post(post_title, post_metadata)
-
-	return redirect(url_for('post_diary'))
+	return jsonify({'success': True})
 
 @app.route('/update_post/<post_title>', methods=['POST'])
 def update_post(post_title):
@@ -286,7 +267,7 @@ def update_post(post_title):
 
 	# Устанавливаем значения по умолчанию для поля files
 	form.description.default = loaded_post_content.pop('description')
-	form.tags.default = loaded_post_content.pop('tags')
+	form.tags.default = ', '.join(loaded_post_content.pop('tags'))
 	form.importance.default = loaded_post_content.pop('importance')
 	loaded_post_content['created_at'] = datetime.strptime(datetime.strptime(loaded_post_content['created_at'], '%Y-%m-%d %I:%M %p').strftime('%Y-%m-%dT%H:%M'), '%Y-%m-%dT%H:%M')
 	form.files.default = [file['id'] for file in loaded_post_content.pop('files')]
@@ -297,8 +278,6 @@ def update_post(post_title):
 
 @app.route('/update_post_route/<post_title>', methods=['POST'])
 def update_post_route(post_title):
-	post_path = f"{os.path.join(app.config['POST_FOLDER'], post_title)}.md"
-
 	description = request.form['description']
 	tags = request.form['tags']
 	importance = request.form['importance']
@@ -316,18 +295,20 @@ def update_post_route(post_title):
 	}
 
 	# Сохраняем метаданные в базе данных
-	with open(post_path, 'w', encoding='utf-8', newline='') as post_file:
+	with open(f"{os.path.join(app.config['POST_FOLDER'], post_title)}.md", 'w', encoding='utf-8', newline='') as post_file:
 		post_file.write(content)
 		with Database() as db:
+			if db.get_post(post_title).created_at.replace(second=0, microsecond=0) == post_metadata['created_at']:
+				post_metadata.pop('created_at')
 			db.update_post(post_title, post_metadata)
 			db.associate_files(post_title, selected_file_ids)
 
-	return redirect(url_for('post_diary'))
+	return jsonify({'success': True})
 
 @app.route('/delete_post/<post_title>', methods=['POST'])
 def delete_post(post_title):
 	with Database() as db:
-		post_path = db.get_post(post_title).post_path
+		post_path = f"{os.path.join(app.config['POST_FOLDER'], post_title)}.md"
 		if os.path.exists(post_path):
 			os.remove(post_path)
 			db.remove_post(post_title)
@@ -360,9 +341,12 @@ def upload_file():
 		valid_files = [file for file in uploaded_files if file.filename]
 		if valid_files:
 			for valid_file in valid_files:
-				filename = os.path.join(app.config['FILE_FOLDER'], valid_file.filename)
-				valid_file.save(filename)
-				db.create_file(valid_file.filename, {'type': valid_file.filename.split('.')[-1].upper()})
+				if db.check_file(valid_file.filename):
+					db.create_file(valid_file.filename, {'type': valid_file.filename.split('.')[-1].upper()})
+				else:
+					continue
+
+				valid_file.save(os.path.join(app.config['FILE_FOLDER'], valid_file.filename))
 
 	return redirect(url_for('attached_files'))
 
@@ -388,12 +372,14 @@ def new_dream():
 @app.route('/save_dream', methods=['POST'])
 def save_dream_route():
 	title = request.form['title']
+	with Database() as db:
+		if not db.check_dream(title):
+			return jsonify({'success': False, 'error_message': 'Сновидіння із такою назвою вже існує'})
 	mood = request.form['mood']
 	tags = request.form['tags']
 	importance = request.form['importance']
 	dream_content = request.form['content']
 	dreamed_at = datetime.strptime(request.form.get('dreamed_at'), '%Y-%m-%dT%H:%M')
-	dream_path = f"{os.path.join(app.config['DREAM_FOLDER'], title)}.md"
 
 	# Формируем метаданные поста
 	dream_metadata = {
@@ -401,27 +387,16 @@ def save_dream_route():
 		'tags': tags,
 		'importance': importance,
 		'dreamed_at': dreamed_at,
-		'is_private': True,
-		'dream_path': dream_path
+		'published_at': datetime.now()
 	}
 
 	# Сохраняем метаданные в базе данных
-	with open(dream_path, 'w', encoding='utf-8', newline='') as dream_file:
+	with open(f"{os.path.join(app.config['DREAM_FOLDER'], title)}.md", 'w', encoding='utf-8', newline='') as dream_file:
 		with Database() as db:
 			dream_file.write(dream_content)
 			db.create_dream(title, dream_metadata)
 
-	return redirect(url_for('dream_diary'))
-
-@app.route('/publish_dream/<dream_title>', methods=['POST'])
-def publish_dream(dream_title):
-	with Database() as db:
-		dream_metadata = {
-			'is_private': not db.get_dream(dream_title).is_private
-		}
-		db.update_dream(dream_title, dream_metadata)
-
-	return redirect(url_for('dream_diary'))
+	return jsonify({'success': True})
 
 @app.route('/update_dream/<dream_title>', methods=['POST'])
 def update_dream(dream_title):
@@ -431,7 +406,7 @@ def update_dream(dream_title):
 
 	# Устанавливаем значения по умолчанию для поля files
 	form.mood.default = dream_content.pop('mood')
-	form.tags.default = dream_content.pop('tags')
+	form.tags.default = ', '.join(dream_content.pop('tags'))
 	form.importance.default = dream_content.pop('importance')
 	dream_content['dreamed_at'] = datetime.strptime(datetime.strptime(dream_content['dreamed_at'], '%Y-%m-%d %I:%M %p').strftime('%Y-%m-%dT%H:%M'), '%Y-%m-%dT%H:%M')
 	form.content.default = dream_content.pop('content')
@@ -441,8 +416,6 @@ def update_dream(dream_title):
 
 @app.route('/update_dream_route/<dream_title>', methods=['POST'])
 def update_dream_route(dream_title):
-	dream_path = f"{os.path.join(app.config['DREAM_FOLDER'], dream_title)}.md"
-
 	mood = request.form['mood']
 	tags = request.form['tags']
 	importance = request.form['importance']
@@ -454,21 +427,21 @@ def update_dream_route(dream_title):
 		'mood': mood,
 		'tags': tags,
 		'importance': importance,
-		'dreamed_at': dreamed_at,
+		'dreamed_at': dreamed_at
 	}
 
 	# Сохраняем метаданные в базе данных
-	with open(dream_path, 'w', encoding='utf-8', newline='') as dream_file:
+	with open(f"{os.path.join(app.config['DREAM_FOLDER'], dream_title)}.md", 'w', encoding='utf-8', newline='') as dream_file:
 		dream_file.write(content)
 		with Database() as db:
 			db.update_dream(dream_title, post_metadata)
 
-	return redirect(url_for('dream_diary'))
+	return jsonify({'success': True})
 
 @app.route('/delete_dream/<dream_title>', methods=['POST'])
 def delete_dream(dream_title):
 	with Database() as db:
-		dream_path = db.get_dream(dream_title).dream_path
+		dream_path = f"{os.path.join(app.config['DREAM_FOLDER'], dream_title)}.md"
 		if os.path.exists(dream_path):
 			os.remove(dream_path)
 			db.remove_dream(dream_title)
@@ -492,15 +465,25 @@ def upload_image(sender, folder):
 		valid_images = [uploaded_image for uploaded_image in uploaded_images if uploaded_image.filename]
 		if valid_images:
 			for valid_image in valid_images:
-				filename = os.path.join(app.config[folder], valid_image.filename)
-				valid_image.save(filename)
 				match sender:
 					case 'arts':
-						db.create_art(valid_image.filename, {'type': valid_image.filename.split('.')[-1].upper()})
+						if db.check_art(valid_image.filename):
+							db.create_art(valid_image.filename, {'type': valid_image.filename.split('.')[-1].upper()})
+						else:
+							continue
 					case 'screenshots':
-						db.create_screenshot(valid_image.filename, {'type': valid_image.filename.split('.')[-1].upper()})
+						if db.check_screenshot(valid_image.filename):
+							db.create_screenshot(valid_image.filename, {'type': valid_image.filename.split('.')[-1].upper()})
+						else:
+							continue
 					case 'photos':
-						db.create_photo(valid_image.filename, {'type': valid_image.filename.split('.')[-1].upper()})
+						if db.check_photo(valid_image.filename):
+							db.create_photo(valid_image.filename, {'type': valid_image.filename.split('.')[-1].upper()})
+						else:
+							continue
+
+				filename = os.path.join(app.config[folder], valid_image.filename)
+				valid_image.save(filename)
 
 				# Открываем изображение
 				original_image = Image.open(filename)
@@ -564,7 +547,7 @@ def load_post_content(title):
 		chosen_post_metadata = extract_post_metadata(chosen_post)
 
 	# Прочитайте содержимое файла
-	with open(chosen_post_metadata['post_path'], 'r', encoding='utf-8') as post_file:
+	with open(f"{os.path.join(app.config['POST_FOLDER'], chosen_post_metadata['title'])}.md", 'r', encoding='utf-8') as post_file:
 		chosen_post_metadata['content'] = post_file.read()
 
 	return chosen_post_metadata
@@ -573,14 +556,13 @@ def extract_post_metadata(post_obj):
 	return {
 		'title': post_obj.title,
 		'description': post_obj.description,
-		'tags': post_obj.tags,
+		'tags': post_obj.tags.split(", "),
 		'importance': post_obj.importance,
 		'created_at': post_obj.created_at.strftime('%Y-%m-%d %I:%M %p'),
+		'published_at': post_obj.published_at.strftime('%Y-%m-%d %I:%M %p'),
 		'last_changed_at': post_obj.last_changed_at.strftime('%Y-%m-%d %I:%M %p') if post_obj.last_changed_at is not None else None,
-		'published_at': post_obj.published_at.strftime('%Y-%m-%d %I:%M %p') if post_obj.published_at is not None else None,
-		'files': [{'id': file.id, 'name': file.name, 'type': file.type} for file in post_obj.files],
-		'is_private': post_obj.is_private,
-		'post_path': post_obj.post_path
+
+		'files': [{'id': file.id, 'name': file.name, 'type': file.type} for file in post_obj.files]
 	}
 
 def get_dreams():
@@ -596,7 +578,7 @@ def load_dream_content(title):
 		chosen_dream_metadata = extract_dream_metadata(chosen_dream)
 
 	# Прочитайте содержимое файла
-	with open(chosen_dream_metadata['dream_path'], 'r', encoding='utf-8') as dream_file:
+	with open(f"{os.path.join(app.config['DREAM_FOLDER'], chosen_dream_metadata['title'])}.md", 'r', encoding='utf-8') as dream_file:
 		chosen_dream_metadata['content'] = dream_file.read()
 
 	return chosen_dream_metadata
@@ -605,11 +587,10 @@ def extract_dream_metadata(dream_obj):
 	return {
 		'title': dream_obj.title,
 		'mood': dream_obj.mood,
-		'tags': dream_obj.tags,
+		'tags': dream_obj.tags.split(", "),
 		'importance': dream_obj.importance,
 		'dreamed_at': dream_obj.dreamed_at.strftime('%Y-%m-%d %I:%M %p'),
-		'is_private': dream_obj.is_private,
-		'dream_path': dream_obj.dream_path
+		'published_at': dream_obj.published_at.strftime('%Y-%m-%d %I:%M %p')
 	}
 
 ############

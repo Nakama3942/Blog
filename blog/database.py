@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, Boolean, Enum, ForeignKey, desc
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, Enum, ForeignKey, desc
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 
 Base = declarative_base()
@@ -24,10 +24,8 @@ class Posts(Base):
 	tags = Column(String, nullable=False)
 	importance = Column(Enum('Normal', 'Rare', 'Elite', 'Super Rare', 'Ultra Rare'), nullable=False)
 	created_at = Column(DateTime, nullable=False)
-	last_changed_at = Column(DateTime)
 	published_at = Column(DateTime)
-	is_private = Column(Boolean, nullable=False)
-	post_path = Column(String, nullable=False)
+	last_changed_at = Column(DateTime)
 
 	# Добавим отношение к таблице файлов
 	files = relationship("Files", secondary="post_file_association")
@@ -54,8 +52,7 @@ class Dreams(Base):
 	tags = Column(String, nullable=False)
 	importance = Column(Enum('Normal', 'Rare', 'Elite', 'Super Rare', 'Ultra Rare'), nullable=False)
 	dreamed_at = Column(DateTime, nullable=False)
-	is_private = Column(Boolean, nullable=False)
-	dream_path = Column(String, nullable=False)
+	published_at = Column(DateTime)
 
 class Arts(Base):
 	__tablename__ = "arts"
@@ -135,8 +132,8 @@ class Database:
 		return self.session.query(Files).all()
 
 	def check_file(self, name):
-		existing_user = self.session.query(Files.name).filter_by(name=name).scalar()
-		return existing_user is None
+		existing_file = self.session.query(Files.name).filter_by(name=name).scalar()
+		return existing_file is None
 
 	def create_file(self, name, post_data):
 		new_file = Files(name=name, **post_data)

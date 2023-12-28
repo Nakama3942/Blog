@@ -8,7 +8,7 @@
 
 {% block content %}
 	<main>
-		<form action="{{ url_for('save_post_route') }}" method="post" enctype="multipart/form-data">
+		<form id="postForm" action="{{ url_for('save_post_route') }}" method="post" enctype="multipart/form-data">
 			{{ form.hidden_tag() }}
 
 			{{ form.title(placeholder="Заголовок", required=true) }}

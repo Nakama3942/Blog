@@ -17,28 +17,29 @@
 					</form>
 				{% endif %}
 				<!-- Метаданные поста -->
-				{% if not post_content['is_private'] %}
-					<h2 class="title">{{ post_content['title'] }}</h2>
-				{% else %}
-					<h2 class="title-private">{{ post_content['title'] }}</h2>
-				{% endif %}
+				<h2 class="title">{{ post_content['title'] }}</h2>
 				<p class="description">{{ post_content['description'] }}</p>
 				<p class="tags">Теги:</p>
 				<ul class="tag-list">
-					{% for tag in post_content['tags'] %}
-						<li class="tag-item">
+					<li class="tag-item">
+						{% if post_content['tags'][0] == 'Особистий' %}
+							<p class="tag-private-source">{{ post_content['tags'][0] }}</p>
+						{% else %}
+							<p class="tag-source">{{ post_content['tags'][0] }}</p>
+						{% endif %}
+						{% for tag in post_content['tags'][1:] %}
 							<p class="tag-source">{{ tag }}</p>
-						</li>
-					{% endfor %}
+						{% endfor %}
+					</li>
 				</ul>
 				<p class="importance" id="importance" data-content-type="post">{{ post_content['importance'] }}</p>
 				<p class="date">Дата написання: {{ post_content['created_at'] }}</p>
 				{% if is_admin %}
-					{% if post_content['last_changed_at'] is not none %}
-						<p class="date">Дата останньої зміни: {{ post_content['last_changed_at'] }}</p>
-					{% endif %}
 					{% if post_content['published_at'] is not none %}
-						<p class="date">Дата публікації: {{ post_content['published_at'] }}</p>
+						<p class="date">Дата публікації у Блозі: {{ post_content['published_at'] }}</p>
+					{% endif %}
+					{% if post_content['last_changed_at'] is not none %}
+						<p class="date">Дата останньої зміни у Блозі: {{ post_content['last_changed_at'] }}</p>
 					{% endif %}
 				{% endif %}
 				<!-- Файлы -->
@@ -61,15 +62,6 @@
 					<form method="post" action="{{ url_for('update_post', post_title=post_content['title']) }}">
 						<input class="button-update" type="submit" value="Оновити пост">
 					</form>
-					{% if not post_content['is_private'] %}
-						<form method="post" action="{{ url_for('publish_post', post_title=post_content['title']) }}">
-							<input class="button-add" type="submit" value="Закрити пост">
-						</form>
-					{% else %}
-						<form method="post" action="{{ url_for('publish_post', post_title=post_content['title']) }}">
-							<input type="submit" value="Опублікувати пост">
-						</form>
-					{% endif %}
 				{% endif %}
 			</article>
 		</div>

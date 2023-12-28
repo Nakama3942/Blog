@@ -9,7 +9,7 @@
 {% block content %}
 	<main>
 		<article class="diary-entry">
-			<form action="{{ url_for('update_dream_route', dream_title=dream_content['title']) }}" method="post" enctype="multipart/form-data">
+			<form id="dreamForm" action="{{ url_for('update_dream_route', dream_title=dream_content['title']) }}" method="post" enctype="multipart/form-data">
 				{{ form.hidden_tag() }}
 
 				{% if not dream_content['is_private'] %}
