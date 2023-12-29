@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Флаг, показывающий, открыто ли модальное окно
 	var modalOpen = false;
 
-	// При клике на изображение открываем модальное окно
+	// При клике на файл открываем модальное окно
 	document.querySelectorAll('.open-modal').forEach(function (element) {
 		element.addEventListener('click', function (e) {
 			e.preventDefault();
@@ -68,6 +68,44 @@ document.addEventListener('DOMContentLoaded', function () {
 		.catch(error => console.error('Ошибка:', error));
 	};
 });
+
+function uploadFiles() {
+	// Получаем форму и её данные
+	const uploadForm = document.querySelector('form');
+	const formData = new FormData(uploadForm);
+
+	// Отменяем стандартное поведение формы
+	event.preventDefault();
+
+	// Отправляем асинхронный запрос на сервер
+	fetch(uploadForm.action, {
+		method: 'POST',
+		body: formData,
+	})
+	.then(response => response.json())
+	.then(data => {
+		// Обработка успешного ответа
+		if (data.success) {
+			const accessFileNames = data.access.map(access => access.filename);
+			alert('Всі файли завантажено: ' + accessFileNames.join(', '));
+			// Перенаправление после вывода ответа
+			window.location.href = "/attached_files";
+		} else {
+			// Обработка неудачной загрузки файлов
+			for (const fail of data.fail) {
+				// Обработка каждого сообщения об ошибке
+				alert('Файл ' + fail.filename + ' не завантажено по причині: ' + fail.error_message);
+			}
+			const accessFileNames = data.access.map(access => access.filename);
+			alert('Всі інші файли завантажено: ' + accessFileNames.join(', '));
+			// Перенаправление после вывода ответа
+			window.location.href = "/attached_files";
+		}
+	})
+	.catch(error => {
+		alert('Невідома помилка: ' + error);
+	});
+}
 
 function deleteFile(filename) {
 	if (confirm(`Вы уверены, что хотите удалить файл ${filename}?`)) {

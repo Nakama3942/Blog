@@ -39,18 +39,9 @@ document.addEventListener("DOMContentLoaded", function() {
 	document.getElementById('galleryBtn').addEventListener('click', function() {
 		handleButtonClick('galleryMenu', ['docs', 'blog', 'viary', 'code']);
 		// Дополнительная логика для вложенных страниц
-		if (window.location.pathname.startsWith('/arts') || window.location.pathname.startsWith('/screenshots') || window.location.pathname.startsWith('/photos')) {
+		if (window.location.pathname.startsWith('/arts') || window.location.pathname.startsWith('/screenshots') || window.location.pathname.startsWith('/photos') || window.location.pathname.startsWith('/codesnaps')) {
 			var galleryMenu = document.getElementById('galleryMenu');
 			galleryMenu.style.display = 'block';
-		}
-	});
-
-	document.getElementById('codeBtn').addEventListener('click', function() {
-		handleButtonClick('codeMenu', ['docs', 'blog', 'viary', 'gallery']);
-		// Дополнительная логика для вложенных страниц
-		if (window.location.pathname.startsWith('/gists') || window.location.pathname.startsWith('/codesnaps')) {
-			var codeMenu = document.getElementById('codeMenu');
-			codeMenu.style.display = 'block';
 		}
 	});
 
@@ -61,8 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		'/arts': 'galleryMenu',
 		'/screenshots': 'galleryMenu',
 		'/photos': 'galleryMenu',
-		'/gists': 'codeMenu',
-		'/codesnaps': 'codeMenu'
+		'/codesnaps': 'galleryMenu'
 	};
 
 	// Получаем текущий путь

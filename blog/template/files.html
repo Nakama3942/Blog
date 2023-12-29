@@ -11,8 +11,7 @@
 		{% if is_admin %}
 			<form method="post" action="{{ url_for('upload_file') }}" enctype="multipart/form-data">
 				<input type="file" id="fileInput" name="files" multiple>
-
-				<input class="button-add" type="submit" value="Додати файл">
+				<input class="button-add" type="submit" value="Додати файл" onclick="uploadFiles()">
 			</form>
 		{% endif %}
 

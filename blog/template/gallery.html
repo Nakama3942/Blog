@@ -9,9 +9,9 @@
 {% block content %}
 	<main>
 		{% if is_admin %}
-			<form method="post" action="{{ url_for('upload_image', sender=page_data['sender'], folder=page_data['folder']) }}" enctype="multipart/form-data">
+			<form id="{{ page_data['sender'] }}"  method="post" action="{{ url_for('upload_image', sender=page_data['sender'], folder=page_data['folder']) }}" enctype="multipart/form-data">
 				<input type="file" id="artInput" name="images" multiple>
-				<input class="button-add" type="submit" value="Додати файл">
+				<input class="button-add" type="submit" value="Додати зображення" onclick="uploadFiles()">
 			</form>
 		{% endif %}
 

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_from_directory, request, redirect, url_for, session, send_file, jsonify
+from flask import Flask, render_template, send_from_directory, request, redirect, url_for, session, send_file, jsonify, make_response
 from markdown2 import markdown
 from dotenv import get_key
 from PIL import Image
@@ -11,17 +11,19 @@ from post_update_form import UpdatePostForm
 from dream_create_form import CreateDreamForm
 from dream_update_form import UpdateDreamForm
 
-# todo + добавить больше плейлистов в видеодневник
-# todo - добавить страницы для хранения фрагментов кода
+# Улучшения
+# todo + перевести файлы и изображения на систему запросов, как в постах и сновидениях - после реализации сделать вывод - какие файлы не удалось загрузить из-за совпадающего названия
+# todo + отрефакторить код БД
+# todo + добавить в БД метод, который будет возвращать не всю таблицу постов, а только её часть
 
-# todo + Переписать главную страницу
-# todo + теги в одну строчку
-# todo + изменить метод приватизации: если есть тег "личный" или что-то подобное - запись приватная и изменение статуса происходит изменением наличия тега
-# todo + запретить создавать посты с одинаковыми названиями и проверять файлы на названия; если файл уже загружен - не грузить его и предупредить меня
-# todo + убрать post_path, dream_path
-# todo + решить баг с обновлением времени в постах
-# todo - Перевести файлы и изображения на систему запросов, как в постах и сновидениях - после реализации сделать вывод - какие файлы не удалось загрузить из-за совпадающего названия
+# Новый функционал
 # todo - добавить поиск в постах и сновидениях по словам в названии, тексте, и поиск по тегам
+
+# Новые страницы
+# todo + добавить страницы для хранения фрагментов кода (можно в изображениях)
+
+# Исправления багов в HTML и CSS
+# todo - решить проблему на страницах с формами при попытке перезагрузиться
 # todo - заменит form - input - button на кнопки
 # todo - перенести кнопку удаления файла/изображения в модальное окно
 # todo - окружить все артикли дивами с class="article-container"
@@ -30,8 +32,10 @@ from dream_update_form import UpdateDreamForm
 # todo - разбить стили на несколько файлов
 # todo - нарисовать favicom
 
+# Полирование проекта
 # todo - Сделать настройки: 1) Выключатель цветных рамочек 2) Тёмная-светлая тема 3) Включение мемного режима ;)
 
+# Завершение проекта
 # todo - после завершения разработки адаптировать дизайн под телефоны
 
 app = Flask(__name__, template_folder='template', static_folder='resources')
@@ -44,6 +48,8 @@ app.config['SCREENSHOT_FOLDER'] = os.path.join(os.getcwd(), 'gallery/screenshots
 app.config['THUMBNAIL_SCREENSHOT_FOLDER'] = os.path.join(os.getcwd(), 'gallery/screenshots/thumbnails')
 app.config['PHOTO_FOLDER'] = os.path.join(os.getcwd(), 'gallery/photos')
 app.config['THUMBNAIL_PHOTO_FOLDER'] = os.path.join(os.getcwd(), 'gallery/photos/thumbnails')
+app.config['CODESNAPS_FOLDER'] = os.path.join(os.getcwd(), 'gallery/codesnaps')
+app.config['THUMBNAIL_CODESNAPS_FOLDER'] = os.path.join(os.getcwd(), 'gallery/codesnaps/thumbnails')
 
 app.secret_key = 'your_secret_key'  # Секретный ключ для подписи сессий
 ADMIN_KEY = 'admin_key'  # Ваш ключ для доступа к админским функциям
@@ -76,7 +82,7 @@ def logout():
 
 @app.route('/')
 def home():
-	posts_content = get_posts()[:5]
+	posts_content = get_posts(5)
 	return render_template(
 		'index.html',
 		active_tab='',
@@ -102,7 +108,7 @@ def projects():
 
 @app.route('/post_diary')
 def post_diary():
-	posts_content = get_posts()
+	posts_content = get_posts(0)
 	return render_template(
 		'post_diary.html',
 		active_tab='post_diary',
@@ -188,19 +194,15 @@ def photos():
 		is_admin=is_admin()
 	)
 
-@app.route('/gists')
-def gists():
-	return render_template(
-		'gist.html',
-		active_tab='gists',
-		is_admin=is_admin()
-	)
-
 @app.route('/codesnaps')
 def codesnaps():
+	with Database() as db:
+		db_codesnaps = db.get_all_codesnaps()
 	return render_template(
-		'codesnap.html',
-		active_tab='codesnaps',
+		'gallery.html',
+		active_tab='photos',
+		page_data={'title': 'CodeSnaps', 'sender': 'codesnaps', 'folder': 'CODESNAPS_FOLDER'},
+		images=db_codesnaps,
 		is_admin=is_admin()
 	)
 
@@ -335,6 +337,9 @@ def attached_files():
 @app.route('/upload_file', methods=['POST'])
 def upload_file():
 	# Сохраняем файлы на сервер
+	access_responses = []
+	fail_responses = []
+
 	with Database() as db:
 		uploaded_files = request.files.getlist('files')
 		# Фильтруем файлы, чтобы оставить только те, которые не пусты
@@ -343,12 +348,20 @@ def upload_file():
 			for valid_file in valid_files:
 				if db.check_file(valid_file.filename):
 					db.create_file(valid_file.filename, {'type': valid_file.filename.split('.')[-1].upper()})
+					access_responses.append({'filename': valid_file.filename})
 				else:
+					fail_responses.append({'filename': valid_file.filename, 'error_message': 'Файл із такою назвою вже існує на сервері'})
 					continue
 
 				valid_file.save(os.path.join(app.config['FILE_FOLDER'], valid_file.filename))
 
-	return redirect(url_for('attached_files'))
+	# Используем генератор для возврата ответов
+	if len(fail_responses) == 0:
+		# Если есть хотя бы одна успешная загрузка, вернем общий успех
+		return jsonify({'success': True, 'access': access_responses})
+	else:
+		# Вернем все неуспешные загрузки
+		return jsonify({'success': False, 'fail': fail_responses, 'access': access_responses})
 
 @app.route('/delete_file/<filename>', methods=['DELETE'])
 def delete_file(filename):
@@ -459,6 +472,9 @@ def image(folder, filename):
 @app.route('/upload_image/<sender>/<folder>', methods=['POST'])
 def upload_image(sender, folder):
 	# Сохраняем файлы на сервер
+	access_responses = []
+	fail_responses = []
+
 	with Database() as db:
 		uploaded_images = request.files.getlist('images')
 		# Фильтруем изображения, чтобы оставить только те, которые не пусты
@@ -469,17 +485,30 @@ def upload_image(sender, folder):
 					case 'arts':
 						if db.check_art(valid_image.filename):
 							db.create_art(valid_image.filename, {'type': valid_image.filename.split('.')[-1].upper()})
+							access_responses.append({'filename': valid_image.filename})
 						else:
+							fail_responses.append({'filename': valid_image.filename, 'error_message': 'Файл із такою назвою вже існує на сервері'})
 							continue
 					case 'screenshots':
 						if db.check_screenshot(valid_image.filename):
 							db.create_screenshot(valid_image.filename, {'type': valid_image.filename.split('.')[-1].upper()})
+							access_responses.append({'filename': valid_image.filename})
 						else:
+							fail_responses.append({'filename': valid_image.filename, 'error_message': 'Файл із такою назвою вже існує на сервері'})
 							continue
 					case 'photos':
 						if db.check_photo(valid_image.filename):
 							db.create_photo(valid_image.filename, {'type': valid_image.filename.split('.')[-1].upper()})
+							access_responses.append({'filename': valid_image.filename})
 						else:
+							fail_responses.append({'filename': valid_image.filename, 'error_message': 'Файл із такою назвою вже існує на сервері'})
+							continue
+					case 'codesnaps':
+						if db.check_codesnap(valid_image.filename):
+							db.create_codesnap(valid_image.filename, {'type': valid_image.filename.split('.')[-1].upper()})
+							access_responses.append({'filename': valid_image.filename})
+						else:
+							fail_responses.append({'filename': valid_image.filename, 'error_message': 'Файл із такою назвою вже існує на сервері'})
 							continue
 
 				filename = os.path.join(app.config[folder], valid_image.filename)
@@ -495,7 +524,13 @@ def upload_image(sender, folder):
 				# Сохраняем миниатюру в директорию thumbnail
 				image_thumbnail.save(os.path.join(app.config[f'THUMBNAIL_{folder}'], valid_image.filename))
 
-	return redirect(url_for(sender))
+	# Используем генератор для возврата ответов
+	if len(fail_responses) == 0:
+		# Если есть хотя бы одна успешная загрузка, вернем общий успех
+		return jsonify({'success': True, 'access': access_responses})
+	else:
+		# Вернем все неуспешные загрузки
+		return jsonify({'success': False, 'fail': fail_responses, 'access': access_responses})
 
 @app.route('/delete_image/<folder>/<filename>', methods=['DELETE'])
 def delete_image(folder, filename):
@@ -510,6 +545,8 @@ def delete_image(folder, filename):
 					db.remove_screenshot(filename)
 				case 'PHOTO_FOLDER':
 					db.remove_photo(filename)
+				case 'CODESNAPS_FOLDER':
+					db.remove_codesnap(filename)
 		return jsonify({'success': True})
 	except FileNotFoundError:
 		return jsonify({'success': False, 'error': 'Art not found'})
@@ -534,9 +571,9 @@ def serve_docs(subpath, filename):
 # Функции загрузки контента
 ############
 
-def get_posts():
+def get_posts(post_limit):
 	with Database() as db:
-		posts = db.get_all_posts()
+		posts = db.get_all_posts(limit=post_limit)
 		posts_metadata = [extract_post_metadata(post_metadata) for post_metadata in posts]
 
 	return posts_metadata

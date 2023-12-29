@@ -72,6 +72,12 @@ class Photos(Base):
 	name = Column(String, nullable=False)
 	type = Column(String, nullable=False)
 
+class CodeSnaps(Base):
+	__tablename__ = "codesnaps"
+	id = Column(Integer, primary_key=True)
+	name = Column(String, nullable=False)
+	type = Column(String, nullable=False)
+
 class Database:
 	def __init__(self):
 		super(Database, self).__init__()
@@ -95,23 +101,25 @@ class Database:
 	def get_post(self, title):
 		return self.session.query(Posts).filter_by(title=title).first()
 
-	def get_all_posts(self):
-		return self.session.query(Posts).order_by(desc(Posts.created_at)).all()
+	def get_all_posts(self, limit):
+		if limit == 0:
+			return self.session.query(Posts).order_by(desc(Posts.created_at)).all()
+		else:
+			return self.session.query(Posts).order_by(desc(Posts.created_at)).limit(limit).all()
 
 	def check_post(self, title):
-		existing_user = self.session.query(Posts.title).filter_by(title=title).scalar()
-		return existing_user is None
+		return self.session.query(Posts.title).filter_by(title=title).scalar() is None
 
 	def create_post(self, title, post_data):
 		new_post = Posts(title=title, **post_data)
 		self.session.add(new_post)
 		self.session.commit()
 
-	def update_post(self, title, new_data):
+	def update_post(self, title, new_post_data):
 		post = self.get_post(title)
 		if post:
 			# Оновлюємо поля посту
-			for key, value in new_data.items():
+			for key, value in new_post_data.items():
 				setattr(post, key, value)
 
 			# Фіксуємо значення в БД
@@ -132,11 +140,10 @@ class Database:
 		return self.session.query(Files).all()
 
 	def check_file(self, name):
-		existing_file = self.session.query(Files.name).filter_by(name=name).scalar()
-		return existing_file is None
+		return self.session.query(Files.name).filter_by(name=name).scalar() is None
 
-	def create_file(self, name, post_data):
-		new_file = Files(name=name, **post_data)
+	def create_file(self, name, file_data):
+		new_file = Files(name=name, **file_data)
 		self.session.add(new_file)
 		self.session.commit()
 
@@ -155,19 +162,18 @@ class Database:
 		return self.session.query(Dreams).order_by(desc(Dreams.dreamed_at)).all()
 
 	def check_dream(self, title):
-		existing_user = self.session.query(Dreams.title).filter_by(title=title).scalar()
-		return existing_user is None
+		return self.session.query(Dreams.title).filter_by(title=title).scalar() is None
 
 	def create_dream(self, title, dream_data):
 		new_dream = Dreams(title=title, **dream_data)
 		self.session.add(new_dream)
 		self.session.commit()
 
-	def update_dream(self, title, new_data):
+	def update_dream(self, title, new_dream_data):
 		dream = self.get_dream(title)
 		if dream:
 			# Оновлюємо поля сновидіння
-			for key, value in new_data.items():
+			for key, value in new_dream_data.items():
 				setattr(dream, key, value)
 
 			# Фіксуємо значення в БД
@@ -188,8 +194,7 @@ class Database:
 		return self.session.query(Arts).all()
 
 	def check_art(self, name):
-		existing_user = self.session.query(Arts.name).filter_by(name=name).scalar()
-		return existing_user is None
+		return self.session.query(Arts.name).filter_by(name=name).scalar() is None
 
 	def create_art(self, name, art_data):
 		new_art = Arts(name=name, **art_data)
@@ -211,11 +216,10 @@ class Database:
 		return self.session.query(Screenshots).all()
 
 	def check_screenshot(self, name):
-		existing_screenshot = self.session.query(Screenshots.name).filter_by(name=name).scalar()
-		return existing_screenshot is None
+		return self.session.query(Screenshots.name).filter_by(name=name).scalar() is None
 
-	def create_screenshot(self, name, art_data):
-		new_screenshot = Screenshots(name=name, **art_data)
+	def create_screenshot(self, name, screenshot_data):
+		new_screenshot = Screenshots(name=name, **screenshot_data)
 		self.session.add(new_screenshot)
 		self.session.commit()
 
@@ -234,11 +238,10 @@ class Database:
 		return self.session.query(Photos).all()
 
 	def check_photo(self, name):
-		existing_photo = self.session.query(Photos.name).filter_by(name=name).scalar()
-		return existing_photo is None
+		return self.session.query(Photos.name).filter_by(name=name).scalar() is None
 
-	def create_photo(self, name, art_data):
-		new_photo = Photos(name=name, **art_data)
+	def create_photo(self, name, photo_data):
+		new_photo = Photos(name=name, **photo_data)
 		self.session.add(new_photo)
 		self.session.commit()
 
@@ -246,6 +249,28 @@ class Database:
 		photo = self.session.query(Photos).filter_by(name=name).first()
 		if photo:
 			self.session.delete(photo)
+			self.session.commit()
+
+	# Методы для работы с таблицей картинок кодов
+
+	def get_codesnap(self, name):
+		return self.session.query(CodeSnaps).filter_by(name=name).first()
+
+	def get_all_codesnaps(self):
+		return self.session.query(CodeSnaps).all()
+
+	def check_codesnap(self, name):
+		return self.session.query(CodeSnaps.name).filter_by(name=name).scalar() is None
+
+	def create_codesnap(self, name, codesnap_data):
+		new_codesnap = CodeSnaps(name=name, **codesnap_data)
+		self.session.add(new_codesnap)
+		self.session.commit()
+
+	def remove_codesnap(self, name):
+		codesnap = self.session.query(CodeSnaps).filter_by(name=name).first()
+		if codesnap:
+			self.session.delete(codesnap)
 			self.session.commit()
 
 	# Методы для работы с таблицей ассоциаций

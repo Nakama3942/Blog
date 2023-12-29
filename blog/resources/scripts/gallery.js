@@ -89,6 +89,70 @@ function showSnackbar(message) {
 	}, 3000); // Закрыть всплывающее сообщение через 3 секунды
 }
 
+function uploadFiles() {
+	// Получаем форму и её данные
+	const uploadForm = document.querySelector('form');
+	const formData = new FormData(uploadForm);
+
+	// Отменяем стандартное поведение формы
+	event.preventDefault();
+
+	// Отправляем асинхронный запрос на сервер
+	fetch(uploadForm.action, {
+		method: 'POST',
+		body: formData,
+	})
+	.then(response => response.json())
+	.then(data => {
+		// Обработка успешного ответа
+		if (data.success) {
+			const accessFileNames = data.access.map(access => access.filename);
+			alert('Всі файли завантажено: ' + accessFileNames.join(', '));
+			// Перенаправление после вывода ответа
+			switch (uploadForm.id) {
+				case 'arts':
+					window.location.href = '/arts';
+					break;
+				case 'screenshots':
+					window.location.href = '/screenshots';
+					break;
+				case 'photos':
+					window.location.href = '/photos';
+					break;
+				case 'codesnaps':
+					window.location.href = '/codesnaps';
+					break;
+			}
+		} else {
+			// Обработка неудачной загрузки файлов
+			for (const fail of data.fail) {
+				// Обработка каждого сообщения об ошибке
+				alert('Файл ' + fail.filename + ' не завантажено по причині: ' + fail.error_message);
+			}
+			const accessFileNames = data.access.map(access => access.filename);
+			alert('Всі інші файли завантажено: ' + accessFileNames.join(', '));
+			// Перенаправление после вывода ответа
+			switch (uploadForm.id) {
+				case 'arts':
+					window.location.href = '/arts';
+					break;
+				case 'screenshots':
+					window.location.href = '/screenshots';
+					break;
+				case 'photos':
+					window.location.href = '/photos';
+					break;
+				case 'codesnaps':
+					window.location.href = '/codesnaps';
+					break;
+			}
+		}
+	})
+	.catch(error => {
+		alert('Невідома помилка: ' + error);
+	});
+}
+
 function deleteImage(folder, filename) {
 	if (confirm(`Вы уверены, что хотите удалить арт ${filename}?`)) {
 		fetch(`/delete_image/${folder}/${filename}`, {
