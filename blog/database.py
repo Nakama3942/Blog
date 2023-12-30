@@ -110,6 +110,18 @@ class Database:
 	def check_post(self, title):
 		return self.session.query(Posts.title).filter_by(title=title).scalar() is None
 
+	# Метод для поиска постов
+	def search_post(self, column, text):
+		if text:
+			# Создаем динамическое условие для поиска в указанной колонке
+			search_condition = getattr(Posts, column).ilike(f'%{text}%')
+			# Выполняем запрос к БД с использованием условия
+			result = self.session.query(Posts).filter(search_condition).all()
+		else:
+			result = []
+
+		return result
+
 	def create_post(self, title, post_data):
 		new_post = Posts(title=title, **post_data)
 		self.session.add(new_post)
@@ -163,6 +175,17 @@ class Database:
 
 	def check_dream(self, title):
 		return self.session.query(Dreams.title).filter_by(title=title).scalar() is None
+
+	def search_dream(self, column, text):
+		if text:
+			# Создаем динамическое условие для поиска в указанной колонке
+			search_condition = getattr(Dreams, column).ilike(f'%{text}%')
+			# Выполняем запрос к БД с использованием условия
+			result = self.session.query(Dreams).filter(search_condition).all()
+		else:
+			result = []
+
+		return result
 
 	def create_dream(self, title, dream_data):
 		new_dream = Dreams(title=title, **dream_data)

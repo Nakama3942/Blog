@@ -2,6 +2,10 @@
 
 {% block title %}Щоденник сновидінь - Блог Калиновського{% endblock %}
 
+{% block scripts %}
+	<script src="/resources/scripts/search.js" data-page="Dreams"></script>
+{% endblock %}
+
 {% block content %}
 	<main>
 		{% if is_admin %}
@@ -9,6 +13,18 @@
 				<input class="button-add" type="submit" value="Додати сновидіння">
 			</form>
 		{% endif %}
+
+		<div class="search-wrapper">
+			<select id="searchScope">
+				<option value="title">По назвам</option>
+				<option value="mood">По настрою</option>
+				<option value="tags">По тегам</option>
+			</select>
+			<input type="text" id="searchInput" placeholder="Пошук...">
+		</div>
+		<div id="searchResultsModal" class="search-results-modal">
+			<div id="searchResultsContainer" class="search-results-container"></div>
+		</div>
 
 		{% set dreams_list_content=dreams_content %}
 		{% include 'dream_list.html' %}

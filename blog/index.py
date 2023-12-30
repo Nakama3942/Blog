@@ -11,16 +11,8 @@ from post_update_form import UpdatePostForm
 from dream_create_form import CreateDreamForm
 from dream_update_form import UpdateDreamForm
 
-# Улучшения
-# todo + перевести файлы и изображения на систему запросов, как в постах и сновидениях - после реализации сделать вывод - какие файлы не удалось загрузить из-за совпадающего названия
-# todo + отрефакторить код БД
-# todo + добавить в БД метод, который будет возвращать не всю таблицу постов, а только её часть
-
 # Новый функционал
-# todo - добавить поиск в постах и сновидениях по словам в названии, тексте, и поиск по тегам
-
-# Новые страницы
-# todo + добавить страницы для хранения фрагментов кода (можно в изображениях)
+# todo + добавить поиск в постах и сновидениях по словам в названии, тексте, и поиск по тегам
 
 # Исправления багов в HTML и CSS
 # todo - решить проблему на страницах с формами при попытке перезагрузиться
@@ -31,6 +23,10 @@ from dream_update_form import UpdateDreamForm
 # todo - исправить все баги навигационной панели
 # todo - разбить стили на несколько файлов
 # todo - нарисовать favicom
+
+# Оптимизаци
+# todo - сделать подгрузку постов, сновидений, файлов и картинок для оптимизации
+# todo - решить проблему с регистрозависимым поиском постов и сновидений
 
 # Полирование проекта
 # todo - Сделать настройки: 1) Выключатель цветных рамочек 2) Тёмная-светлая тема 3) Включение мемного режима ;)
@@ -233,13 +229,13 @@ def save_post_route():
 	selected_file_ids = request.form.getlist('files')
 	created_at = request.form.get('created_at')
 
-	# Если дата не указана - взять текущую
+	# Якщо дату написання не зазначено - взяти поточну
 	if created_at:
 		created_at = datetime.strptime(created_at, '%Y-%m-%dT%H:%M')
 	else:
 		created_at = datetime.now()
 
-	# Формируем метаданные поста
+	# Формуємо метаданні посту
 	post_metadata = {
 		'description': description,
 		'tags': tags,
@@ -248,7 +244,7 @@ def save_post_route():
 		'published_at': datetime.now()
 	}
 
-	# Сохраняем метаданные в базе данных
+	# Зберігаємо метадані в БД
 	with open(f"{os.path.join(app.config['POST_FOLDER'], title)}.md", 'w', encoding='utf-8', newline='') as post_file:
 		post_file.write(content)
 		with Database() as db:
@@ -316,6 +312,23 @@ def delete_post(post_title):
 			db.remove_post(post_title)
 
 	return redirect(url_for('post_diary'))
+
+@app.route('/search_post', methods=['GET'])
+def search_post():
+	try:
+		# Получаем параметры запроса от клиента
+		column = request.args.get('column')
+		text = request.args.get('text')
+
+		# Вызываем метод поиска в базе данных
+		with Database() as db:
+			search_result = db.search_post(column, text)
+			search_result_metadata = [extract_post_metadata(post_metadata) for post_metadata in search_result]
+
+		# Возвращаем результаты в формате JSON
+		return jsonify({'success': True, 'results': search_result_metadata})
+	except Exception as e:
+		return jsonify({'success': False, 'error_message': str(e)})
 
 ############
 # Открытие страницы файлов
@@ -460,6 +473,27 @@ def delete_dream(dream_title):
 			db.remove_dream(dream_title)
 
 	return redirect(url_for('dream_diary'))
+
+@app.route('/search_dream', methods=['GET'])
+def search_dream():
+	try:
+		# Получаем параметры запроса от клиента
+		column = request.args.get('column')
+		text = request.args.get('text')
+
+		# Вызываем метод поиска в базе данных
+		with Database() as db:
+			search_result = db.search_dream(column, text)
+			search_result_metadata = []
+			for dream_metadata in search_result:
+				metadata = extract_dream_metadata(dream_metadata)
+				metadata['description'] = metadata.pop('mood')
+				search_result_metadata.append(metadata)
+
+		# Возвращаем результаты в формате JSON
+		return jsonify({'success': True, 'results': search_result_metadata})
+	except Exception as e:
+		return jsonify({'success': False, 'error_message': str(e)})
 
 ############
 # Страница галереи
@@ -635,4 +669,4 @@ def extract_dream_metadata(dream_obj):
 ############
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run(host='192.168.0.102', port=5000, debug=True)

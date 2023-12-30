@@ -2,6 +2,10 @@
 
 {% block title %}Щоденник - Блог Калиновського{% endblock %}
 
+{% block scripts %}
+	<script src="/resources/scripts/search.js" data-page="Posts"></script>
+{% endblock %}
+
 {% block content %}
 	<main>
 		{% if is_admin %}
@@ -12,6 +16,18 @@
 				<input class="button-file" type="submit" value="Файли постів">
 			</form>
 		{% endif %}
+
+		<div class="search-wrapper">
+			<select id="searchScope">
+				<option value="title">По назвам</option>
+				<option value="description">По опису</option>
+				<option value="tags">По тегам</option>
+			</select>
+			<input type="text" id="searchInput" placeholder="Пошук...">
+		</div>
+		<div id="searchResultsModal" class="search-results-modal">
+			<div id="searchResultsContainer" class="search-results-container"></div>
+		</div>
 
 		{% set post_list_content=posts_content %}
 		{% include 'post_list.html' %}
