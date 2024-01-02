@@ -23,9 +23,6 @@
 							<img class="file-icon" src="{{ url_for('image', folder='THUMBNAIL_'+page_data['folder'], filename=image.name) }}" alt="{{ image.name }}" width="128" height="128">
 						</div>
 					</a>
-					{% if is_admin %}
-						<span class="button-icon" onclick="deleteImage('{{ page_data['folder'] }}', '{{ image.name }}')">🗑️</span>
-					{% endif %}
 				</li>
 			{% endfor %}
 		</ul>
@@ -33,6 +30,9 @@
 		<div id="myModal" class="modal">
 			<span class="close">&times;</span>
 			<span class="download" onclick="downloadImage()">&#8595;</span>
+			{% if is_admin %}
+				<span class="delete" onclick="deleteImage()">🗑️</span>
+			{% endif %}
 			<span class="prev" onclick="plusSlides(-1)">&#10094;</span>
 			<img class="modal-content" id="img01" src="">
 			<span class="next" onclick="plusSlides(1)">&#10095;</span>

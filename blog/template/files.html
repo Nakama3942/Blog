@@ -24,7 +24,6 @@
 						</div>
 						{{ file.name }}
 					</a>
-					<span class="button-icon" onclick="deleteFile('{{ file.name }}')">🗑️</span>
 				</li>
 			{% endfor %}
 		</ul>
@@ -32,6 +31,7 @@
 		<div id="myModal" class="modal">
 			<span class="close">&times;</span>
 			<span class="download" onclick="downloadFile()">&#8595;</span>
+			<span class="delete" onclick="deleteFile()">🗑️</span>
 			<p class="modal-content" id="postsList"></p>
 		</div>
 	</main>

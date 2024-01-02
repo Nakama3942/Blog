@@ -77,6 +77,31 @@ document.addEventListener('DOMContentLoaded', function () {
 		})
 		.catch(error => console.error('Ошибка:', error));
 	};
+
+	window.deleteImage = function () {
+		var image = document.querySelectorAll('.open-modal');
+		var imageName = image[currentImageIndex].getAttribute('data-img').split('/').pop();
+		var folder = image[currentImageIndex].getAttribute('data-folder');
+
+		if (confirm(`Вы уверены, что хотите удалить арт ${imageName}?`)) {
+			fetch(`/delete_image/${folder}/${imageName}`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					// Обновить страницу или выполнить другие действия по желанию
+					location.reload();
+				} else {
+					alert('Не удалось удалить файл.');
+				}
+			})
+			.catch(error => console.error('Ошибка:', error));
+		}
+	}
 });
 
 // Функция для отображения всплывающего сообщения
@@ -93,6 +118,12 @@ function uploadFiles() {
 	// Получаем инпут файла
 	const imageInput = document.getElementById('imageInput');
 	const images = imageInput.files;
+
+	// Проверяем, есть ли выбранные файлы
+	if (images.length === 0) {
+		alert('Выберите изображения для загрузки!');
+		return; // Прерываем выполнение функции, если файлы не выбраны
+	}
 
 	const formData = new FormData();
 	for (let i = 0; i < images.length; i++) {
@@ -156,25 +187,4 @@ function uploadFiles() {
 	.catch(error => {
 		alert('Невідома помилка: ' + error);
 	});
-}
-
-function deleteImage(folder, filename) {
-	if (confirm(`Вы уверены, что хотите удалить арт ${filename}?`)) {
-		fetch(`/delete_image/${folder}/${filename}`, {
-			method: 'DELETE',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		})
-		.then(response => response.json())
-		.then(data => {
-			if (data.success) {
-				// Обновить страницу или выполнить другие действия по желанию
-				location.reload();
-			} else {
-				alert('Не удалось удалить файл.');
-			}
-		})
-		.catch(error => console.error('Ошибка:', error));
-	}
 }

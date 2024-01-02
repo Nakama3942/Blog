@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			console.log('file-posts-titles:', filePostsList);
 
 			// Создаем список с использованием HTML-разметки
-			var postLinks = filePostsList.map((post, index) => `<a href="/posts/${encodeURIComponent(post)}">${index + 1}. ${post}</a>`).join('<br>');
+			var postLinks = filePostsList.map((post, index) => `<a href="/post/${encodeURIComponent(post)}">${index + 1}. ${post}</a>`).join('<br>');
 
 			// Используйте innerHTML для вставки HTML-разметки в элемент
 			modalList.innerHTML = `Файл <b>${currentFileName}</b> закріплено за постами:<br>${postLinks}`;
@@ -67,12 +67,39 @@ document.addEventListener('DOMContentLoaded', function () {
 		})
 		.catch(error => console.error('Ошибка:', error));
 	};
+
+	window.deleteFile = function () {
+		if (confirm(`Вы уверены, что хотите удалить файл ${currentFileName}?`)) {
+			fetch(`/delete_file/${currentFileName}`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					// Обновить страницу или выполнить другие действия по желанию
+					location.reload();
+				} else {
+					alert('Не удалось удалить файл.');
+				}
+			})
+			.catch(error => console.error('Ошибка:', error));
+		}
+	}
 });
 
 function uploadFiles() {
 	// Получаем инпут файла
 	const fileInput = document.getElementById('fileInput');
 	const files = fileInput.files;
+
+	// Проверяем, есть ли выбранные файлы
+	if (files.length === 0) {
+		alert('Выберите файлы для загрузки!');
+		return; // Прерываем выполнение функции, если файлы не выбраны
+	}
 
 	const formData = new FormData();
 	for (let i = 0; i < files.length; i++) {
@@ -107,25 +134,4 @@ function uploadFiles() {
 	.catch(error => {
 		alert('Невідома помилка: ' + error);
 	});
-}
-
-function deleteFile(filename) {
-	if (confirm(`Вы уверены, что хотите удалить файл ${filename}?`)) {
-		fetch(`/delete_file/${filename}`, {
-			method: 'DELETE',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		})
-		.then(response => response.json())
-		.then(data => {
-			if (data.success) {
-				// Обновить страницу или выполнить другие действия по желанию
-				location.reload();
-			} else {
-				alert('Не удалось удалить файл.');
-			}
-		})
-		.catch(error => console.error('Ошибка:', error));
-	}
 }

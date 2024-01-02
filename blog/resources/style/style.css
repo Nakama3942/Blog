@@ -177,15 +177,6 @@ footer {
 	max-height: 100%;
 	object-fit: cover;
 }
-.button-icon {
-	cursor: pointer;
-	font-size: 20px;
-	color: #e74c3c; /* Красный цвет для иконки удаления */
-	margin-left: 5px;
-}
-.button-icon:hover {
-	color: #c0392b; /* Красный цвет для иконки удаления при наведении */
-}
 
 /*
  * Стили для списка тегов
@@ -675,6 +666,21 @@ input[type="file"] {
 	width: 50px; /* Задаем фиксированную ширину */
 	height: 50px; /* Задаем фиксированную высоту */
 	text-indent: 15px; /* Сдвигаем текст вправо на 40 пикселей */
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: 50%;
+	color: #f1f1f1;
+	font-size: 40px;
+	font-weight: bold;
+	cursor: pointer;
+}
+/* Стиль кнопки удаления */
+.delete {
+	position: fixed;
+	top: 15px;
+	right: 155px; /* Подвигаем кнопку загрузки левее */
+	width: 50px; /* Задаем фиксированную ширину */
+	height: 50px; /* Задаем фиксированную высоту */
+	text-indent: 0px; /* Сдвигаем текст вправо на 40 пикселей */
 	background-color: rgba(0, 0, 0, 0.5);
 	border-radius: 50%;
 	color: #f1f1f1;
