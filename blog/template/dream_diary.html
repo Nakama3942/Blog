@@ -9,9 +9,9 @@
 {% block content %}
 	<main>
 		{% if is_admin %}
-			<form method="post" action="{{ url_for('new_dream') }}">
-				<input class="button-add" type="submit" value="Додати сновидіння">
-			</form>
+			<div class="button-container">
+				<button class="button-add" onclick="location.href='{{ url_for('new_dream') }}'">Додати сновидіння</button>
+			</div>
 		{% endif %}
 
 		<div class="search-wrapper">

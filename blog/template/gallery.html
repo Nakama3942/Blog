@@ -9,10 +9,10 @@
 {% block content %}
 	<main>
 		{% if is_admin %}
-			<form id="{{ page_data['sender'] }}"  method="post" action="{{ url_for('upload_image', sender=page_data['sender'], folder=page_data['folder']) }}" enctype="multipart/form-data">
-				<input type="file" id="artInput" name="images" multiple>
-				<input class="button-add" type="submit" value="Додати зображення" onclick="uploadFiles()">
-			</form>
+			<div class="button-container">
+				<input type="file" id="imageInput" name="images" multiple>
+				<button class="button-add" data-sender="{{ page_data['sender'] }}" data-folder="{{ page_data['folder'] }}" onclick="uploadFiles()">Додати зображення</button>
+			</div>
 		{% endif %}
 
 		<ul class="file-list">
@@ -24,7 +24,7 @@
 						</div>
 					</a>
 					{% if is_admin %}
-						<span class="delete-icon" onclick="deleteImage('{{ page_data['folder'] }}', '{{ image.name }}')">🗑️</span>
+						<span class="button-icon" onclick="deleteImage('{{ page_data['folder'] }}', '{{ image.name }}')">🗑️</span>
 					{% endif %}
 				</li>
 			{% endfor %}

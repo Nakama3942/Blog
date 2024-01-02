@@ -70,17 +70,19 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function uploadFiles() {
-	// Получаем форму и её данные
-	const uploadForm = document.querySelector('form');
-	const formData = new FormData(uploadForm);
+	// Получаем инпут файла
+	const fileInput = document.getElementById('fileInput');
+	const files = fileInput.files;
 
-	// Отменяем стандартное поведение формы
-	event.preventDefault();
+	const formData = new FormData();
+	for (let i = 0; i < files.length; i++) {
+		formData.append('files', files[i]);
+	}
 
 	// Отправляем асинхронный запрос на сервер
-	fetch(uploadForm.action, {
+	fetch(`/upload_file`, {
 		method: 'POST',
-		body: formData,
+		body: formData
 	})
 	.then(response => response.json())
 	.then(data => {

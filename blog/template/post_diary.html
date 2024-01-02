@@ -9,12 +9,10 @@
 {% block content %}
 	<main>
 		{% if is_admin %}
-			<form method="post" action="{{ url_for('new_post') }}">
-				<input class="button-add" type="submit" value="Додати пост">
-			</form>
-			<form method="post" action="{{ url_for('attached_files') }}">
-				<input class="button-file" type="submit" value="Файли постів">
-			</form>
+			<div class="button-container">
+				<button class="button-add" onclick="location.href='{{ url_for('new_post') }}'">Додати пост</button>
+				<button class="button-file" onclick="location.href='{{ url_for('attached_files') }}'">Файли постів</button>
+			</div>
 		{% endif %}
 
 		<div class="search-wrapper">

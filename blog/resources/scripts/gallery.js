@@ -90,17 +90,22 @@ function showSnackbar(message) {
 }
 
 function uploadFiles() {
-	// Получаем форму и её данные
-	const uploadForm = document.querySelector('form');
-	const formData = new FormData(uploadForm);
+	// Получаем инпут файла
+	const imageInput = document.getElementById('imageInput');
+	const images = imageInput.files;
 
-	// Отменяем стандартное поведение формы
-	event.preventDefault();
+	const formData = new FormData();
+	for (let i = 0; i < images.length; i++) {
+		formData.append('images', images[i]);
+	}
+
+	const sender = document.querySelector('.button-add').getAttribute('data-sender');
+	const folder = document.querySelector('.button-add').getAttribute('data-folder');
 
 	// Отправляем асинхронный запрос на сервер
-	fetch(uploadForm.action, {
+	fetch(`/upload_image/${sender}/${encodeURIComponent(folder)}`, {
 		method: 'POST',
-		body: formData,
+		body: formData
 	})
 	.then(response => response.json())
 	.then(data => {
@@ -109,7 +114,7 @@ function uploadFiles() {
 			const accessFileNames = data.access.map(access => access.filename);
 			alert('Всі файли завантажено: ' + accessFileNames.join(', '));
 			// Перенаправление после вывода ответа
-			switch (uploadForm.id) {
+			switch (sender) {
 				case 'arts':
 					window.location.href = '/arts';
 					break;
@@ -132,7 +137,7 @@ function uploadFiles() {
 			const accessFileNames = data.access.map(access => access.filename);
 			alert('Всі інші файли завантажено: ' + accessFileNames.join(', '));
 			// Перенаправление после вывода ответа
-			switch (uploadForm.id) {
+			switch (sender) {
 				case 'arts':
 					window.location.href = '/arts';
 					break;

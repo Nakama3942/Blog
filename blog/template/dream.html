@@ -10,11 +10,12 @@
 	<main>
 		<div class="article-container" data-importance="{{ dream_content['importance'] }}">
 			<article class="diary-entry">
-				<!-- Кнопка удаления -->
+				<!-- Настройки поста -->
 				{% if is_admin %}
-					<form method="post" action="{{ url_for('delete_dream', dream_title=dream_content['title']) }}">
-						<input class="button-delete" type="submit" value="Видалити сновидіння">
-					</form>
+					<div class="button-container">
+						<button class="button-update" onclick="location.href='{{ url_for('update_dream', dream_title=dream_content['title']) }}'">Оновити сновидіння</button>
+						<button class="button-delete" onclick="location.href='{{ url_for('delete_dream', dream_title=dream_content['title']) }}'">Видалити сновидіння</button>
+					</div>
 				{% endif %}
 				<!-- Метаданные поста -->
 				<h2 class="title">{{ dream_content['title'] }}</h2>
@@ -42,12 +43,6 @@
 				<hr class="divider">
 				<!-- Содержание поста -->
 				<div class="content">{{ dream_content['content']|safe }}</div>
-				<!-- Настройки поста -->
-				{% if is_admin %}
-					<form method="post" action="{{ url_for('update_dream', dream_title=dream_content['title']) }}">
-						<input class="button-update" type="submit" value="Оновити сновидіння">
-					</form>
-				{% endif %}
 			</article>
 		</div>
 	</main>

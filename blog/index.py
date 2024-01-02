@@ -11,12 +11,9 @@ from post_update_form import UpdatePostForm
 from dream_create_form import CreateDreamForm
 from dream_update_form import UpdateDreamForm
 
-# Новый функционал
-# todo + добавить поиск в постах и сновидениях по словам в названии, тексте, и поиск по тегам
-
 # Исправления багов в HTML и CSS
-# todo - решить проблему на страницах с формами при попытке перезагрузиться
-# todo - заменит form - input - button на кнопки
+# todo + решить проблему на страницах с формами при попытке перезагрузиться
+# todo + заменит form - input - button на кнопки
 # todo - перенести кнопку удаления файла/изображения в модальное окно
 # todo - окружить все артикли дивами с class="article-container"
 # todo - сделать анимацию открывания вложенных вкладок во вкладках в навигационной панели
@@ -206,7 +203,7 @@ def codesnaps():
 # Работа с постами
 ############
 
-@app.route('/new_post', methods=['POST'])
+@app.route('/new_post')
 def new_post():
 	form = CreatePostForm()
 	with Database() as db:
@@ -253,7 +250,7 @@ def save_post_route():
 
 	return jsonify({'success': True})
 
-@app.route('/update_post/<post_title>', methods=['POST'])
+@app.route('/update_post/<post_title>')
 def update_post(post_title):
 	form = UpdatePostForm()
 	with Database() as db:
@@ -303,7 +300,7 @@ def update_post_route(post_title):
 
 	return jsonify({'success': True})
 
-@app.route('/delete_post/<post_title>', methods=['POST'])
+@app.route('/delete_post/<post_title>')
 def delete_post(post_title):
 	with Database() as db:
 		post_path = f"{os.path.join(app.config['POST_FOLDER'], post_title)}.md"
@@ -390,7 +387,7 @@ def delete_file(filename):
 # Открытие страницы сновидений
 ############
 
-@app.route('/new_dream', methods=['POST'])
+@app.route('/new_dream')
 def new_dream():
 	form = CreateDreamForm()
 	return render_template('dream_new.html', form=form, is_admin=is_admin())
@@ -424,7 +421,7 @@ def save_dream_route():
 
 	return jsonify({'success': True})
 
-@app.route('/update_dream/<dream_title>', methods=['POST'])
+@app.route('/update_dream/<dream_title>')
 def update_dream(dream_title):
 	form = UpdateDreamForm()
 
@@ -464,7 +461,7 @@ def update_dream_route(dream_title):
 
 	return jsonify({'success': True})
 
-@app.route('/delete_dream/<dream_title>', methods=['POST'])
+@app.route('/delete_dream/<dream_title>')
 def delete_dream(dream_title):
 	with Database() as db:
 		dream_path = f"{os.path.join(app.config['DREAM_FOLDER'], dream_title)}.md"
