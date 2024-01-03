@@ -15,9 +15,9 @@ class CreateDreamForm(FlaskForm):
 			('Super Rare', 'Якість: Дуже цікавий сон'),
 			('Ultra Rare', 'Якість: Епічний тривалий сон із крутим сюжетом')
 		],
-		default='0',
+		default='Normal',
 		validators=[DataRequired()]
 	)
-	content = TextAreaField('Сновидіння', validators=[DataRequired()])
 	dreamed_at = DateTimeField('Час сновидіння', format='%Y-%m-%d %I:%M %p', validators=[DataRequired()])
+	content = TextAreaField('Сновидіння', validators=[DataRequired()])
 	submit = SubmitField('Зберегти сновидіння')

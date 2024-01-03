@@ -254,6 +254,9 @@ input[type="submit"] {
 input[type="submit"]:hover {
 	background-color: #45a049;
 }
+input[type="submit"]:last-child {
+    margin-bottom: 0px; /* Отступ справа между всеми элементами кроме последнего */
+}
 /* Дополнительные стили для элемента input[type="file"] */
 input[type="file"] {
 	padding: 0;
@@ -299,6 +302,7 @@ input[type="file"] {
 /* Стили для инструмента вставки изображений в текст */
 .content-wrapper {
 	padding: 1px;
+	background-color: #fff;
 }
 .content-wrapper:focus-within {
   outline: auto; /* Используйте auto, чтобы получить стандартный стиль обводки */
@@ -320,13 +324,15 @@ input[type="file"] {
  */
 
 .biography {
-	margin-bottom: 20px;
-	padding: 15px;
+	position: relative;
+	padding: 20px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
+	background-color: rgba(255, 255, 255, 0.8);
 	font-family: 'Montserrat', sans-serif;
 }
 .biography .title{
+	margin: 10px;
 	text-align: center;
 	font-size: 36px;
 	font-weight: 700;
@@ -344,10 +350,11 @@ input[type="file"] {
 
 .project-item {
 	/* Стили для article */
-	margin-bottom: 20px;
-	padding: 15px;
+	position: relative;
+	padding: 20px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
+	background-color: rgba(255, 255, 255, 0.8);
 	font-family: 'Montserrat', sans-serif;
 }
 .project-item a {
@@ -359,6 +366,7 @@ input[type="file"] {
 }
 .project-item .project-title {
 	/* Стили для вложенного p с классом post-description */
+	margin: 10px 0px;
 	font-size: 24px;
 }
 .project-item .project-description {
@@ -376,8 +384,7 @@ input[type="file"] {
  * Стили для списка документаций
  */
 
-.docs-item {
-	/* Стили для article */
+/*.docs-item {
 	margin-bottom: 20px;
 	padding: 15px;
 	border: 1px solid #ccc;
@@ -386,15 +393,13 @@ input[type="file"] {
 }
 .docs-item a {
 	text-decoration: none;
-	color: #3498db; /* Синий цвет для ссылок на посты */
 }
 .docs-item a:hover {
 	text-decoration: underline;
 }
 .docs-item .docs-title {
-	/* Стили для вложенного p с классом post-description */
 	font-size: 24px;
-}
+}*/
 
 /*
  * Стили для страницы списка постов и сновидений

@@ -12,10 +12,10 @@ from dream_create_form import CreateDreamForm
 from dream_update_form import UpdateDreamForm
 
 # Исправления багов в HTML и CSS
-# todo + перенести кнопку удаления файла/изображения в модальное окно
-# todo - окружить все артикли дивами с class="article-container"
-# todo - сделать анимацию открывания вложенных вкладок во вкладках в навигационной панели
-# todo - исправить все баги навигационной панели
+# todo + окружить все артикли дивами с class="article-container"
+# todo ! сделать анимацию открывания вложенных вкладок во вкладках в навигационной панели
+# todo + исправить все баги навигационной панели
+# todo + изменить расположение полей форм создания Поста/Сновидения
 # todo - разбить стили на несколько файлов
 # todo - нарисовать favicom
 
@@ -220,9 +220,9 @@ def save_post_route():
 	description = request.form['description']
 	tags = request.form['tags']
 	importance = request.form['importance']
-	content = request.form['content']
-	selected_file_ids = request.form.getlist('files')
 	created_at = request.form.get('created_at')
+	selected_file_ids = request.form.getlist('files')
+	content = request.form['content']
 
 	# Якщо дату написання не зазначено - взяти поточну
 	if created_at:
@@ -399,8 +399,8 @@ def save_dream_route():
 	mood = request.form['mood']
 	tags = request.form['tags']
 	importance = request.form['importance']
-	dream_content = request.form['content']
 	dreamed_at = datetime.strptime(request.form.get('dreamed_at'), '%Y-%m-%dT%H:%M')
+	dream_content = request.form['content']
 
 	# Формируем метаданные поста
 	dream_metadata = {

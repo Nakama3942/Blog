@@ -18,6 +18,8 @@ class CreatePostForm(FlaskForm):
 		default='Normal',
 		validators=[DataRequired()]
 	)
+	created_at = DateTimeField('Дата й час написання', format='%Y-%m-%d %I:%M %p', validators=[DataRequired()])
+	files = SelectMultipleField('Обрані файли', coerce=int, validators=[DataRequired()])
 	content = TextAreaField('Текст запису', validators=[DataRequired()])
 	image_name = StringField('Назва зображення')
 	image_directory = SelectField(
@@ -31,6 +33,4 @@ class CreatePostForm(FlaskForm):
 		default='',
 		validators=[DataRequired()]
 	)
-	files = SelectMultipleField('Обрані файли', coerce=int, validators=[DataRequired()])
-	created_at = DateTimeField('Дата й час написання', format='%Y-%m-%d %I:%M %p', validators=[DataRequired()])
 	submit = SubmitField('Зберегти пост')

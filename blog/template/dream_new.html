@@ -4,21 +4,29 @@
 
 {% block scripts %}
 	<script src="/resources/scripts/content_script.js"></script>
+	<script src="/resources/scripts/importance_adapter.js"></script>
 {% endblock %}
 
 {% block content %}
 	<main>
-		<form id="dreamForm" action="{{ url_for('save_dream_route') }}" method="post" enctype="multipart/form-data">
-			{{ form.hidden_tag() }}
+		<div class="article-container" data-importance="{{ form.importance.data }}">
+			<article class="diary-entry">
+				<form id="dreamForm" action="{{ url_for('save_dream_route') }}" method="post" enctype="multipart/form-data">
+					{{ form.hidden_tag() }}
 
-			{{ form.title(placeholder="Заголовок", required=true) }}
-			{{ form.mood(placeholder="Що ти думаєш про сон? Який настрій після сну?", required=true) }}
-			{{ form.tags(placeholder="Теги", required=true) }}
-			{{ form.importance(required=true) }}
-			{{ form.content(placeholder="Сновидіння", oninput="auto_grow(this)", required=true) }}
-			{{ form.dreamed_at(type="datetime-local", required=true) }}
+					{{ form.title(placeholder="Заголовок", required=true) }}
+					{{ form.mood(placeholder="Що ти думаєш про сон? Який настрій після сну?", required=true) }}
+					{{ form.tags(placeholder="Теги", required=true) }}
+					{{ form.importance(required=true) }}
+					{{ form.dreamed_at(type="datetime-local", required=true) }}
 
-			{{ form.submit() }}
-		</form>
+					<hr class="divider">
+
+					{{ form.content(placeholder="Сновидіння", oninput="auto_grow(this)", required=true) }}
+
+					{{ form.submit() }}
+				</form>
+			</article>
+		</div>
 	</main>
 {% endblock %}

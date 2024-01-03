@@ -14,7 +14,7 @@ class UpdateDreamForm(FlaskForm):
 			('Super Rare', 'Якість: Дуже цікавий сон'),
 			('Ultra Rare', 'Якість: Епічний тривалий сон із крутим сюжетом')
 		],
-		default='0',
+		default='Normal',
 		validators=[DataRequired()]
 	)
 	content = TextAreaField('Сновидіння', validators=[DataRequired()])

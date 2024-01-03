@@ -14,7 +14,7 @@ class UpdatePostForm(FlaskForm):
 			('Super Rare', 'Важливість: Дуже важливий пост'),
 			('Ultra Rare', 'Важливість: Настають великі зміни')
 		],
-		default='0',
+		default='Normal',
 		validators=[DataRequired()]
 	)
 	content = TextAreaField('Текст запису', validators=[DataRequired()])
