@@ -11,10 +11,6 @@ from post_update_form import UpdatePostForm
 from dream_create_form import CreateDreamForm
 from dream_update_form import UpdateDreamForm
 
-# Исправления багов в HTML и CSS
-# todo + Исправить новые баги в навигационной панели
-# todo + нарисовать favicom
-
 # Оптимизаци
 # todo - сделать подгрузку постов, сновидений, файлов и картинок для оптимизации
 # todo - решить проблему с регистрозависимым поиском постов и сновидений
@@ -25,7 +21,7 @@ from dream_update_form import UpdateDreamForm
 #  2) Тёмная-светлая тема
 #  3) Включение мемного режима ;)
 #  4) Отключение всех стилей
-# todo - сделать отображение пяти последних сновидений на главной странице
+# todo + сделать отображение пяти последних сновидений на главной странице
 
 # Завершение проекта
 # todo - после завершения разработки адаптировать дизайн под телефоны
@@ -75,10 +71,12 @@ def logout():
 @app.route('/')
 def home():
 	posts_content = get_posts(5)
+	dreams_content = get_dreams(5)
 	return render_template(
 		'index.html',
 		active_tab='',
 		posts_content=posts_content,
+		dreams_content=dreams_content,
 		is_admin=is_admin()
 	)
 
@@ -121,7 +119,7 @@ def post(post_title):
 
 @app.route('/dream_diary')
 def dream_diary():
-	dreams_content = get_dreams()
+	dreams_content = get_dreams(0)
 	return render_template(
 		'dream_diary.html',
 		active_tab='dream_diary',
@@ -632,9 +630,9 @@ def extract_post_metadata(post_obj):
 		'files': [{'id': file.id, 'name': file.name, 'type': file.type} for file in post_obj.files]
 	}
 
-def get_dreams():
+def get_dreams(dream_limit):
 	with Database() as db:
-		dreams = db.get_all_dreams()
+		dreams = db.get_all_dreams(limit=dream_limit)
 		dreams_metadata = [extract_dream_metadata(dream_metadata) for dream_metadata in dreams]
 
 	return dreams_metadata

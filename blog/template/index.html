@@ -62,7 +62,14 @@
 			</article>
 		</div>
 
+		<h1 class="title" align="center">П'ять останніх постів</h1>
+
 		{% set posts_list_content=posts_content %}
 		{% include 'post_list.html' %}
+
+		<h1 class="title" align="center">П'ять останніх сновидінь</h1>
+
+		{% set dreams_list_content=dreams_content %}
+		{% include 'dream_list.html' %}
 	</main>
 {% endblock %}

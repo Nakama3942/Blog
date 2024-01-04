@@ -170,8 +170,11 @@ class Database:
 	def get_dream(self, title):
 		return self.session.query(Dreams).filter_by(title=title).first()
 
-	def get_all_dreams(self):
-		return self.session.query(Dreams).order_by(desc(Dreams.dreamed_at)).all()
+	def get_all_dreams(self, limit):
+		if limit == 0:
+			return self.session.query(Dreams).order_by(desc(Dreams.dreamed_at)).all()
+		else:
+			return self.session.query(Dreams).order_by(desc(Dreams.dreamed_at)).limit(limit).all()
 
 	def check_dream(self, title):
 		return self.session.query(Dreams.title).filter_by(title=title).scalar() is None
