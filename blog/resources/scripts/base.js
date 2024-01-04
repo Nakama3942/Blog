@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		'/dream': 'blogMenu',
 		'/new_dream': 'blogMenu',
 		'/update_dream': 'blogMenu',
-		'/viary': 'viaryMenu',
+		'/viary/PL2MbnZfZV5Ku1yAsuDXz3h4bCOYDn2eJh': 'viaryMenu',
 		'/arts': 'galleryMenu',
 		'/screenshots': 'galleryMenu',
 		'/photos': 'galleryMenu',
@@ -95,14 +95,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// Получаем текущий путь
 	var currentPath = window.location.pathname;
-	currentPath = Object.keys(menuMap).find(path => currentPath.startsWith(path));
+	var menuPath = Object.keys(menuMap).find(path => currentPath.startsWith(path));
 
 	// Проверяем, если newPath это один из '/attached_files', '/post', '/new_post' или '/update_post'
-	if (['/attached_files', '/post', '/new_post', '/update_post'].includes(currentPath)) {
+	if (['/attached_files', '/post', '/new_post', '/update_post'].includes(menuPath)) {
 		currentPath = '/post_diary';
 	}
 
-	if (['/dream', '/new_dream', '/update_dream'].includes(currentPath)) {
+	if (['/dream', '/new_dream', '/update_dream'].includes(menuPath)) {
 		currentPath = '/dream_diary';
 	}
 

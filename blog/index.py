@@ -12,9 +12,8 @@ from dream_create_form import CreateDreamForm
 from dream_update_form import UpdateDreamForm
 
 # Исправления багов в HTML и CSS
-# todo + разбить стили на несколько файлов
-# todo - Исправить новые баги в навигационной панели
-# todo - нарисовать favicom
+# todo + Исправить новые баги в навигационной панели
+# todo + нарисовать favicom
 
 # Оптимизаци
 # todo - сделать подгрузку постов, сновидений, файлов и картинок для оптимизации
