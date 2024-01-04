@@ -2,6 +2,12 @@
 
 {% block title %}{{ post_content['title'] }} - Блог Калиновського{% endblock %}
 
+{% block styles %}
+	<link href="/resources/style/frame.css" rel="stylesheet">
+	<link href="/resources/style/diary_entry.css" rel="stylesheet">
+	<link href="/resources/style/form.css" rel="stylesheet">
+{% endblock %}
+
 {% block scripts %}
 	<script src="/resources/scripts/content_script.js"></script>
 	<script src="/resources/scripts/importance_adapter.js"></script>

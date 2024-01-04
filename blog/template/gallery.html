@@ -2,8 +2,15 @@
 
 {% block title %}{{ page_data['title'] }} - Блог Калиновського{% endblock %}
 
+{% block styles %}
+	<link href="/resources/style/button.css" rel="stylesheet">
+	<link href="/resources/style/file_list.css" rel="stylesheet">
+	<link href="/resources/style/image_modal.css" rel="stylesheet">
+	<link href="/resources/style/snackbar.css" rel="stylesheet">
+{% endblock %}
+
 {% block scripts %}
-<script src="/resources/scripts/gallery.js"></script>
+	<script src="/resources/scripts/gallery.js"></script>
 {% endblock %}
 
 {% block content %}

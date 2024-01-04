@@ -2,13 +2,20 @@
 
 {% block title %}Мій особистий Блог - Блог Калиновського{% endblock %}
 
+{% block styles %}
+	<link href="/resources/style/frame.css" rel="stylesheet">
+	<link href="/resources/style/biography.css" rel="stylesheet">
+	<link href="/resources/style/diary.css" rel="stylesheet">
+	<link href="/resources/style/tag_list.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 	<main>
 		<div class="article-container" data-importance="Ultra Rare">
 			<article class="biography">
 				<h1 class="title">Про себе</h1>
 				<p class="foto">
-					<img src="../resources/images/Me.jpg" alt="Моя фотография" width="300px">
+					<img src="/resources/images/Me.jpg" alt="Моя фотография" width="300px">
 				</p>
 				<p>Мене звати Калиновський Валентин, але мої друзі звуть мене просто Валік. Розкажу трохи про себе.</p>
 				<p>Народився я 2001 року. Познайомився з комп'ютером у 5 років, з 10 років почав самостійно вивчати комп'ютерну грамотність (інтернету тоді ще не було, а в маленькому місті в ньому не було потреби, тому мені довелося вчитися на своїх помилках). Python став моєю першою мовою. Я почав вивчати його ще в січні 2018 року під час зимових канікул, але далеко не зайшов (не міг багато навчатися), а потім повернувся в училище і був змушений закинути його на наступні півтора року. У 2020 році я вступив до ЦНТУ (Центральноукраїнського Національного Технічного Університету) на спеціальність <i>Комп'ютерна інженерія</i>. На даний момент я активно вивчаю C++, Python і фреймворк Qt.</p>

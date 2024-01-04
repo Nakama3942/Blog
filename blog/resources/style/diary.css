@@ -1,0 +1,43 @@
+/*
+ * Стили для страницы списка постов и сновидений
+ */
+
+.diary-item {
+	/* Стили для article */
+	border: 1px solid #ccc;
+	padding: 20px;
+	border-radius: 8px;
+	background-color: rgba(255, 255, 255, 0.8);
+	font-family: 'Montserrat', sans-serif;
+}
+.diary-item a {
+	text-decoration: none;
+	color: #3498db; /* Синий цвет для ссылок на посты */
+}
+.diary-item a:hover {
+	text-decoration: underline;
+}
+.diary-item .entry-title {
+	/* Стили для вложенного p с классом post-description */
+	margin: 8px 0px;
+	margin-top: 0px;
+	font-size: 24px;
+}
+.diary-item .entry-description {
+	/* Стили для вложенного p с классом post-description */
+	margin:8px 0px;
+	font-size: 16px;
+	color: #333;
+}
+.diary-item .tags {
+	margin: 8px 0px;
+	font-size: 16px;
+	color: #333;
+}
+.diary-item .entry-date {
+	/* Стили для вложенного p с классом post-date */
+	margin: 8px 0px;
+	margin-bottom: 0px;
+	font-size: 14px;
+	color: #555;
+}

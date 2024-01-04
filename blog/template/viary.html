@@ -2,12 +2,17 @@
 
 {% block title %}Відео-щоденник - Блог Калиновського{% endblock %}
 
+{% block styles %}
+	<link href="/resources/style/frame.css" rel="stylesheet">
+	<link href="/resources/style/video_container.css" rel="stylesheet">
+{% endblock %}
+
 {% block scripts %}
 	<script src="/resources/scripts/viary.js"></script>
 {% endblock %}
 
 {% block content %}
 	<main id="videoBlog" youtube-api-key="{{ youtube_api_key }}" playlist-id="{{ playlist_id }}">
-        <!-- Здесь будут плееры -->
-    </main>
+		<!-- Здесь будут плееры -->
+	</main>
 {% endblock %}

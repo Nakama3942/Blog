@@ -1,0 +1,115 @@
+/*
+ * Стили для модального окна обзорщика изображений
+ */
+
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	padding-top: 50px;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 94.2%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+.modal-content {
+	margin: auto;
+	margin-top: 50px;
+	display: block;
+	width: auto;
+	max-width: 80%;
+	max-height: 80vh; /* 80% высоты экрана */
+	/*max-width: 800px;*/
+	margin-bottom: 50px; /* Добавляем отступ снизу */
+}
+#postsList {
+	background-color: #333; /* Непрозрачный фон */
+	color: #ddd; /* Цвет текста */
+	font-size: 18px;
+	line-height: 2; /* Межстрочный интервал */
+	padding: 10px; /* Поля вокруг текста */
+}
+#postsList a {
+	display: inline-block; /* Чтобы элемент занимал всю ширину строки */
+	width: 100%;
+	box-sizing: border-box; /* Это свойство учитывает padding в расчетах ширины элемента */
+	color: #007bff; /* Цвет ссылок */
+	text-decoration: none; /* Убираем подчеркивание у ссылок */
+	padding: 6px;
+	border-radius: 5px; /* Закругляем углы */
+}
+#postsList br {
+	margin-bottom: 12px;
+}
+#postsList a:hover {
+	background-color: #444; /* Изменяем фон при наведении на ссылку */
+}
+.close {
+	position: fixed;
+	top: 15px;
+	right: 35px;
+	width: 50px; /* Задаем фиксированную ширину */
+	height: 50px; /* Задаем фиксированную высоту */
+	text-indent: 15px; /* Сдвигаем текст вправо на 40 пикселей */
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: 50%;
+	color: #f1f1f1;
+	font-size: 40px;
+	font-weight: bold;
+	cursor: pointer;
+}
+/* Стиль кнопки загрузки */
+.download {
+	position: fixed;
+	top: 15px;
+	right: 95px; /* Подвигаем кнопку загрузки левее */
+	width: 50px; /* Задаем фиксированную ширину */
+	height: 50px; /* Задаем фиксированную высоту */
+	text-indent: 15px; /* Сдвигаем текст вправо на 40 пикселей */
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: 50%;
+	color: #f1f1f1;
+	font-size: 40px;
+	font-weight: bold;
+	cursor: pointer;
+}
+/* Стиль кнопки удаления */
+.delete {
+	position: fixed;
+	top: 15px;
+	right: 155px; /* Подвигаем кнопку загрузки левее */
+	width: 50px; /* Задаем фиксированную ширину */
+	height: 50px; /* Задаем фиксированную высоту */
+	text-indent: 0px; /* Сдвигаем текст вправо на 40 пикселей */
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: 50%;
+	color: #f1f1f1;
+	font-size: 40px;
+	font-weight: bold;
+	cursor: pointer;
+}
+.prev, .next {
+	position: fixed;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 50px;
+	height: 50px;
+	margin: 50px; /* Добавляем отступы */
+	line-height: 50px; /* Центрируем текст (иконку) по вертикали */
+	text-indent: 10px; /* Сдвигаем текст вправо на 40 пикселей */
+	font-size: 40px;
+	color: #f1f1f1;
+	font-weight: bold;
+	background-color: rgba(0, 0, 0, 0.5);
+	cursor: pointer;
+	border-radius: 50%;
+	z-index: 2;
+}
+.next {
+	right: 0;
+}
+.close:hover, .download:hover, .prev:hover, .next:hover {
+	background-color: rgba(0, 0, 0, 0.8);
+}
