@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
 	var modal = document.getElementById('myModal');
 	var modalImg = document.getElementById('img01');
+	var currentImageIndex;
+
+	var settings = document.querySelectorAll('.settings-panel');
 
 	// Флаг, показывающий, открыто ли модальное окно
 	var modalOpen = false;
-
-	var currentImageIndex;
 
 	// При клике на изображение открываем модальное окно
 	document.querySelectorAll('.open-modal').forEach(function (element) {
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			currentImageIndex = parseInt(this.getAttribute('data-index')); // Сохраняем текущий индекс изображения
 			modalImg.src = imgSrc;
 			modal.style.display = 'block';
+			settings[0].style.display = 'none';
 			modalOpen = true;
 		});
 	});
@@ -22,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Закрываем модальное окно при клике на крестик
 	document.querySelector('.close').addEventListener('click', function () {
 		modal.style.display = 'none';
+		settings[0].style.display = 'block';
 		modalOpen = false;
 	});
 

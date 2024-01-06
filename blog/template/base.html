@@ -10,9 +10,11 @@
 		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 		<!--Стили-->
 		<link href="/resources/style/base.css" rel="stylesheet">
+		<link href="/resources/style/settings_panel.css" rel="stylesheet">
 		{% block styles %}{% endblock %}
 		<!--Скрипты-->
 		<script src="/resources/scripts/base.js"></script>
+		<script src="/resources/scripts/settings.js"></script>
 		{% block scripts %}{% endblock %}
 	</head>
 	<body>
@@ -52,6 +54,27 @@
 				<a href="/codesnaps">CodeSnaps</a>
 			</div>
 		</nav>
+
+		<!-- Переключатели в правом верхнем углу -->
+		<div class="settings-panel">
+			<!-- Здесь будут ваши переключатели или другие настройки -->
+			<div class="toggle-wrapper" toggle-color="rgba(255, 85, 0, 0.8)">
+				<input type="checkbox" class="toggle" id="option1" name="private" onclick="framing(this)">
+				<label for="option1" class="toggle-icon">🎨 ☁️</label>
+			</div>
+			<div class="toggle-wrapper" toggle-color="rgba(0, 170, 0, 0.8)">
+				<input type="checkbox" class="toggle" id="option2" name="private" onclick="theming(this)">
+				<label for="option2" class="toggle-icon">☀️ 🌙</label>
+			</div>
+			<div class="toggle-wrapper" toggle-color="rgba(170, 0, 0, 0.8)">
+				<input type="checkbox" class="toggle" id="option3" name="private" onclick="meming(this)">
+				<label for="option3" class="toggle-icon">😁 🥱</label>
+			</div>
+			<div class="toggle-wrapper" toggle-color="rgba(0, 0, 170, 0.8)">
+				<input type="checkbox" class="toggle" id="option4" name="private" onclick="styling(this)">
+				<label for="option4" class="toggle-icon">😱 🧐</label>
+			</div>
+		</div>
 
 		{% block content %}{% endblock %}
 

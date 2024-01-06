@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	var modalList = document.getElementById('postsList');
 	var currentFileName;
 
+	var settings = document.querySelectorAll('.settings-panel');
+
 	// Флаг, показывающий, открыто ли модальное окно
 	var modalOpen = false;
 
@@ -23,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			// Используйте innerHTML для вставки HTML-разметки в элемент
 			modalList.innerHTML = `Файл <b>${currentFileName}</b> закріплено за постами:<br>${postLinks}`;
 			modal.style.display = 'block';
+			settings[0].style.display = 'none';
 			modalOpen = true;
 		});
 	});
@@ -30,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Закрываем модальное окно при клике на крестик
 	document.querySelector('.close').addEventListener('click', function () {
 		modal.style.display = 'none';
+		settings[0].style.display = 'block';
 		modalOpen = false;
 	});
 
