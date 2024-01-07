@@ -10,4 +10,15 @@ document.addEventListener('DOMContentLoaded', function () {
 		// Устанавливаем значение data-importance атрибута для div в соответствии с выбранным значением в select
 		articleContainer.setAttribute('data-importance', importanceSelect.value);
 	});
+
+	// Получаем элемент первого тогла с id 'firstToggle'
+	var framingToggle = document.getElementById('framing');
+
+	// Проверяем наличие первого тогла
+	if (framingToggle) {
+		// Включаем первый тогл
+		framingToggle.checked = false;
+		// Блокируем возможность переключения первого тогла
+		framingToggle.disabled = true;
+	}
 });

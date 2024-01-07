@@ -69,42 +69,26 @@
 }
 
 /*Пасхалочка в анимации*/
-/*
-.article-container {
-	position: relative;
-	overflow: hidden;
-	border-radius: 8px;
-	padding: 6px;
-	margin-bottom: 20px;
-	z-index: 0;
-}
-.article-container:last-child {
-	margin-bottom: 0;
-}
-.article-container::after {
-	content:'';
-	position: absolute;
-	z-index: -1;
-	top: -.125em;
-	left: -.125em;
+
+.article-container[meme-article]::after {
 	width: calc(100% + .25em);
 	height: calc(100% + .25em);
-	border-radius: .25em;
+	background-size: 100%;
 	animation: rotateColors 10s linear infinite;
 }
-.article-container[data-importance="Normal"]::after {
+.article-container[meme-article][data-importance="Normal"]::after {
 	background-image: conic-gradient(from 0deg, #999999, #e0e0e0);
 }
-.article-container[data-importance="Rare"]::after {
+.article-container[meme-article][data-importance="Rare"]::after {
 	background-image: conic-gradient(from 0deg, #5ab8ff, #c9eaff);
 }
-.article-container[data-importance="Elite"]::after {
+.article-container[meme-article][data-importance="Elite"]::after {
 	background-image: conic-gradient(from 0deg, #8c6ff0, #ebd2ff);
 }
-.article-container[data-importance="Super Rare"]::after {
+.article-container[meme-article][data-importance="Super Rare"]::after {
 	background-image: conic-gradient(from 0deg, #d9ca66, #f6f3b7);
 }
-.article-container[data-importance="Ultra Rare"]::after {
+.article-container[meme-article][data-importance="Ultra Rare"]::after {
 	background-image: conic-gradient(from 0deg, #faffca, #baffc0, #a9f1f8, #d3cdff, #feacff);
 }
 @keyframes rotateColors {
@@ -112,4 +96,3 @@
 		transform: rotate(1turn);
 	}
 }
-*/

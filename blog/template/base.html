@@ -19,11 +19,16 @@
 	</head>
 	<body>
 		<header>
-			<h1>Калиновський Валентин</h1>
-			<h2>Мій Особистий Блог</h2>
-			{% if is_admin %}
-				<p>Привіт, Вальок!</p>
-			{% endif %}
+			<div class="avatar-container">
+				<img src="/resources/images/avatar.jpg" alt="Аватарка">
+			</div>
+			<div class="header-text">
+				<h1>Калиновський Валентин</h1>
+				<h2>Мій Особистий Блог</h2>
+				{% if is_admin %}
+					<p>Привіт, Вальок!</p>
+				{% endif %}
+			</div>
 		</header>
 
 		<nav id="mainNav">
@@ -55,24 +60,22 @@
 			</div>
 		</nav>
 
-		<!-- Переключатели в правом верхнем углу -->
 		<div class="settings-panel">
-			<!-- Здесь будут ваши переключатели или другие настройки -->
+			<div class="toggle-wrapper" toggle-color="rgba(170, 0, 0, 0.8)">
+				<input type="checkbox" class="toggle" id="styling" name="private" onclick="styling(this)">
+				<label for="styling" class="toggle-icon">😱 🧐</label>
+			</div>
 			<div class="toggle-wrapper" toggle-color="rgba(255, 85, 0, 0.8)">
-				<input type="checkbox" class="toggle" id="option1" name="private" onclick="framing(this)">
-				<label for="option1" class="toggle-icon">🎨 ☁️</label>
+				<input type="checkbox" class="toggle" id="meming" name="private" onclick="meming(this)">
+				<label for="meming" class="toggle-icon">🥱 😁</label>
 			</div>
 			<div class="toggle-wrapper" toggle-color="rgba(0, 170, 0, 0.8)">
-				<input type="checkbox" class="toggle" id="option2" name="private" onclick="theming(this)">
-				<label for="option2" class="toggle-icon">☀️ 🌙</label>
+				<input type="checkbox" class="toggle" id="theming" name="private" onclick="theming(this)">
+				<label for="theming" class="toggle-icon">☀️ 🌙</label>
 			</div>
-			<div class="toggle-wrapper" toggle-color="rgba(170, 0, 0, 0.8)">
-				<input type="checkbox" class="toggle" id="option3" name="private" onclick="meming(this)">
-				<label for="option3" class="toggle-icon">😁 🥱</label>
-			</div>
-			<div class="toggle-wrapper" toggle-color="rgba(0, 0, 170, 0.8)">
-				<input type="checkbox" class="toggle" id="option4" name="private" onclick="styling(this)">
-				<label for="option4" class="toggle-icon">😱 🧐</label>
+			<div class="toggle-wrapper" toggle-color="rgba(0, 170, 0, 0.8)">
+				<input type="checkbox" class="toggle" id="framing" name="private" onclick="framing(this)">
+				<label for="framing" class="toggle-icon">🎨 ☁️</label>
 			</div>
 		</div>
 
@@ -83,7 +86,7 @@
 				<div class="column-left">
 					<h3>&copy; 2023-2024 Калиновський Валентин</h3>
 					<p>Студент-програміст</p>
-					<p>23 роки, холостий</p>
+					<p meme>23 роки, холостий</p>
 					<p>3 роки стажу програмування</p>
 					<p>
 						<img alt="Static Badge" src="https://img.shields.io/badge/Gmail-nakama3942?style=for-the-badge&logo=gmail&label=nakama3942%40gmail.com&color=202020">
