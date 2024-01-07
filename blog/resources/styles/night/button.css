@@ -1,0 +1,60 @@
+/*
+ * Стили для кнопок
+ */
+
+.button-container {
+    display: flex;
+}
+.button-container > *:not(:last-child) {
+    margin-right: 10px; /* Отступ справа между всеми элементами кроме последнего */
+}
+.button-container button,
+.button-container input[type="file"] {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 15px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+	font-family: 'Montserrat', sans-serif;
+}
+.button-container button.button-add {
+	background-color: #3498db; /* Зеленый цвет для кнопки "Добавить пост" */
+	color: white;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+.button-container button.button-add:hover {
+	background-color: #2980b9; /* Зеленый цвет для кнопки "Добавить пост" */
+}
+.button-container button.button-file {
+	background-color: #3498db; /* Зеленый цвет для кнопки "Добавить пост" */
+	color: white;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+.button-container button.button-file:hover {
+	background-color: #2980b9; /* Зеленый цвет для кнопки "Добавить пост" */
+}
+.button-container button.button-update {
+	background-color: #f1c40f; /* Красный цвет для кнопки "Удалить пост" */
+	color: white;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+.button-container button.button-update:hover {
+	background-color: #d4ac0d; /* Красный цвет для кнопки "Удалить пост" */
+}
+.button-container button.button-delete {
+	background-color: #e74c3c; /* Красный цвет для кнопки "Удалить пост" */
+	color: white;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+.button-container button.button-delete:hover {
+	background-color: #c0392b; /* Красный цвет для кнопки "Удалить пост" */
+}
+/* Дополнительные стили для элемента input[type="file"] */
+.button-container input[type="file"] {
+	padding: 10px;
+}

@@ -1,0 +1,15 @@
+/*
+ * Стили для анимации рамок
+ */
+
+.article-container {
+	position: relative;
+	overflow: hidden;
+	border-radius: 8px;
+	padding: 1px;
+	margin-bottom: 12px; /* Добавьте отступ сразу ко всем элементам */
+	z-index: 0; /* Установите явный z-index */
+}
+.article-container:last-child {
+	margin-bottom: 0; /* Уберите отступ у последнего элемента */
+}

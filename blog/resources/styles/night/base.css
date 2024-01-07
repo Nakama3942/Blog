@@ -1,0 +1,102 @@
+/*
+ * Ядро стилей для всего блога
+ */
+
+body {
+	font-family: 'Lato', sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #666;
+}
+
+header {
+	background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1em;
+    position: relative; /* Установка относительной позиции */
+}
+.avatar-container {
+    width: 150px; /* Размер кружка */
+    height: 150px;
+    overflow: hidden; /* Обрезать изображение, чтобы оно не выходило за границы кружка */
+    border-radius: 50%; /* Создание кружка */
+    position: absolute; /* Абсолютное позиционирование */
+    left: 1em; /* Размещение слева от родительского элемента */
+    top: 50%; /* Размещение по вертикали в центре родительского элемента */
+    transform: translateY(-50%); /* Коррекция вертикального выравнивания */
+}
+.avatar-container img {
+    width: 100%; /* Заполнить весь кружок изображением */
+    height: auto;
+    border-radius: 50%; /* Поддержание круглой формы */
+}
+.header-text {
+    flex-grow: 1; /* Растягивание текстового блока на всю доступную ширину */
+}
+
+#mainNav {
+	background-color: #454545;
+	padding: 1em;
+	text-align: center;
+}
+#docsMenu,
+#blogMenu,
+#viaryMenu,
+#galleryMenu,
+#codeMenu {
+	display: none;
+	flex-basis: 100%;
+	flex-direction: column;
+	margin-top: 30px; /* или другое значение отступа сверху */
+}
+#mainNav a,
+#docsMenu a,
+#blogMenu a,
+#viaryMenu a,
+#galleryMenu a,
+#codeMenu a {
+	margin: 5px;
+	padding: 10px;
+	background-color: #e4e4e4;
+	text-decoration: none;
+	color: #333;
+	border-radius: 5px;
+}
+/* Change the color of links on hover */
+#mainNav a:hover {
+	background-color: #aaa;
+	color: black;
+	transition: background-color 0.5s ease, color 0.5s ease;
+}
+/* Add a color to the active/current link */
+#mainNav a.active {
+	background-color: #bbb;
+	color: black;
+}
+
+main {
+	max-width: 800px;
+	min-height: 400px;
+	margin: 20px auto;
+	padding: 20px;
+	background-color: #777;
+}
+
+footer {
+	padding: 1em;
+	background-color: #333;
+	color: #fff;
+}
+.footer-container {
+	display: flex;
+	justify-content: space-between;
+}
+.column-left {
+	padding-left: 50px;
+	width: 48%; /* Задайте ширину колонок по вашему усмотрению */
+}
+.column-right {
+	text-align: center;
+	width: 48%; /* Задайте ширину колонок по вашему усмотрению */
+}

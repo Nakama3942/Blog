@@ -105,7 +105,19 @@ function theming(toggleId) {
 }
 
 function applyThemes(isChecked) {
-	// Пока не готово
+	const links = document.querySelectorAll('link[rel="stylesheet"]');
+
+	links.forEach(link => {
+		let href = link.getAttribute('href');
+
+		if (isChecked) {
+			href = href.replace('/light/', '/night/');
+		} else {
+			href = href.replace('/night/', '/light/');
+		}
+
+		link.setAttribute('href', href);
+	});
 }
 
 function framing(toggleId) {

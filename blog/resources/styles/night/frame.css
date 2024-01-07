@@ -1,0 +1,98 @@
+/*
+ * Стили для анимации рамок
+ */
+
+/*:root {
+	--color-normal: #cccccc;
+	--color-rare: #9fe8ff;
+	--color-elite: #c4adff;
+	--color-super-rare: #eeee99;
+	--color-ultra-rare: linear-gradient(to #faffca, #baffc0, #a9f1f8, #d3cdff, #feacff);
+}*/
+.article-container {
+	position: relative;
+	overflow: hidden;
+	border-radius: 8px;
+	padding: 6px;
+	margin-bottom: 20px; /* Добавьте отступ сразу ко всем элементам */
+	z-index: 0; /* Установите явный z-index */
+}
+.article-container:last-child {
+	margin-bottom: 0; /* Уберите отступ у последнего элемента */
+}
+.article-container::after {
+	content:'';
+	position: absolute;
+	z-index: -1;
+	top: -.125em;
+	left: -.125em;
+	width: calc(100% + .25em);
+	height: calc(100% + .25em);
+	border-radius: .25em;
+	background-size: 200%;
+	animation: animateborder 10s ease infinite; /* Анимация вращения в течение 10 секунд */
+}
+.article-container[data-importance="Normal"]::after {
+	background-image: linear-gradient(135deg, #999999, #e0e0e0);
+}
+.article-container[data-importance="Rare"]::after {
+	background-image: linear-gradient(135deg, #5ab8ff, #c9eaff);
+}
+.article-container[data-importance="Elite"]::after {
+	background-image: linear-gradient(135deg, #8c6ff0, #ebd2ff);
+}
+.article-container[data-importance="Super Rare"]::after {
+	background-image: linear-gradient(135deg, #d9ca66, #f6f3b7);
+}
+.article-container[data-importance="Ultra Rare"]::after {
+	background-image: linear-gradient(135deg, #faffca, #baffc0, #a9f1f8, #d3cdff, #feacff);
+}
+@keyframes animateborder {
+	0% {
+		background-position: 0%;
+	}
+	5% {
+		background-position: 0%;
+	}
+	45% {
+		background-position: 100%;
+	}
+	55% {
+		background-position: 100%;
+	}
+	95% {
+		background-position: 0%;
+	}
+	100% {
+		background-position: 0%;
+	}
+}
+
+/*Пасхалочка в анимации*/
+
+.article-container[meme-article]::after {
+	width: calc(100% + .25em);
+	height: calc(100% + .25em);
+	background-size: 100%;
+	animation: rotateColors 10s linear infinite;
+}
+.article-container[meme-article][data-importance="Normal"]::after {
+	background-image: conic-gradient(from 0deg, #999999, #e0e0e0);
+}
+.article-container[meme-article][data-importance="Rare"]::after {
+	background-image: conic-gradient(from 0deg, #5ab8ff, #c9eaff);
+}
+.article-container[meme-article][data-importance="Elite"]::after {
+	background-image: conic-gradient(from 0deg, #8c6ff0, #ebd2ff);
+}
+.article-container[meme-article][data-importance="Super Rare"]::after {
+	background-image: conic-gradient(from 0deg, #d9ca66, #f6f3b7);
+}
+.article-container[meme-article][data-importance="Ultra Rare"]::after {
+	background-image: conic-gradient(from 0deg, #faffca, #baffc0, #a9f1f8, #d3cdff, #feacff);
+}
+@keyframes rotateColors {
+	to {
+		transform: rotate(1turn);
+	}
+}
