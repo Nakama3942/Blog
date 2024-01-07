@@ -6,10 +6,7 @@ from datetime import datetime
 import os
 
 from database import Database
-from post_create_form import CreatePostForm
-from post_update_form import UpdatePostForm
-from dream_create_form import CreateDreamForm
-from dream_update_form import UpdateDreamForm
+from forms import CreatePostForm, UpdatePostForm, CreateDreamForm, UpdateDreamForm
 
 # Оптимизаци
 # todo - сделать подгрузку постов, сновидений, файлов и картинок для оптимизации
