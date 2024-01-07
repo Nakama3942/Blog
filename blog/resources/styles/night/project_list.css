@@ -2,34 +2,4 @@
  * Стили для списка проектов
  */
 
-.project-item {
-	/* Стили для article */
-	position: relative;
-	padding: 20px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	background-color: rgba(255, 255, 255, 0.8);
-	font-family: 'Montserrat', sans-serif;
-}
-.project-item a {
-	text-decoration: none;
-	color: #3498db; /* Синий цвет для ссылок на посты */
-}
-.project-item a:hover {
-	text-decoration: underline;
-}
-.project-item .project-title {
-	/* Стили для вложенного p с классом post-description */
-	margin: 10px 0px;
-	font-size: 24px;
-}
-.project-item .project-description {
-	/* Стили для вложенного p с классом post-description */
-	font-size: 16px;
-	color: #333;
-}
-.project-item .project-date {
-	/* Стили для вложенного p с классом post-date */
-	font-size: 14px;
-	color: #555;
-}
+

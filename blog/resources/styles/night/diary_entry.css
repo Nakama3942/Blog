@@ -2,45 +2,4 @@
  * Стили для страницы содержимого поста и сновидения
  */
 
-.diary-entry {
-	position: relative;
-	border: 1px solid #ddd;
-	padding: 20px;
-	border-radius: 8px;
-	background-color: rgba(255, 255, 255, 0.8);
-	font-family: 'Montserrat', sans-serif;
-}
-.diary-entry .title {
-	margin: 10px 0px;
-	text-align: center;
-	font-size: 36px;
-}
-.diary-entry .description {
-	margin: 10px 0px;
-	font-size: 18px;
-}
-.diary-entry .tags {
-	font-size: 18px;
-}
-.diary-entry .date {
-	margin: 10px 0px;
-	text-align: right;
-	font-size: 16px;
-}
-.diary-entry .importance {
-	margin: 10px 0px;
-	text-align: right;
-	font-size: 16px;
-}
-.diary-entry .divider {
-	border: 0;
-	border-top: 1px solid #ddd;
-	margin: 0px 0px 15px 0px;
-}
-.diary-entry .content {
-	font-size: 16px;
-	line-height: 1.6;
-}
-.diary-entry .content .image {
-	text-align: center;
-}
+

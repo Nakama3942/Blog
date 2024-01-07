@@ -107,17 +107,27 @@ function theming(toggleId) {
 function applyThemes(isChecked) {
 	const links = document.querySelectorAll('link[rel="stylesheet"]');
 
-	links.forEach(link => {
-		let href = link.getAttribute('href');
-
-		if (isChecked) {
+	if (isChecked) {
+		links.forEach(link => {
+			let href = link.getAttribute('href');
 			href = href.replace('/light/', '/night/');
-		} else {
-			href = href.replace('/night/', '/light/');
-		}
 
-		link.setAttribute('href', href);
-	});
+			// Добавляем темный стиль, не удаляя светлый
+			if (href.includes('/night/')) {
+				link.insertAdjacentHTML('afterend', `<link href="${href}" rel="stylesheet">`);
+			}
+		});
+	} else {
+		// Удаляем все темные стили
+		links.forEach(link => {
+			const href = link.getAttribute('href');
+
+			// Добавляем темный стиль, не удаляя светлый
+			if (href.includes('/night/')) {
+				link.remove();
+			}
+		});
+	}
 }
 
 function framing(toggleId) {

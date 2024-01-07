@@ -2,36 +2,4 @@
  * Стили для списка тегов
  */
 
-.diary-item .tags,
-.diary-item .tag-list,
-.diary-entry .tags,
-.diary-entry .tag-list {
-  display: inline; /* Добавьте этот стиль */
-  margin: 10px 5px 5px 0px;
-}
-.tag-list {
-  list-style: none; /* Убираем маркеры списка */
-  padding: 0px; /* Убираем отступы вокруг списка */
-}
-.tag-item {
-  display: inline-block; /* Элементы списка в одну строку */
-  border-radius: 8px;
-  margin-right: 5px; /* Расстояние между тегами */
-}
-.tag-item:last-child {
-	margin-right: 0; /* Уберите отступ у последнего элемента */
-}
-.tag-source {
-  display: inline-block; /* Размещаем текст внутри круглой планочки */
-  padding: 5px 10px; /* Задаем отступы внутри круглой планочки */
-  margin: 0px;
-  border-radius: 20px; /* Создаем круглую форму */
-  background-color: rgba(100, 100, 100, 0.2); /* Цвет фона планочки */
-}
-.tag-private-source {
-  display: inline-block; /* Размещаем текст внутри круглой планочки */
-  padding: 5px 10px; /* Задаем отступы внутри круглой планочки */
-  margin: 0px;
-  border-radius: 20px; /* Создаем круглую форму */
-  background-color: rgba(240, 40, 40, 0.2); /* Цвет фона планочки */
-}
+

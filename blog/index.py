@@ -17,6 +17,7 @@ from dream_update_form import UpdateDreamForm
 
 # Завершение проекта
 # todo - после завершения разработки адаптировать дизайн под телефоны
+# todo - сделать тёмную тему
 
 app = Flask(__name__, template_folder='template', static_folder='resources')
 app.config['POST_FOLDER'] = os.path.join(os.getcwd(), 'posts')

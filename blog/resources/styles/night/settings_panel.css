@@ -2,49 +2,10 @@
  * Стили для панели настроек
  */
 
-.settings-panel {
-	position: fixed;
-	top: 0;
-	right: 0;
-	padding: 10px;
-	color: #fff;
-	z-index: 5; /* Установите значение z-index, чтобы элементы были поверх других элементов */
-}
+
 
 /*
  * Стили для переключателя
  */
 
-.toggle-wrapper {
-	display: flex;
-	align-items: center;
-}
-.toggle {
-	appearance: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	width: 60px;
-	height: 34px;
-	margin-right: 15px;
-	background-color: rgba(170, 170, 170, 0.8);
-	border-radius: 20px;
-	position: relative;
-	cursor: pointer;
-}
-.toggle:checked {
-	background-color: var(--toggle-color, #FF5500); /* Используем переменную для цвета фона */
-}
-.toggle::before {
-	position: absolute;
-	content: "";
-	height: 26px;
-	width: 26px;
-	left: 4px;
-	bottom: 4px;
-	background-color: white;
-	border-radius: 50%;
-	transition: transform 0.4s ease;
-}
-.toggle:checked::before {
-	transform: translateX(26px);
-}
+
