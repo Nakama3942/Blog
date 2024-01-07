@@ -36,15 +36,31 @@
 }
 .toggle::before {
 	position: absolute;
-	content: "";
+	content: '';
 	height: 26px;
 	width: 26px;
 	left: 4px;
 	bottom: 4px;
 	background-color: white;
+	background-size: cover; /* Растягиваем изображение на всю площадь ::before */
 	border-radius: 50%;
 	transition: transform 0.4s ease;
 }
+.toggle[icon="css"]::before {
+	background-image: url('/resources/icons/settings/css.svg'); /* Замените '/path/to/your/image.png' на путь к вашему изображению */
+}
+.toggle[icon="mood"]::before {
+	background-image: url('/resources/icons/settings/mood.svg'); /* Замените '/path/to/your/image.png' на путь к вашему изображению */
+}
+.toggle[icon="theme"]::before {
+	background-image: url('/resources/icons/settings/routine.svg'); /* Замените '/path/to/your/image.png' на путь к вашему изображению */
+}
+.toggle[icon="colored"]::before {
+	background-image: url('/resources/icons/settings/colored.svg'); /* Замените '/path/to/your/image.png' на путь к вашему изображению */
+}
 .toggle:checked::before {
 	transform: translateX(26px);
+}
+.toggle-hint {
+	display: none;
 }

@@ -26,7 +26,7 @@
 				<li class="file-item">
 					<a href="javascript:void(0);" class="open-modal" file-name="{{ file.name }}" file-posts-titles="{{ file.posts_titles|safe }}">
 						<div class="thumbnail-container">
-							<img class="file-icon" src="{{ url_for('static', filename='icons/' + file.type + '.png') }}" alt="{{ file.type }} Icon" width="128" height="128">
+							<img class="file-icon" src="{{ url_for('static', filename='icons/type/' + file.type + '.png') }}" alt="{{ file.type }} Icon" width="128" height="128">
 						</div>
 						{{ file.name }}
 					</a>
