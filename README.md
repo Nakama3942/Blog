@@ -1,6 +1,6 @@
 # Blog
 ## Content
-- [ALGOR](#blog)
+- [Blog](#blog)
 	- [Content](#content)
 	- [Overview](#overview)
 	- [LICENSE](#license)
@@ -11,7 +11,7 @@ My personal blog.
 ## LICENSE
 The full text of the license can be found at the following [link](https://github.com/Nakama3942/Blog/blob/main/LICENSE).
 
-> Copyright © 2021-2022 Kalynovsky Valentin. All rights reserved.
+> Copyright © 2023-2024 Kalynovsky Valentin. All rights reserved.
 > 
 > Licensed under the Apache License, Version 2.0 (the "License");
 > you may not use this file except in compliance with the License.
@@ -28,6 +28,17 @@ The full text of the license can be found at the following [link](https://github
 ## Thanks
 Thanks to Krisada for providing the free icon pack. You helped me out a lot!
 https://www.deviantart.com/krisada/art/SATORI-File-Type-Icon-546526945
+
+## Install
+
+```
+pip install flask
+pip install flask-wtf
+pip install python-dotenv
+pip install SQLAlchemy
+pip install markdown2
+pip install Pillow
+```
 
 ## Authors
 <table align="center" style="border-width: 10; border-style: ridge">
