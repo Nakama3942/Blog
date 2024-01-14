@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var playlistId = document.getElementById('videoBlog').getAttribute('playlist-id');
 
     // Количество видео, которые вы хотите отобразить
-    var maxResults = 10;
+    var maxResults = 1000;
 
     // URL для запроса к YouTube Data API
     var apiUrl = 'https://www.googleapis.com/youtube/v3/playlistItems';

@@ -16,24 +16,23 @@ from forms import CreatePostForm, UpdatePostForm, CreateDreamForm, UpdateDreamFo
 # todo - сделать тёмную тему
 
 app = Flask(__name__, template_folder='template', static_folder='resources')
-app.config['POST_FOLDER'] = os.path.join(os.getcwd(), 'posts')
-app.config['FILE_FOLDER'] = os.path.join(os.getcwd(), 'files')
-app.config['DREAM_FOLDER'] = os.path.join(os.getcwd(), 'dreams')
-app.config['ART_FOLDER'] = os.path.join(os.getcwd(), 'gallery/arts')
-app.config['THUMBNAIL_ART_FOLDER'] = os.path.join(os.getcwd(), 'gallery/arts/thumbnails')
-app.config['SCREENSHOT_FOLDER'] = os.path.join(os.getcwd(), 'gallery/screenshots')
-app.config['THUMBNAIL_SCREENSHOT_FOLDER'] = os.path.join(os.getcwd(), 'gallery/screenshots/thumbnails')
-app.config['PHOTO_FOLDER'] = os.path.join(os.getcwd(), 'gallery/photos')
-app.config['THUMBNAIL_PHOTO_FOLDER'] = os.path.join(os.getcwd(), 'gallery/photos/thumbnails')
-app.config['CODESNAPS_FOLDER'] = os.path.join(os.getcwd(), 'gallery/codesnaps')
-app.config['THUMBNAIL_CODESNAPS_FOLDER'] = os.path.join(os.getcwd(), 'gallery/codesnaps/thumbnails')
-
-app.secret_key = 'your_secret_key'  # Секретный ключ для подписи сессий
-ADMIN_KEY = 'admin_key'  # Ваш ключ для доступа к админским функциям
+app.config['POST_FOLDER'] = os.path.join(os.getcwd(), 'content/posts')
+app.config['FILE_FOLDER'] = os.path.join(os.getcwd(), 'content/files')
+app.config['DREAM_FOLDER'] = os.path.join(os.getcwd(), 'content/dreams')
+app.config['ART_FOLDER'] = os.path.join(os.getcwd(), 'content/gallery/arts')
+app.config['THUMBNAIL_ART_FOLDER'] = os.path.join(os.getcwd(), 'content/gallery/arts/thumbnails')
+app.config['SCREENSHOT_FOLDER'] = os.path.join(os.getcwd(), 'content/gallery/screenshots')
+app.config['THUMBNAIL_SCREENSHOT_FOLDER'] = os.path.join(os.getcwd(), 'content/gallery/screenshots/thumbnails')
+app.config['PHOTO_FOLDER'] = os.path.join(os.getcwd(), 'content/gallery/photos')
+app.config['THUMBNAIL_PHOTO_FOLDER'] = os.path.join(os.getcwd(), 'content/gallery/photos/thumbnails')
+app.config['CODESNAPS_FOLDER'] = os.path.join(os.getcwd(), 'content/gallery/codesnaps')
+app.config['THUMBNAIL_CODESNAPS_FOLDER'] = os.path.join(os.getcwd(), 'content/gallery/codesnaps/thumbnails')
 
 ############
 # Администрирование
 ############
+
+app.secret_key = get_key(".env", "SECRET_KEY")  # Секретный ключ для подписи сессий
 
 # Проверка, является ли пользователь администратором
 def is_admin():
@@ -43,7 +42,7 @@ def is_admin():
 @app.route('/login')
 def login():
 	key = request.args.get('key', '')
-	if key == ADMIN_KEY:
+	if key == get_key(".env", "ADMIN_KEY"):
 		session['admin'] = True
 	return redirect(url_for('home'))
 
@@ -652,4 +651,4 @@ def extract_dream_metadata(dream_obj):
 ############
 
 if __name__ == '__main__':
-	app.run(host='192.168.0.102', port=5000, debug=True)
+	app.run(host='192.168.0.102', port=5000, ssl_context=('local.crt', 'local.key'), debug=True)

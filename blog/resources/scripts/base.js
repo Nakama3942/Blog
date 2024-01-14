@@ -128,3 +128,12 @@ document.addEventListener("DOMContentLoaded", function() {
 		}
 	}
 });
+
+// Скрипт для обновления версии
+fetch('https://api.github.com/repos/Nakama3942/Blog/releases/latest')
+.then(response => response.json())
+.then(data => {
+	// Извлекаем версию из ответа и обновляем элемент с id "version"
+	document.getElementById('versionLink').innerText = data.tag_name;
+})
+.catch(error => console.error('Ошибка при получении данных:', error));

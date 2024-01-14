@@ -11,28 +11,35 @@ body {
 
 header {
 	background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 1em;
-    position: relative; /* Установка относительной позиции */
+	color: #fff;
+	text-align: center;
+	padding: 1em;
+	position: relative; /* Установка относительной позиции */
 }
 .avatar-container {
-    width: 150px; /* Размер кружка */
-    height: 150px;
-    overflow: hidden; /* Обрезать изображение, чтобы оно не выходило за границы кружка */
-    border-radius: 50%; /* Создание кружка */
-    position: absolute; /* Абсолютное позиционирование */
-    left: 1em; /* Размещение слева от родительского элемента */
-    top: 50%; /* Размещение по вертикали в центре родительского элемента */
-    transform: translateY(-50%); /* Коррекция вертикального выравнивания */
+	width: 150px; /* Размер кружка */
+	height: 150px;
+	overflow: hidden; /* Обрезать изображение, чтобы оно не выходило за границы кружка */
+	border-radius: 50%; /* Создание кружка */
+	position: absolute; /* Абсолютное позиционирование */
+	left: 1em; /* Размещение слева от родительского элемента */
+	top: 50%; /* Размещение по вертикали в центре родительского элемента */
+	transform: translateY(-50%); /* Коррекция вертикального выравнивания */
 }
 .avatar-container img {
-    width: 100%; /* Заполнить весь кружок изображением */
-    height: auto;
-    border-radius: 50%; /* Поддержание круглой формы */
+	width: 100%; /* Заполнить весь кружок изображением */
+	height: auto;
+	border-radius: 50%; /* Поддержание круглой формы */
 }
 .header-text {
-    flex-grow: 1; /* Растягивание текстового блока на всю доступную ширину */
+	flex-grow: 1; /* Растягивание текстового блока на всю доступную ширину */
+}
+.header-text a {
+	text-decoration: none;
+	color: #333;
+	background-color: #fff;
+	padding: 5px 10px;
+	border-radius: 10px;
 }
 
 #mainNav {

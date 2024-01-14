@@ -82,7 +82,7 @@ class Database:
 	def __init__(self):
 		super(Database, self).__init__()
 
-		self.engine = create_engine("sqlite:///db\\blog_database.db")
+		self.engine = create_engine("sqlite:///content\\db\\blog_database.db")
 		Base.metadata.create_all(self.engine)
 		self.Session = sessionmaker(bind=self.engine)
 		self.session = self.Session()
