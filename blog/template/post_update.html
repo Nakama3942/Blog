@@ -3,43 +3,43 @@
 {% block title %}{{ post_content['title'] }} - Блог Калиновського{% endblock %}
 
 {% block styles %}
-	<link href="/resources/styles/light/frame.css" rel="stylesheet">
-	<link href="/resources/styles/light/diary_entry.css" rel="stylesheet">
-	<link href="/resources/styles/light/form.css" rel="stylesheet">
+		<link href="/resources/styles/light/frame.css" rel="stylesheet">
+		<link href="/resources/styles/light/diary_entry.css" rel="stylesheet">
+		<link href="/resources/styles/light/form.css" rel="stylesheet">
 {% endblock %}
 
 {% block scripts %}
-	<script src="/resources/scripts/content_script.js"></script>
-	<script src="/resources/scripts/importance_adapter.js"></script>
+		<script src="/resources/scripts/content_script.js"></script>
+		<script src="/resources/scripts/importance_adapter.js"></script>
 {% endblock %}
 
 {% block content %}
-	<main>
-		<div class="article-container" data-importance="{{ form.importance.data }}">
-			<article class="diary-entry">
-				<form id="postForm" action="{{ url_for('update_post_route', post_title=post_content['title']) }}" method="post" enctype="multipart/form-data">
-					{{ form.hidden_tag() }}
+		<main>
+			<div class="article-container" data-importance="{{ form.importance.data }}">
+				<article class="diary-entry">
+					<form id="postForm" action="{{ url_for('update_post_route', post_title=post_content['title']) }}" method="post" enctype="multipart/form-data">
+						{{ form.hidden_tag() }}
 
-					<h2 class="title">{{ post_content['title'] }}</h2>
+						<h2 class="title">{{ post_content['title'] }}</h2>
 
-					{{ form.description(placeholder="Опис запису", required=true) }}
-					{{ form.tags(placeholder="Теги", required=true) }}
-					{{ form.importance(required=true) }}
-					{{ form.created_at(type="datetime-local", value=post_content['created_at']|default(""), required=true) }}
-					{{ form.files(required=false) }}
+						{{ form.description(placeholder="Опис запису", required=true) }}
+						{{ form.tags(placeholder="Теги", required=true) }}
+						{{ form.importance(required=true) }}
+						{{ form.created_at(type="datetime-local", value=post_content['created_at']|default(""), required=true) }}
+						{{ form.files(required=false) }}
 
-					<hr class="divider">
+						<hr class="divider">
 
-					<div class="content-wrapper">
-						{{ form.content(placeholder="Текст запису", oninput="auto_grow(this)", required=true) }}
-						<hr class="content-divider">
-						{{ form.image_name(placeholder="Назва зображення", required=false) }}
-						{{ form.image_directory(onchange="insertImageTag()", required=false) }}
-					</div>
+						<div class="content-wrapper">
+							{{ form.content(placeholder="Текст запису", oninput="auto_grow(this)", required=true) }}
+							<hr class="content-divider">
+							{{ form.image_name(placeholder="Назва зображення", required=false) }}
+							{{ form.image_directory(onchange="insertImageTag()", required=false) }}
+						</div>
 
-					{{ form.submit() }}
-				</form>
-			</article>
-		</div>
-	</main>
+						{{ form.submit() }}
+					</form>
+				</article>
+			</div>
+		</main>
 {% endblock %}

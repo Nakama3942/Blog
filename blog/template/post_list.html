@@ -1,26 +1,26 @@
 {% for post_metadata in posts_content %}
-	{% if not post_metadata['tags'][0] == 'Особистий' or is_admin %}
-		<div class="article-container" data-importance="{{ post_metadata['importance'] }}">
-			<article class="diary-item">
-				<a href="{{ url_for('post', post_title=post_metadata['title']) }}">
-					<h2 class="entry-title">{{ post_metadata['title'] }}</h2>
-				</a>
-				<p class="entry-description">{{ post_metadata['description'] }}</p>
-				<p class="tags">Теги:</p>
-				<ul class="tag-list">
-					<li class="tag-item">
-						{% if post_metadata['tags'][0] == 'Особистий' %}
+{% if not post_metadata['tags'][0] == 'Особистий' or is_admin %}
+			<div class="article-container" data-importance="{{ post_metadata['importance'] }}">
+				<article class="diary-item">
+					<a href="{{ url_for('post', post_title=post_metadata['title']) }}">
+						<h2 class="entry-title">{{ post_metadata['title'] }}</h2>
+					</a>
+					<p class="entry-description">{{ post_metadata['description'] }}</p>
+					<p class="tags">Теги:</p>
+					<ul class="tag-list">
+						<li class="tag-item">
+							{% if post_metadata['tags'][0] == 'Особистий' %}
 							<p class="tag-private-source">{{ post_metadata['tags'][0] }}</p>
-						{% else %}
+							{% else %}
 							<p class="tag-source">{{ post_metadata['tags'][0] }}</p>
-						{% endif %}
-						{% for tag in post_metadata['tags'][1:] %}
+							{% endif %}
+							{% for tag in post_metadata['tags'][1:] %}
 							<p class="tag-source">{{ tag }}</p>
-						{% endfor %}
-					</li>
-				</ul>
-				<p class="entry-date">Дата написання: {{ post_metadata['created_at'] }}</p>
-			</article>
-		</div>
-	{% endif %}
+							{% endfor %}
+						</li>
+					</ul>
+					<p class="entry-date">Дата написання: {{ post_metadata['created_at'] }}</p>
+				</article>
+			</div>
+{% endif %}
 {% endfor %}

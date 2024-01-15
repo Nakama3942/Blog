@@ -3,54 +3,54 @@
 {% block title %}{{ dream_content['title'] }} - Блог Калиновського{% endblock %}
 
 {% block styles %}
-	<link href="/resources/styles/light/frame.css" rel="stylesheet">
-	<link href="/resources/styles/light/diary_entry.css" rel="stylesheet">
-	<link href="/resources/styles/light/button.css" rel="stylesheet">
-	<link href="/resources/styles/light/tag_list.css" rel="stylesheet">
+		<link href="/resources/styles/light/frame.css" rel="stylesheet">
+		<link href="/resources/styles/light/diary_entry.css" rel="stylesheet">
+		<link href="/resources/styles/light/button.css" rel="stylesheet">
+		<link href="/resources/styles/light/tag_list.css" rel="stylesheet">
 {% endblock %}
 
 {% block scripts %}
-	<script src="/resources/scripts/importance.js"></script>
+		<script src="/resources/scripts/importance.js"></script>
 {% endblock %}
 
 {% block content %}
-	<main>
-		<div class="article-container" data-importance="{{ dream_content['importance'] }}">
-			<article class="diary-entry">
-				<!-- Настройки поста -->
-				{% if is_admin %}
+		<main>
+			<div class="article-container" data-importance="{{ dream_content['importance'] }}">
+				<article class="diary-entry">
+					<!-- Настройки поста -->
+					{% if is_admin %}
 					<div class="button-container">
 						<button class="button-update" onclick="location.href='{{ url_for('update_dream', dream_title=dream_content['title']) }}'">Оновити сновидіння</button>
 						<button class="button-delete" onclick="location.href='{{ url_for('delete_dream', dream_title=dream_content['title']) }}'">Видалити сновидіння</button>
 					</div>
-				{% endif %}
-				<!-- Метаданные поста -->
-				<h2 class="title">{{ dream_content['title'] }}</h2>
-				<p class="description">{{ dream_content['mood'] }}</p>
-				<p class="tags">Теги:</p>
-				<ul class="tag-list">
-					<li class="tag-item">
-						{% if dream_content['tags'][0] == 'Особистий' %}
-							<p class="tag-private-source">{{ dream_content['tags'][0] }}</p>
-						{% else %}
-							<p class="tag-source">{{ dream_content['tags'][0] }}</p>
-						{% endif %}
-						{% for tag in dream_content['tags'][1:] %}
-							<p class="tag-source">{{ tag }}</p>
-						{% endfor %}
-					</li>
-				</ul>
-				<p class="importance" id="importance" data-content-type="dream">{{ dream_content['importance'] }}</p>
-				<p class="date">Час сновидіння: {{ dream_content['dreamed_at'] }}</p>
-				{% if is_admin %}
-					{% if dream_content['published_at'] is not none %}
-						<p class="date">Дата публікації у Блозі: {{ dream_content['published_at'] }}</p>
 					{% endif %}
-				{% endif %}
-				<hr class="divider">
-				<!-- Содержание поста -->
-				<div class="content">{{ dream_content['content']|safe }}</div>
-			</article>
-		</div>
-	</main>
+					<!-- Метаданные поста -->
+					<h2 class="title">{{ dream_content['title'] }}</h2>
+					<p class="description">{{ dream_content['mood'] }}</p>
+					<p class="tags">Теги:</p>
+					<ul class="tag-list">
+						<li class="tag-item">
+							{% if dream_content['tags'][0] == 'Особистий' %}
+							<p class="tag-private-source">{{ dream_content['tags'][0] }}</p>
+							{% else %}
+							<p class="tag-source">{{ dream_content['tags'][0] }}</p>
+							{% endif %}
+							{% for tag in dream_content['tags'][1:] %}
+							<p class="tag-source">{{ tag }}</p>
+							{% endfor %}
+						</li>
+					</ul>
+					<p class="importance" id="importance" data-content-type="dream">{{ dream_content['importance'] }}</p>
+					<p class="date">Час сновидіння: {{ dream_content['dreamed_at'] }}</p>
+					{% if is_admin %}
+					{% if dream_content['published_at'] is not none %}
+					<p class="date">Дата публікації у Блозі: {{ dream_content['published_at'] }}</p>
+					{% endif %}
+					{% endif %}
+					<hr class="divider">
+					<!-- Содержание поста -->
+					<div class="content">{{ dream_content['content']|safe }}</div>
+				</article>
+			</div>
+		</main>
 {% endblock %}

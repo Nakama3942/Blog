@@ -3,27 +3,27 @@
 {% block title %}{{ page_data['title'] }} - Блог Калиновського{% endblock %}
 
 {% block styles %}
-	<link href="/resources/styles/light/button.css" rel="stylesheet">
-	<link href="/resources/styles/light/file_list.css" rel="stylesheet">
-	<link href="/resources/styles/light/image_modal.css" rel="stylesheet">
-	<link href="/resources/styles/light/snackbar.css" rel="stylesheet">
+		<link href="/resources/styles/light/button.css" rel="stylesheet">
+		<link href="/resources/styles/light/file_list.css" rel="stylesheet">
+		<link href="/resources/styles/light/image_modal.css" rel="stylesheet">
+		<link href="/resources/styles/light/snackbar.css" rel="stylesheet">
 {% endblock %}
 
 {% block scripts %}
-	<script src="/resources/scripts/gallery.js"></script>
+		<script src="/resources/scripts/gallery.js"></script>
 {% endblock %}
 
 {% block content %}
-	<main>
-		{% if is_admin %}
+		<main>
+			{% if is_admin %}
 			<div class="button-container">
 				<input type="file" id="imageInput" name="images" multiple>
 				<button class="button-add" data-sender="{{ page_data['sender'] }}" data-folder="{{ page_data['folder'] }}" onclick="uploadFiles()">Додати зображення</button>
 			</div>
-		{% endif %}
+			{% endif %}
 
-		<ul class="file-list">
-			{% for image in images %}
+			<ul class="file-list">
+				{% for image in images %}
 				<li class="file-item">
 					<a href="javascript:void(0);" class="open-modal" data-index="{{ loop.index - 1 }}" data-img="{{ url_for('image', folder=page_data['folder'], filename=image.name) }}" data-folder="{{ page_data['folder'] }}">
 						<div class="thumbnail-container">
@@ -31,21 +31,21 @@
 						</div>
 					</a>
 				</li>
-			{% endfor %}
-		</ul>
+				{% endfor %}
+			</ul>
 
-		<div id="myModal" class="modal">
-			<span class="close">&times;</span>
-			<span class="download" onclick="downloadImage()">&#8595;</span>
-			{% if is_admin %}
+			<div id="myModal" class="modal">
+				<span class="close">&times;</span>
+				<span class="download" onclick="downloadImage()">&#8595;</span>
+				{% if is_admin %}
 				<span class="delete" onclick="deleteImage()">🗑️</span>
-			{% endif %}
-			<span class="prev" onclick="plusSlides(-1)">&#10094;</span>
-			<img class="modal-content" id="img01" src="">
-			<span class="next" onclick="plusSlides(1)">&#10095;</span>
-		</div>
+				{% endif %}
+				<span class="prev" onclick="plusSlides(-1)">&#10094;</span>
+				<img class="modal-content" id="img01" src="">
+				<span class="next" onclick="plusSlides(1)">&#10095;</span>
+			</div>
 
-		<!-- Всплывающее сообщение -->
-		<div id="snackbar"></div>
-	</main>
+			<!-- Всплывающее сообщение -->
+			<div id="snackbar"></div>
+		</main>
 {% endblock %}

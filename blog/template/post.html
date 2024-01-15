@@ -3,68 +3,68 @@
 {% block title %}{{ post_content['title'] }} - Блог Калиновського{% endblock %}
 
 {% block styles %}
-	<link href="/resources/styles/light/frame.css" rel="stylesheet">
-	<link href="/resources/styles/light/diary_entry.css" rel="stylesheet">
-	<link href="/resources/styles/light/button.css" rel="stylesheet">
-	<link href="/resources/styles/light/tag_list.css" rel="stylesheet">
+		<link href="/resources/styles/light/frame.css" rel="stylesheet">
+		<link href="/resources/styles/light/diary_entry.css" rel="stylesheet">
+		<link href="/resources/styles/light/button.css" rel="stylesheet">
+		<link href="/resources/styles/light/tag_list.css" rel="stylesheet">
 {% endblock %}
 
 {% block scripts %}
-	<script src="/resources/scripts/importance.js"></script>
+		<script src="/resources/scripts/importance.js"></script>
 {% endblock %}
 
 {% block content %}
-	<main>
-		<div class="article-container" data-importance="{{ post_content['importance'] }}">
-			<article class="diary-entry">
-				<!-- Настройки поста -->
-				{% if is_admin %}
+		<main>
+			<div class="article-container" data-importance="{{ post_content['importance'] }}">
+				<article class="diary-entry">
+					<!-- Настройки поста -->
+					{% if is_admin %}
 					<div class="button-container">
 						<button class="button-update" onclick="location.href='{{ url_for('update_post', post_title=post_content['title']) }}'">Оновити пост</button>
 						<button class="button-delete" onclick="location.href='{{ url_for('delete_post', post_title=post_content['title']) }}'">Видалити пост</button>
 					</div>
-				{% endif %}
-				<!-- Метаданные поста -->
-				<h2 class="title">{{ post_content['title'] }}</h2>
-				<p class="description">{{ post_content['description'] }}</p>
-				<p class="tags">Теги:</p>
-				<ul class="tag-list">
-					<li class="tag-item">
-						{% if post_content['tags'][0] == 'Особистий' %}
+					{% endif %}
+					<!-- Метаданные поста -->
+					<h2 class="title">{{ post_content['title'] }}</h2>
+					<p class="description">{{ post_content['description'] }}</p>
+					<p class="tags">Теги:</p>
+					<ul class="tag-list">
+						<li class="tag-item">
+							{% if post_content['tags'][0] == 'Особистий' %}
 							<p class="tag-private-source">{{ post_content['tags'][0] }}</p>
-						{% else %}
+							{% else %}
 							<p class="tag-source">{{ post_content['tags'][0] }}</p>
-						{% endif %}
-						{% for tag in post_content['tags'][1:] %}
+							{% endif %}
+							{% for tag in post_content['tags'][1:] %}
 							<p class="tag-source">{{ tag }}</p>
-						{% endfor %}
-					</li>
-				</ul>
-				<p class="importance" id="importance" data-content-type="post">{{ post_content['importance'] }}</p>
-				<p class="date">Дата написання: {{ post_content['created_at'] }}</p>
-				{% if is_admin %}
+							{% endfor %}
+						</li>
+					</ul>
+					<p class="importance" id="importance" data-content-type="post">{{ post_content['importance'] }}</p>
+					<p class="date">Дата написання: {{ post_content['created_at'] }}</p>
+					{% if is_admin %}
 					{% if post_content['published_at'] is not none %}
-						<p class="date">Дата публікації у Блозі: {{ post_content['published_at'] }}</p>
+					<p class="date">Дата публікації у Блозі: {{ post_content['published_at'] }}</p>
 					{% endif %}
 					{% if post_content['last_changed_at'] is not none %}
-						<p class="date">Дата останньої зміни у Блозі: {{ post_content['last_changed_at'] }}</p>
+					<p class="date">Дата останньої зміни у Блозі: {{ post_content['last_changed_at'] }}</p>
 					{% endif %}
-				{% endif %}
-				<!-- Файлы -->
-				<ul class="file-list">
-					{% for file in post_content['files'] %}
+					{% endif %}
+					<!-- Файлы -->
+					<ul class="file-list">
+						{% for file in post_content['files'] %}
 						<li class="file-item">
 							<a href="{{ url_for('uploaded_file', filename=file.name) }}" download="/files/{{ file.name }}">
 								<img class="file-icon" src="{{ url_for('static', filename='icons/' + file.type + '.png') }}" alt="{{ file.type }} Icon" width="128" height="128">
 								{{ file.name }}
 							</a>
 						</li>
-					{% endfor %}
-				</ul>
-				<hr class="divider">
-				<!-- Содержание поста -->
-				<div class="content">{{ post_content['content']|safe }}</div>
-			</article>
-		</div>
-	</main>
+						{% endfor %}
+					</ul>
+					<hr class="divider">
+					<!-- Содержание поста -->
+					<div class="content">{{ post_content['content']|safe }}</div>
+				</article>
+			</div>
+		</main>
 {% endblock %}

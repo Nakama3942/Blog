@@ -3,38 +3,38 @@
 {% block title %}Щоденник сновидінь - Блог Калиновського{% endblock %}
 
 {% block styles %}
-	<link href="/resources/styles/light/button.css" rel="stylesheet">
-	<link href="/resources/styles/light/search.css" rel="stylesheet">
-	<link href="/resources/styles/light/frame.css" rel="stylesheet">
-	<link href="/resources/styles/light/diary.css" rel="stylesheet">
-	<link href="/resources/styles/light/tag_list.css" rel="stylesheet">
+		<link href="/resources/styles/light/button.css" rel="stylesheet">
+		<link href="/resources/styles/light/search.css" rel="stylesheet">
+		<link href="/resources/styles/light/frame.css" rel="stylesheet">
+		<link href="/resources/styles/light/diary.css" rel="stylesheet">
+		<link href="/resources/styles/light/tag_list.css" rel="stylesheet">
 {% endblock %}
 
 {% block scripts %}
-	<script src="/resources/scripts/search.js" data-page="Dreams"></script>
+		<script src="/resources/scripts/search.js" data-page="Dreams"></script>
 {% endblock %}
 
 {% block content %}
-	<main>
-		{% if is_admin %}
+		<main>
+			{% if is_admin %}
 			<div class="button-container">
 				<button class="button-add" onclick="location.href='{{ url_for('new_dream') }}'">Додати сновидіння</button>
 			</div>
-		{% endif %}
+			{% endif %}
 
-		<div class="search-wrapper">
-			<select id="searchScope">
-				<option value="title">По назвам</option>
-				<option value="mood">По настрою</option>
-				<option value="tags">По тегам</option>
-			</select>
-			<input type="text" id="searchInput" placeholder="Пошук...">
-		</div>
-		<div id="searchResultsModal" class="search-results-modal">
-			<div id="searchResultsContainer" class="search-results-container"></div>
-		</div>
+			<div class="search-wrapper">
+				<select id="searchScope">
+					<option value="title">По назвам</option>
+					<option value="mood">По настрою</option>
+					<option value="tags">По тегам</option>
+				</select>
+				<input type="text" id="searchInput" placeholder="Пошук...">
+			</div>
+			<div id="searchResultsModal" class="search-results-modal">
+				<div id="searchResultsContainer" class="search-results-container"></div>
+			</div>
 
-		{% set dreams_list_content=dreams_content %}
-		{% include 'dream_list.html' %}
-	</main>
+			{% set dreams_list_content=dreams_content %}
+			{% include 'dream_list.html' %}
+		</main>
 {% endblock %}

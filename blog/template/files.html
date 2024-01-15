@@ -3,26 +3,26 @@
 {% block title %}Файли постів - Блог Калиновського{% endblock %}
 
 {% block styles %}
-	<link href="/resources/styles/light/button.css" rel="stylesheet">
-	<link href="/resources/styles/light/file_list.css" rel="stylesheet">
-	<link href="/resources/styles/light/image_modal.css" rel="stylesheet">
+		<link href="/resources/styles/light/button.css" rel="stylesheet">
+		<link href="/resources/styles/light/file_list.css" rel="stylesheet">
+		<link href="/resources/styles/light/image_modal.css" rel="stylesheet">
 {% endblock %}
 
 {% block scripts %}
-	<script src="/resources/scripts/files.js"></script>
+		<script src="/resources/scripts/files.js"></script>
 {% endblock %}
 
 {% block content %}
-	<main>
-		{% if is_admin %}
+		<main>
+			{% if is_admin %}
 			<div class="button-container">
 				<input type="file" id="fileInput" name="files" multiple>
 				<button class="button-add" onclick="uploadFiles()">Додати файл</button>
 			</div>
-		{% endif %}
+			{% endif %}
 
-		<ul class="file-list">
-			{% for file in files %}
+			<ul class="file-list">
+				{% for file in files %}
 				<li class="file-item">
 					<a href="javascript:void(0);" class="open-modal" file-name="{{ file.name }}" file-posts-titles="{{ file.posts_titles|safe }}">
 						<div class="thumbnail-container">
@@ -31,14 +31,14 @@
 						{{ file.name }}
 					</a>
 				</li>
-			{% endfor %}
-		</ul>
+				{% endfor %}
+			</ul>
 
-		<div id="myModal" class="modal">
-			<span class="close">&times;</span>
-			<span class="download" onclick="downloadFile()">&#8595;</span>
-			<span class="delete" onclick="deleteFile()">🗑️</span>
-			<p class="modal-content" id="postsList"></p>
-		</div>
-	</main>
+			<div id="myModal" class="modal">
+				<span class="close">&times;</span>
+				<span class="download" onclick="downloadFile()">&#8595;</span>
+				<span class="delete" onclick="deleteFile()">🗑️</span>
+				<p class="modal-content" id="postsList"></p>
+			</div>
+		</main>
 {% endblock %}

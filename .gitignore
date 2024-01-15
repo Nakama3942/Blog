@@ -1,3 +1,5 @@
 .idea
-blog/docs
 blog/.env
+blog/ssl.crt
+blog/ssl.key
+blog/content/

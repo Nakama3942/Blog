@@ -3,39 +3,39 @@
 {% block title %}Щоденник - Блог Калиновського{% endblock %}
 
 {% block styles %}
-	<link href="/resources/styles/light/button.css" rel="stylesheet">
-	<link href="/resources/styles/light/search.css" rel="stylesheet">
-	<link href="/resources/styles/light/frame.css" rel="stylesheet">
-	<link href="/resources/styles/light/diary.css" rel="stylesheet">
-	<link href="/resources/styles/light/tag_list.css" rel="stylesheet">
+		<link href="/resources/styles/light/button.css" rel="stylesheet">
+		<link href="/resources/styles/light/search.css" rel="stylesheet">
+		<link href="/resources/styles/light/frame.css" rel="stylesheet">
+		<link href="/resources/styles/light/diary.css" rel="stylesheet">
+		<link href="/resources/styles/light/tag_list.css" rel="stylesheet">
 {% endblock %}
 
 {% block scripts %}
-	<script src="/resources/scripts/search.js" data-page="Posts"></script>
+		<script src="/resources/scripts/search.js" data-page="Posts"></script>
 {% endblock %}
 
 {% block content %}
-	<main>
-		{% if is_admin %}
+		<main>
+			{% if is_admin %}
 			<div class="button-container">
 				<button class="button-add" onclick="location.href='{{ url_for('new_post') }}'">Додати пост</button>
 				<button class="button-file" onclick="location.href='{{ url_for('attached_files') }}'">Файли постів</button>
 			</div>
-		{% endif %}
+			{% endif %}
 
-		<div class="search-wrapper">
-			<select id="searchScope">
-				<option value="title">По назвам</option>
-				<option value="description">По опису</option>
-				<option value="tags">По тегам</option>
-			</select>
-			<input type="text" id="searchInput" placeholder="Пошук...">
-		</div>
-		<div id="searchResultsModal" class="search-results-modal">
-			<div id="searchResultsContainer" class="search-results-container"></div>
-		</div>
+			<div class="search-wrapper">
+				<select id="searchScope">
+					<option value="title">По назвам</option>
+					<option value="description">По опису</option>
+					<option value="tags">По тегам</option>
+				</select>
+				<input type="text" id="searchInput" placeholder="Пошук...">
+			</div>
+			<div id="searchResultsModal" class="search-results-modal">
+				<div id="searchResultsContainer" class="search-results-container"></div>
+			</div>
 
-		{% set post_list_content=posts_content %}
-		{% include 'post_list.html' %}
-	</main>
+			{% set post_list_content=posts_content %}
+			{% include 'post_list.html' %}
+		</main>
 {% endblock %}

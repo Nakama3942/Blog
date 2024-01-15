@@ -1,26 +1,26 @@
 {% for dream_metadata in dreams_content %}
-	{% if not dream_metadata['tags'][0] == 'Особистий' or is_admin %}
-		<div class="article-container" data-importance="{{ dream_metadata['importance'] }}">
-			<article class="diary-item">
-				<a href="{{ url_for('dream', dream_title=dream_metadata['title']) }}">
-					<h2 class="entry-title">{{ dream_metadata['title'] }}</h2>
-				</a>
-				<p class="entry-description">{{ dream_metadata['mood'] }}</p>
-				<p class="tags">Теги:</p>
-				<ul class="tag-list">
-					<li class="tag-item">
-						{% if dream_metadata['tags'][0] == 'Особистий' %}
+{% if not dream_metadata['tags'][0] == 'Особистий' or is_admin %}
+			<div class="article-container" data-importance="{{ dream_metadata['importance'] }}">
+				<article class="diary-item">
+					<a href="{{ url_for('dream', dream_title=dream_metadata['title']) }}">
+						<h2 class="entry-title">{{ dream_metadata['title'] }}</h2>
+					</a>
+					<p class="entry-description">{{ dream_metadata['mood'] }}</p>
+					<p class="tags">Теги:</p>
+					<ul class="tag-list">
+						<li class="tag-item">
+							{% if dream_metadata['tags'][0] == 'Особистий' %}
 							<p class="tag-private-source">{{ dream_metadata['tags'][0] }}</p>
-						{% else %}
+							{% else %}
 							<p class="tag-source">{{ dream_metadata['tags'][0] }}</p>
-						{% endif %}
-						{% for tag in dream_metadata['tags'][1:] %}
+							{% endif %}
+							{% for tag in dream_metadata['tags'][1:] %}
 							<p class="tag-source">{{ tag }}</p>
-						{% endfor %}
-					</li>
-				</ul>
-				<p class="entry-date">Час сновидіння: {{ dream_metadata['dreamed_at'] }}</p>
-			</article>
-		</div>
-	{% endif %}
+							{% endfor %}
+						</li>
+					</ul>
+					<p class="entry-date">Час сновидіння: {{ dream_metadata['dreamed_at'] }}</p>
+				</article>
+			</div>
+{% endif %}
 {% endfor %}
