@@ -14,6 +14,22 @@
 // limitations under the License.                                                   *
 // ******************************************************************************** *
 
+//Устанавливаю настройки при первой загрузке сайта
+function onPageLoad() {
+	// Проверяем, была ли функция уже вызвана
+	if (!localStorage.getItem('pageLoaded')) {
+		// Ваш код здесь
+		styling(document.getElementById('styling'));
+		meming(document.getElementById('meming'));
+		theming(document.getElementById('theming'));
+		framing(document.getElementById('framing'));
+
+		// Помечаем, что функция была вызвана
+		localStorage.setItem('pageLoaded', true);
+	}
+}
+window.onload = onPageLoad;
+
 document.addEventListener('DOMContentLoaded', function () {
 	var toggleWrappers = document.querySelectorAll('.toggle-wrapper');
 

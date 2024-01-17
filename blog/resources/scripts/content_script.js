@@ -14,6 +14,11 @@
 // limitations under the License.                                                   *
 // ******************************************************************************** *
 
+window.addEventListener('unload', function () {
+	const form = document.querySelector('form');
+	form.reset(); // Очищаем все поля формы
+});
+
 document.addEventListener('DOMContentLoaded', function() {
 	// Вызовите вашу функцию обновления размера здесь
 	auto_grow(document.getElementById('content'));
@@ -56,6 +61,38 @@ function auto_grow(element) {
 	element.style.height = (element.scrollHeight) + "px";
 }
 
+function formatText(command) {
+	event.preventDefault();
+
+	const contentTextArea = document.getElementById('content');
+	var selectedText = contentTextArea.value.substring(contentTextArea.selectionStart, contentTextArea.selectionEnd);
+
+	switch (command) {
+		case 'bold':
+			selectedText = `**${selectedText}**`;
+			break;
+		case 'italic':
+			selectedText = `*${selectedText}*`;
+			break;
+		case 'underline':
+			selectedText = `<u>${selectedText}</u>`;
+			break;
+		case 'spoiler':
+			selectedText = `<span class="spoiler">${selectedText}</span>`;
+			break;
+		case 'censor':
+			selectedText = `<span class="censored">${selectedText}</span>`;
+			break;
+	}
+
+	// Заменяем выделенный текст новым текстом
+	contentTextArea.setRangeText(selectedText, contentTextArea.selectionStart, contentTextArea.selectionEnd, 'end');
+
+	// Устанавливаем курсор в конец нового текста
+    contentTextArea.focus();
+    contentTextArea.setSelectionRange(contentTextArea.selectionEnd, contentTextArea.selectionEnd);
+}
+
 function insertImageTag() {
 	const imageDirectorySelect = document.getElementById('image_directory');
 	const imageFileNameInput = document.getElementById('image_name');
@@ -73,11 +110,6 @@ function insertImageTag() {
 	// Сброс значения селектора после добавления картинки
 	imageDirectorySelect.value = '';
 }
-
-window.addEventListener('unload', function () {
-	const form = document.querySelector('form');
-	form.reset(); // Очищаем все поля формы
-});
 
 // JavaScript для отображения выбранных файлов
 function handleFileSelect(event) {

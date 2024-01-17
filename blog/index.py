@@ -671,5 +671,5 @@ if __name__ == '__main__':
 		host='192.168.0.102',
 		port=5000,
 		ssl_context=('ssl.crt', 'ssl.key'),
-		debug=False
+		debug=True
 	)

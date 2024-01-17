@@ -1,0 +1,17 @@
+/* Стиль для цензуры */
+.censored {
+	user-select: none;
+	background-color: black;
+	color: black;
+}
+
+/* Стиль для спойлера */
+.spoiler {
+	user-select: none;
+	background-color: black;
+	color: black;
+}
+
+.spoiler:hover {
+	color: white;
+}

@@ -29,7 +29,27 @@
 
 						<hr class="divider">
 
-						{{ form.content(placeholder="Сновидіння", oninput="auto_grow(this)", required=true) }}
+						<div class="content-wrapper">
+							<div class="content_button-wrapper">
+								<button class="content-button" onclick="formatText('bold')" title="Жирний">
+									<img src="/resources/icons/buttons/format_bold.svg" alt="Жирний">
+								</button>
+								<button class="content-button" onclick="formatText('italic')" title="Курсив">
+									<img src="/resources/icons/buttons/format_italic.svg" alt="Курсив">
+								</button>
+								<button class="content-button" onclick="formatText('underline')" title="Підкреслення">
+									<img src="/resources/icons/buttons/format_underlined.svg" alt="Підкреслення">
+								</button>
+								<button class="content-button" onclick="formatText('spoiler')" title="Спойлер">
+									<img src="/resources/icons/buttons/warning.svg" alt="Спойлер">
+								</button>
+								<button class="content-button" onclick="formatText('censor')" title="Цензура">
+									<img src="/resources/icons/buttons/invisible.svg" alt="Цензура">
+								</button>
+							</div>
+							<hr class="content-divider">
+							{{ form.content(placeholder="Сновидіння", oninput="auto_grow(this)", required=true) }}
+						</div>
 
 						{{ form.submit() }}
 					</form>

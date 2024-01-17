@@ -24,6 +24,7 @@ form {
 }
 input[type="text"],
 textarea,
+button,
 .content-wrapper,
 input[type="file"],
 select,
@@ -78,6 +79,20 @@ input[type="file"] {
 	outline: none; /* Убираем синюю обводку у textarea, input[type="text"], select */
 }
 .content-wrapper .content-divider {
-	border: 0;
+	margin: 1px;
+	border: 0px;
 	border-top: 1px solid #ddd;
+}
+.content-wrapper .content_button-wrapper {
+	display: flex;
+}
+.content-wrapper .content_button-wrapper .content-button {
+	flex-grow: 1;
+	background-color: #fff;
+	margin-bottom: 0px;
+	border: 0px;
+	outline: none; /* Убираем синюю обводку у textarea, input[type="text"], select */
+}
+.content-wrapper .content_button-wrapper .content-button:hover {
+	background-color: #eee;
 }

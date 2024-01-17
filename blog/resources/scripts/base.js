@@ -143,6 +143,21 @@ document.addEventListener("DOMContentLoaded", function() {
 			activeLink.classList.add('active');
 		}
 	}
+
+	document.getElementById('emailBadge').addEventListener('click', function () {
+		// Текст, который вы хотите скопировать в буфер обмена
+		var textToCopy = 'nakama3942@gmail.com';
+
+		// Помещаем текст в буфер обмена
+		navigator.clipboard.writeText(textToCopy)
+		.then(function () {
+			// Выводим уведомление или выполните другие действия по вашему выбору
+			alert('Текст скопирован в буфер обмена: ' + textToCopy);
+		})
+		.catch(function (err) {
+			console.error('Не удалось скопировать текст: ', err);
+		});
+	});
 });
 
 // Скрипт для обновления версии
