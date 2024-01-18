@@ -32,6 +32,7 @@ from forms import CreatePostForm, UpdatePostForm, CreateDreamForm, UpdateDreamFo
 # todo - сделать тёмную тему
 
 app = Flask(__name__, template_folder='template', static_folder='resources')
+app.config['CONTENT_FOLDER'] = os.path.join(os.getcwd(), 'content')
 app.config['POST_FOLDER'] = os.path.join(os.getcwd(), 'content/posts')
 app.config['FILE_FOLDER'] = os.path.join(os.getcwd(), 'content/files')
 app.config['DREAM_FOLDER'] = os.path.join(os.getcwd(), 'content/dreams')
@@ -74,13 +75,12 @@ def logout():
 
 @app.route('/')
 def home():
-	posts_content = get_posts(5)
-	dreams_content = get_dreams(5)
 	return render_template(
 		'index.html',
 		active_tab='',
-		posts_content=posts_content,
-		dreams_content=dreams_content,
+		index_content=markdown(get_content('index')),
+		posts_content=get_posts(5),
+		dreams_content=get_dreams(5),
 		is_admin=is_admin()
 	)
 
@@ -88,14 +88,28 @@ def home():
 def autobiography():
 	return render_template(
 		'biography.html',
+		biography_content=markdown(get_content('biography')),
 		active_tab='autobiography',
 		is_admin=is_admin()
 	)
 
 @app.route('/projects')
 def projects():
+	projects_data_list = get_content('projects').replace('\n', '').split('* ')
+	projects_content = [
+		{
+			'type': projects_data_list[i],
+			'link': projects_data_list[i + 1],
+			'name': projects_data_list[i + 2],
+			'desc': projects_data_list[i + 3],
+			'time': projects_data_list[i + 4]
+		}
+		for i in range(1, len(projects_data_list), 5)
+	]
+
 	return render_template(
 		'projects.html',
+		projects_content=projects_content,
 		active_tab='projects',
 		is_admin=is_admin()
 	)
@@ -602,6 +616,12 @@ def serve_docs(subpath, filename):
 ############
 # Функции загрузки контента
 ############
+
+def get_content(file_name):
+	with open(f"{os.path.join(app.config['CONTENT_FOLDER'], file_name)}.md", 'r', encoding='utf-8') as content_file:
+		content_data = content_file.read()
+
+	return content_data
 
 def get_posts(post_limit):
 	with Database() as db:
