@@ -89,8 +89,8 @@ function formatText(command) {
 	contentTextArea.setRangeText(selectedText, contentTextArea.selectionStart, contentTextArea.selectionEnd, 'end');
 
 	// Устанавливаем курсор в конец нового текста
-    contentTextArea.focus();
-    contentTextArea.setSelectionRange(contentTextArea.selectionEnd, contentTextArea.selectionEnd);
+	contentTextArea.focus();
+	contentTextArea.setSelectionRange(contentTextArea.selectionEnd, contentTextArea.selectionEnd);
 }
 
 function insertImageTag() {

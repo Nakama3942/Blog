@@ -2,17 +2,21 @@
 
 ## Current version
 
-### Final update - v0.13.3
+### ReleaseUpdate - v1.0.0
 
-1. Fixed styles:
-	1. Made changes to the icon structure
-	2. Added icons for toggles
-	3. Hid the tooltips in the mode with css enabled
-2. Changed the principle of enabling the dark theme
-3. Combined forms into one file
-4. Refused optimizations:
-	1. Loading data is not critical now
-	2. There is a problem with searching in the library itself - it only supports the Latin alphabet, therefore in the Cyrillic alphabet only case-sensitive search is possible and this cannot be solved in any way...
+Improvements have been made:
+1. Combined the Blog content into one directory;
+2. Added a devlog playlist;
+3. Added an indication of the current version with a link to Changelog;
+4. Hid the Administrator keys;
+5. Switched to HTTPS;
+6. Added formatting buttons to the content field;
+7. Now, the first time you visit the site, the settings are applied correctly;
+8. When you click on the mail banner, it is now copied to the clipboard;
+9. Now, the styles loading toggle for the first load always on;
+10. Licensed the project;
+11. Transferred all personal information to content files;
+12. Documented the project.
 
 ## Old releases
 
@@ -186,3 +190,15 @@ Removed toggle from the form style (bug fixed) and added new settings:
 ### Style structure update - v0.13.2
 
 Changed the style structure (prepared addition a dark theme) and finished adding settings (the styles themselves have not yet been rewritten and look disgusting).
+
+### Final update - v0.13.3
+
+1. Fixed styles:
+	1. Made changes to the icon structure
+	2. Added icons for toggles
+	3. Hid the tooltips in the mode with css enabled
+2. Changed the principle of enabling the dark theme
+3. Combined forms into one file
+4. Refused optimizations:
+	1. Loading data is not critical now
+	2. There is a problem with searching in the library itself - it only supports the Latin alphabet, therefore in the Cyrillic alphabet only case-sensitive search is possible and this cannot be solved in any way...
